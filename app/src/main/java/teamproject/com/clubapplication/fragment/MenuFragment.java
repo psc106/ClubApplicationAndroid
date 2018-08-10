@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.Unbinder;
+import teamproject.com.clubapplication.MyAlarmActivity;
+import teamproject.com.clubapplication.MyCalendarActivity;
+import teamproject.com.clubapplication.MyContentActivity;
+import teamproject.com.clubapplication.MyGroupActivity;
+import teamproject.com.clubapplication.MyOptionActivity;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.DrawerMenu;
 import teamproject.com.clubapplication.MyInfoActivity;
@@ -58,7 +64,7 @@ public class MenuFragment extends Fragment {
     @OnClick(R.id.menu_txt_Name)
     void onClickMemeberInfo() {
         Intent intent = new Intent(getContext(), MyInfoActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         closeMenu(MyInfoActivity.class);
     }
@@ -66,25 +72,30 @@ public class MenuFragment extends Fragment {
     @OnItemClick(R.id.menu_listV_MenuList)
     public void onItemClick(AdapterView<?> parent, int position) {
 
-        Toast.makeText(getContext(), menuList[position], Toast.LENGTH_SHORT).show();
-
-        switch (position) {
-            case 0:
-                break;
-
-            case 1:
-                break;
-
-            case 2:
-                break;
-
-            case 3:
-                break;
-
-            case 4:
-                break;
-
-            default:
+        Intent intent = null;
+        Object closeClass = null;
+        if(position==0) {
+            intent = new Intent(getContext(), MyGroupActivity.class);
+            closeClass = MyGroupActivity.class;
+        } else if(position==1) {
+            intent = new Intent(getContext(), MyCalendarActivity.class);
+            closeClass = MyCalendarActivity.class;
+        } else if(position==2) {
+            intent = new Intent(getContext(), MyAlarmActivity.class);
+            closeClass = MyAlarmActivity.class;
+        } else if(position==3) {
+            intent = new Intent(getContext(), MyContentActivity.class);
+            closeClass = MyContentActivity.class;
+        } else if(position==4) {
+            intent = new Intent(getContext(), MyOptionActivity.class);
+            closeClass = MyOptionActivity.class;
+        } else  {
+            return;
+        }
+        if(intent!=null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            closeMenu(closeClass);
         }
     }
 

@@ -19,7 +19,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyInfoActivity" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".MyContentActivity" />
+        <activity android:name=".MyOptionActivity" />
+        <activity android:name=".MyAlarmActivity" />
+        <activity android:name=".MyGroupActivity" />
+        <activity android:name=".MyCalendarActivity"></activity>
     </application>
 
 </manifest>
