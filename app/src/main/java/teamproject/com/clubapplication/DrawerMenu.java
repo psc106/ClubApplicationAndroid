@@ -8,6 +8,54 @@ import android.support.v7.app.AppCompatActivity;
 
 import teamproject.com.clubapplication.fragment.MenuFragment;
 
+
+
+/*
+*  사용법:
+*  ( ID 명명 규칙 )
+*  frame 레이아웃 id는 activity에서 앞에 사용하는 이름+ "_menu"      ex) main_menu
+*  drawer 레이아웃 id는 activity에서 앞에 사용하는 이름+ "_drawer"   ex) main_drawer
+*
+*  1) 메뉴를 사용할 activity의 레이아웃 xml에 아래의 소스를 추가합니다.
+*
+*      1-1. 레이아웃의 두번째 줄에 아래의 소스를 추가합니다.
+*      <?xml version="1.0" encoding="utf-8"?> <!--제일 첫줄-->
+*      <android.support.v4.widget.DrawerLayout
+*           android:id="drawer레이아웃 id"
+*           xmlns:android="http://schemas.android.com/apk/res/android"
+*           android:layout_width="match_parent"
+*           android:layout_height="match_parent">
+*      ...(원본 코드)...
+*
+*      1-2. 레이아웃의 제일 아래에 아래의 소스를 추가합니다.*
+*      ...(원본 코드)...
+*       <FrameLayout
+*           android:id="frame레이아웃 id"
+*           xmlns:android="http://schemas.android.com/apk/res/android"
+*           android:layout_width="240dp"
+*           android:layout_height="match_parent"
+*           android:layout_gravity="left"
+*           android:gravity="center">
+*       </FrameLayout>
+*       </android.support.v4.widget.DrawerLayout>
+*
+*
+*  2) 메뉴를 사용할 activity에 아래의 소스를 추가합니다.
+*
+*      2-1. 아래의 멤버변수를 추가합니다.
+*         private DrawerMenu drawerMenu;
+*
+*      2-2. onResume메소드에 아래 코드를 추가합니다.
+*        ....
+*        if (drawerMenu == null) {
+*            drawerMenu = DrawerMenu.addMenu(this, R.id."frame레이아웃 id", R.id."drawer레이아웃 id");
+*        } else {
+*            drawerMenu.restartMenu(this, R.id."frame레이아웃 id", R.id."drawer레이아웃 id");
+*        }
+*       ....
+*
+* */
+
 public class DrawerMenu {
     //멤버 변수
     private MenuFragment menuContent;
