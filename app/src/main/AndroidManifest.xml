@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="teamproject.com.clubapplication">
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -18,13 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MyInfoActivity" />
-        <activity android:name=".TestActivity" />
-        <activity android:name=".MyContentActivity" />
-        <activity android:name=".MyOptionActivity" />
-        <activity android:name=".MyAlarmActivity" />
-        <activity android:name=".MyGroupActivity" />
-        <activity android:name=".MyCalendarActivity"></activity>
+        <activity android:name=".JoinActivity">
+        </activity>
+        <activity android:name=".LoginActivity">
+        </activity>
+        <activity android:name=".FindIdPwActivity">
+        </activity>
+        <activity android:name=".TestActivity">
+        </activity>
+        <activity android:name=".MyInfoActivity">
+        </activity>
     </application>
 
 </manifest>

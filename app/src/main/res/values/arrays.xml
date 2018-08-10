@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="area_code_arr">
+        <item>010</item>
+        <item>011</item>
+    </string-array>
+
+    <string-array name="join_region_arr">
+        <item>010</item>
+        <item>011</item>
+    </string-array>
+
+
+
+
+</resources>
