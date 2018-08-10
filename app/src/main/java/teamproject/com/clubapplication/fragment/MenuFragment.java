@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,11 +60,7 @@ public class MenuFragment extends Fragment {
         Intent intent = new Intent(getContext(), MyInfoActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-        if(!(getContext() instanceof MyInfoActivity)) {
-            drawerMenu.getMenuDrawer().closeDrawer(Gravity.LEFT, false);
-        } else {
-            drawerMenu.getMenuDrawer().closeDrawers();
-        }
+        closeMenu(MyInfoActivity.class);
     }
 
     @OnItemClick(R.id.menu_listV_MenuList)
@@ -118,8 +115,8 @@ public class MenuFragment extends Fragment {
         bus.unregister(this);
     }
 
-    public void closeMenu(Activity activity) {
-        if(getContext().getClass() != activity.getClass()) {
+    public  void closeMenu(Object activity) {
+        if(getContext().getClass() != activity) {
             drawerMenu.getMenuDrawer().closeDrawer(Gravity.LEFT, false);
         } else {
             drawerMenu.getMenuDrawer().closeDrawers();

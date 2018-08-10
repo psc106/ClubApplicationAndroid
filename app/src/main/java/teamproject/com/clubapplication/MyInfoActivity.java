@@ -17,9 +17,9 @@ public class MyInfoActivity extends AppCompatActivity {
         super.onResume();
 
         if (drawerMenu == null) {
-            drawerMenu = DrawerMenu.addMenu(this, R.id.main_menu, R.id.main_drawer);
+            drawerMenu = DrawerMenu.addMenu(this, R.id.myInfo_menu, R.id.myInfo_drawer);
         } else {
-            drawerMenu.restartMenu(this, R.id.main_menu, R.id.main_drawer);
+            drawerMenu.restartMenu(this, R.id.myInfo_menu, R.id.myInfo_drawer);
         }
     }
 
