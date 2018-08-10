@@ -1,22 +1,14 @@
 package teamproject.com.clubapplication;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import teamproject.com.clubapplication.data.TestData;
-import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
-
-public class MainActivity extends AppCompatActivity {
+public class MyInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        startActivity(new Intent(this, TestActivity.class));
+        setContentView(R.layout.activity_my_info);
     }
 
     DrawerMenu drawerMenu;
@@ -30,4 +22,5 @@ public class MainActivity extends AppCompatActivity {
             drawerMenu.restartMenu(this, R.id.main_menu, R.id.main_drawer);
         }
     }
+
 }
