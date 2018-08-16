@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_make_group;
     @BindView(R.id.gv_category)
     GridView gvCategory;
-    int a = 0;
+    int check_detail = 0;
     GvAdapter gvAdapter;
     int [] img = {R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background};
     String[]items_location={"서울","경기","이천","전라도","경상도","충청도","강원도","제주"};
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> imgs = new ArrayList<>();
 
     Unbinder unbinder;
+
+    private DrawerMenu drawerMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,27 +73,54 @@ public class MainActivity extends AppCompatActivity {
             adt_spinner_location.setAdapter(adapter);
         }
 
-        btn_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("asd","aaaa");
-            }
-        });
+
     }
 
 
     @OnClick(R.id.btn_search_detail)
     public void searchDetail(View view) {
         Log.d("asd","commit");
-        if (a == 0) {
+        if (check_detail == 0) {
             search_location.setVisibility(View.VISIBLE);
             search_category.setVisibility(View.VISIBLE);
-            a = 1;
-        } else if (a == 1) {
+            check_detail = 1;
+        } else if (check_detail == 1) {
             search_location.setVisibility(View.GONE);
             search_category.setVisibility(View.GONE);
-            a = 0;
+            check_detail = 0;
         }
 
+    }
+    //검색
+    @OnClick(R.id.btn_search)
+    public void search(View view){
+
+        if(check_detail==0){
+            //검색어
+            String str_search = search.getText().toString();
+
+        }else if(check_detail==1){
+            //검색어 , 위치 , 카테고리 지정
+            String str_search = search.getText().toString();
+            String str_location = spinner_location.getSelectedItem().toString();
+            String str_category = spinner_category.getSelectedItem().toString();
+        }
+
+
+    }
+    //그룹생성
+    @OnClick(R.id.btn_make_group)
+    public void makeGroup(View view){
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id.main_menu, R.id.main_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.main_menu, R.id.main_drawer);
+        }
     }
 }

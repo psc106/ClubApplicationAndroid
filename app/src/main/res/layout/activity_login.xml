@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/login_drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,7 +21,7 @@
         <ImageView
             android:layout_marginTop="50dp"
             android:layout_gravity="center"
-            android:src="@drawable/users"
+            android:src="#ffff00"
             android:layout_width="100dp"
             android:layout_height="100dp" />
 
@@ -113,3 +118,12 @@
 
 
 </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/login_menu"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:gravity="center">
+    </FrameLayout>
+</android.support.v4.widget.DrawerLayout>

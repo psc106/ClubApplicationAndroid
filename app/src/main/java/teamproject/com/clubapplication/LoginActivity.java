@@ -21,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.login_find_pw) TextView login_find_pw;
     @BindView(R.id.login_new_join) TextView login_new_join;
 
+    private DrawerMenu drawerMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,15 @@ public class LoginActivity extends AppCompatActivity {
     public void loginNewJoin() {
         Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
         startActivity(intent);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this,R.id.login_menu, R.id.login_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.login_menu, R.id.login_drawer);
+        }
     }
 
 }

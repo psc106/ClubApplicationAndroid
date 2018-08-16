@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +39,7 @@ public class JoinActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_join_ok) Button btn_join_ok;//
 
-
+    private DrawerMenu drawerMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,5 +61,14 @@ public class JoinActivity extends AppCompatActivity {
     @OnClick(R.id.btn_join_ok)
     public void btnJoinOk() {
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this,R.id.join_menu, R.id.join_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.join_menu, R.id.join_drawer);
+        }
     }
 }
