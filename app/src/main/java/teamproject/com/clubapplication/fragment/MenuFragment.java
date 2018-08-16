@@ -18,21 +18,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.Unbinder;
+import teamproject.com.clubapplication.LoginActivity;
 import teamproject.com.clubapplication.MyAlarmActivity;
 import teamproject.com.clubapplication.MyCalendarActivity;
 import teamproject.com.clubapplication.MyGroupActivity;
 import teamproject.com.clubapplication.MyContentActivity;
 import teamproject.com.clubapplication.MyOptionActivity;
+import teamproject.com.clubapplication.data.Member;
+import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.DrawerMenu;
 import teamproject.com.clubapplication.MyInfoActivity;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
 
 @SuppressLint("ValidFragment")
 public class MenuFragment extends Fragment {
@@ -53,16 +58,27 @@ public class MenuFragment extends Fragment {
 
     @OnClick(R.id.menu_btn_Login)
     void onClickLoginBtn() {
+        if(loginService.getMember()==null) {
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            if (closeMenu(LoginActivity.class)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        } else {
+            loginService.logout();
+        }
     }
     @OnClick(R.id.menu_imgV_Profile)
     void onClickProfileImg() {
+        loginService.login(new Member(Member.testData()));
     }
     @OnClick(R.id.menu_txt_Name)
     void onClickMemeberInfo() {
         Intent intent = new Intent(getContext(), MyInfoActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-        closeMenu(MyInfoActivity.class);
+        if(closeMenu(MyInfoActivity.class)){
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        }
     }
 
     @OnItemClick(R.id.menu_listV_MenuList)
@@ -89,15 +105,18 @@ public class MenuFragment extends Fragment {
             return;
         }
         if(intent!=null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-            closeMenu(closeClass);
+            if(closeMenu(closeClass)){
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
         }
     }
 
     String TAG = "로그출력";
     Unbinder unbinder;
     Bus bus;
+    ArrayAdapter adapter;
+    LoginService loginService;
     String[] menuList = {"내 동호회", "내 일정", "내 알림", "내 글", "설정"};
 
 
@@ -109,9 +128,15 @@ public class MenuFragment extends Fragment {
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
 
-        ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, menuList);
+        adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, menuList);
         menuListV.setAdapter(adapter);
 
+        loginService = LoginService.getInstance();
+        if(loginService.getMember()==null){
+            setLogoutMenu();
+        } else {
+            setLoginMenu();
+        }
         return view;
     }
 
@@ -122,12 +147,35 @@ public class MenuFragment extends Fragment {
         bus.unregister(this);
     }
 
-    public  void closeMenu(Object activity) {
+    public  boolean closeMenu(Object activity) {
         if(getContext().getClass() != activity) {
             drawerMenu.getMenuDrawer().closeDrawer(Gravity.LEFT, false);
+            return true;
         } else {
             drawerMenu.getMenuDrawer().closeDrawers();
+            return false;
         }
 
+    }
+
+    public void setLogoutMenu() {
+       // profileImg.setVisibility(View.GONE);
+        menuListV.setVisibility(View.GONE);
+        nameTxt.setText("로그인이 필요합니다.");
+    }
+
+    public void setLoginMenu() {
+        //profileImg.setVisibility(View.VISIBLE);
+        menuListV.setVisibility(View.VISIBLE);
+        nameTxt.setText(loginService.getMember().getName()+" 님("+loginService.getMember().getLogin_id()+")");
+    }
+
+    @Subscribe
+    public void FinishLoad(LoginEvent event) {
+        if(event.getState()==0) {
+            setLogoutMenu();
+        } else if(event.getState()==1) {
+            setLoginMenu();
+        }
     }
 }

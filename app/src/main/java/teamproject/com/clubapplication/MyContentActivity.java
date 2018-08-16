@@ -3,17 +3,38 @@ package teamproject.com.clubapplication;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.MyContentPageAdapter;
 
 public class MyContentActivity extends AppCompatActivity {
 
     @BindView(R.id.myContent_viewPager)
     ViewPager viewPager;
-    MyContentPageAdapter pageAdapter;
+    @BindView(R.id.myContent_btn_Post)
+    Button postBtn;
+    @BindView(R.id.myContent_btn_Comment)
+    Button commentBtn;
 
+    @OnClick(R.id.myContent_btn_Post)
+    void movePostPage() {
+        if(viewPager.getCurrentItem()!=0) {
+            viewPager.setCurrentItem(0);
+        }
+    }
+    @OnClick(R.id.myContent_btn_Comment)
+    void moveCommentPage() {
+        if(viewPager.getCurrentItem()!=1) {
+            viewPager.setCurrentItem(1);
+        }
+    }
+
+
+
+    MyContentPageAdapter pageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

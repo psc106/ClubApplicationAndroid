@@ -31,27 +31,26 @@ public class FindIdPwActivity extends AppCompatActivity {
         Integer findIdentifier = intent.getIntExtra("findValue", 1);
 
         if(findIdentifier == 1) {
-            fragment = new IdFindFragment();
+            fragment = IdFindFragment.getInstance();
         }else if(findIdentifier == 2) {
-            fragment = new PwFindFragment();
+            fragment = PwFindFragment.getInstance();
         }
 
         goFragment();
-
 
     }
 
 
     @OnClick(R.id.btn_find_id)
     public void onClick_btn_find_id(View view) {
-        fragment = new IdFindFragment();
+        fragment = IdFindFragment.getInstance();
 
         goFragment();
     }
 
     @OnClick(R.id.btn_find_pw)
     public void onClick_btn_find_pw(View view) {
-        fragment = new PwFindFragment();
+        fragment = PwFindFragment.getInstance();
 
         goFragment();
     }
@@ -60,6 +59,18 @@ public class FindIdPwActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.find_container, fragment);
         ft.commit();
+    }
+
+    DrawerMenu drawerMenu;
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id.find_menu, R.id.find_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.find_menu, R.id.find_drawer);
+        }
     }
 
 }

@@ -12,12 +12,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Schedule {
-    long id;
-    long club_id;
-    long member_id;
-    String place;
-    int cost;
-    String intro;
-    String start_date;
-    String create_date;
+    private long id;
+    private  long club_id;
+    private  long member_id;
+    private  String place;
+    private  int cost;
+    private  String intro;
+    private  String start_date;
+    private  String create_date;
 }

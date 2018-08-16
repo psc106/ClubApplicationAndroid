@@ -61,4 +61,16 @@ public class JoinActivity extends AppCompatActivity {
     public void btnJoinOk() {
 
     }
+
+    DrawerMenu drawerMenu;
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id.join_menu, R.id.join_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.join_menu, R.id.join_drawer);
+        }
+    }
 }
