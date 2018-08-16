@@ -27,6 +27,14 @@
         </activity>
         <activity android:name=".MyInfoActivity">
         </activity>
+        <activity android:name=".MyContentActivity" />
+        <activity android:name=".MyOptionActivity" />
+        <activity android:name=".MyAlarmActivity" />
+        <activity android:name=".MyClubActivity" />
+        <activity android:name=".MyCalendarActivity">
+
+        </activity>
+
     </application>
 
 </manifest>

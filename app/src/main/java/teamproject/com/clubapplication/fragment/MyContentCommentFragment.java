@@ -7,19 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
-import teamproject.com.clubapplication.utils.bus.BusProvider;
 
-public class MyContentPostFragment extends Fragment {
+public class MyContentCommentFragment extends Fragment {
 
-    private static MyContentPostFragment fragment = null;
-    public static MyContentPostFragment getInstance() {
+    private static MyContentCommentFragment fragment = null;
+    public static MyContentCommentFragment getInstance() {
         if(fragment==null) {
-            fragment = new MyContentPostFragment();
+            fragment = new MyContentCommentFragment();
         }
         return fragment;
     }
@@ -29,7 +27,7 @@ public class MyContentPostFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_content_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_content_comment, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         return view;

@@ -1,5 +1,6 @@
-package teamproject.com.clubapplication;
+package teamproject.com.clubapplication.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,14 +9,13 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Post;
 
 public class MyContentPostListviewAdapter extends BaseAdapter implements StickyListHeadersAdapter {
     private ArrayList<Post> list;
     public MyContentPostListviewAdapter(ArrayList<Post> list) {
         this.list = list;
-        Post P = new Post();
-        P.getId();
     }
 
     @Override
@@ -30,25 +30,44 @@ public class MyContentPostListviewAdapter extends BaseAdapter implements StickyL
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return ((Post)getItem(position)).getId();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        Horder horder;
+        if(convertView==null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_content_post, parent, false);
+            horder = new Horder(convertView);
+            convertView.setTag(horder);
+        } else {
+            horder=(Horder)convertView.getTag();
+        }
+
+        return convertView;
     }
 
 
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
-        return null;
+        HeaderHorder horder;
+        if(convertView==null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_content_post, parent, false);
+            horder = new HeaderHorder(convertView);
+            convertView.setTag(horder);
+        } else {
+            horder=(HeaderHorder)convertView.getTag();
+        }
+
+        return convertView;
     }
 
     //header sorting
     //시간은 yyyymmddhhmmss로 받는다
+    //최근일수록 높은 값을 갖는다.
     @Override
     public long getHeaderId(int position) {
-        return 0;
+        return 30000000-Long.parseLong(((Post)getItem(position)).getCreate_date().substring(0, 8));
     }
 
     private class Horder {

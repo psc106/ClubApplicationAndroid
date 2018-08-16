@@ -1,14 +1,11 @@
 package teamproject.com.clubapplication.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 
@@ -30,8 +26,8 @@ import butterknife.OnItemClick;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.MyAlarmActivity;
 import teamproject.com.clubapplication.MyCalendarActivity;
+import teamproject.com.clubapplication.MyClubActivity;
 import teamproject.com.clubapplication.MyContentActivity;
-import teamproject.com.clubapplication.MyGroupActivity;
 import teamproject.com.clubapplication.MyOptionActivity;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.DrawerMenu;
@@ -75,8 +71,8 @@ public class MenuFragment extends Fragment {
         Intent intent = null;
         Object closeClass = null;
         if(position==0) {
-            intent = new Intent(getContext(), MyGroupActivity.class);
-            closeClass = MyGroupActivity.class;
+            intent = new Intent(getContext(), MyClubActivity.class);
+            closeClass = MyClubActivity.class;
         } else if(position==1) {
             intent = new Intent(getContext(), MyCalendarActivity.class);
             closeClass = MyCalendarActivity.class;
