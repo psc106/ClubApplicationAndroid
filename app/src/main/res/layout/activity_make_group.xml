@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/make_group_drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -42,7 +47,7 @@
         <EditText
             android:id="@+id/text_group_name"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:text="22"
             android:background="@drawable/back"/>
 
@@ -62,7 +67,7 @@
 
             android:id="@+id/spinner_group_category"
             android:layout_width="130dp"
-            android:layout_height="wrap_content">
+            android:layout_height="25dp">
 
         </Spinner>
     </LinearLayout>
@@ -80,7 +85,7 @@
 
             android:id="@+id/spinner_group_count"
             android:layout_width="130dp"
-            android:layout_height="wrap_content">
+            android:layout_height="25dp">
 
         </Spinner>
     </LinearLayout>
@@ -99,7 +104,7 @@
 
             android:id="@+id/spinner_group_location"
             android:layout_width="130dp"
-            android:layout_height="wrap_content">
+            android:layout_height="25dp">
 
         </Spinner>
     </LinearLayout>
@@ -111,6 +116,7 @@
         android:text="소개"/>
 
     <EditText
+        android:textAlignment="textStart"
         android:id="@+id/text_group_info"
         android:layout_width="300dp"
         android:layout_height="130dp"
@@ -132,3 +138,12 @@
         />
     </RelativeLayout>
 </LinearLayout>
+    <FrameLayout
+        android:id="@+id/make_group_menu"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:gravity="center">
+    </FrameLayout>
+</android.support.v4.widget.DrawerLayout>

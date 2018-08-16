@@ -37,6 +37,7 @@
                 android:orientation="vertical">
 
                 <EditText
+
                     android:id="@+id/login_id"
                     android:layout_marginLeft="5dp"
                     android:hint="id"

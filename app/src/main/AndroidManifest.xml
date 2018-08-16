@@ -17,20 +17,23 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".IntroActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".FindIdPwActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".MyInfoActivity" />
-        <activity android:name=".MakeGroupActivity">
+        <activity android:name=".MakeGroupActivity" />
+        <activity android:name=".searchGroupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".searchGroupActivity"></activity>
+        <activity android:name=".ModifyNickNameActivity" />
+        <activity android:name=".MyOptionActivity" />
+        <activity android:name=".GroupManageModifyActivity"></activity>
     </application>
 
 </manifest>

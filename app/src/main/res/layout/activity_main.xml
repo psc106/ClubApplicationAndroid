@@ -30,10 +30,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <EditText
+                    android:background="@drawable/back"
                     android:id="@+id/text_search"
                     android:layout_marginLeft="20dp"
                     android:layout_width="270dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     />
                 <Button
                     android:background="@drawable/search"
@@ -68,7 +69,7 @@
                     android:layout_marginLeft="20dp"
                     android:id="@+id/spinner_location"
                     android:layout_width="260dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="30dp">
                 </Spinner>
             </LinearLayout>
 
@@ -90,7 +91,7 @@
                     android:layout_marginLeft="20dp"
                     android:id="@+id/spinner_category"
                     android:layout_width="260dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="30dp">
                 </Spinner>
             </LinearLayout>
         </LinearLayout>
@@ -120,7 +121,7 @@
     <Button
         android:id="@+id/btn_make_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="모임 생성"
         android:background="#79e2f7"
         />

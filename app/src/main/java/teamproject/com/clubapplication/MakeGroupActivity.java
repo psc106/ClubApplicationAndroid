@@ -34,6 +34,7 @@ public class MakeGroupActivity extends AppCompatActivity {
     String[]itmes_category={"여행","음식","음악","문화","기타","등등","모르","겄다","...."};
     String[]items_count=new String[19];
 
+    private DrawerMenu drawerMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +65,15 @@ public class MakeGroupActivity extends AppCompatActivity {
         adapter_location.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGroupLocation.setAdapter(adapter_location);
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id.make_group_menu, R.id.make_group_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.make_group_menu, R.id.make_group_drawer);
+        }
     }
 
 
