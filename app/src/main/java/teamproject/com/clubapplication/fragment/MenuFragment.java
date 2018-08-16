@@ -26,7 +26,7 @@ import butterknife.OnItemClick;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.MyAlarmActivity;
 import teamproject.com.clubapplication.MyCalendarActivity;
-import teamproject.com.clubapplication.MyClubActivity;
+import teamproject.com.clubapplication.MyGroupActivity;
 import teamproject.com.clubapplication.MyContentActivity;
 import teamproject.com.clubapplication.MyOptionActivity;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
@@ -71,8 +71,8 @@ public class MenuFragment extends Fragment {
         Intent intent = null;
         Object closeClass = null;
         if(position==0) {
-            intent = new Intent(getContext(), MyClubActivity.class);
-            closeClass = MyClubActivity.class;
+            intent = new Intent(getContext(), MyGroupActivity.class);
+            closeClass = MyGroupActivity.class;
         } else if(position==1) {
             intent = new Intent(getContext(), MyCalendarActivity.class);
             closeClass = MyCalendarActivity.class;
