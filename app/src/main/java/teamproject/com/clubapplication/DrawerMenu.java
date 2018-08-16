@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import teamproject.com.clubapplication.fragment.MenuFragment;
 
-
-
 /*
 *  사용법:
 *  ( ID 명명 규칙 )
