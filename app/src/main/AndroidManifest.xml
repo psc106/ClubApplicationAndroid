@@ -30,7 +30,7 @@
         <activity android:name=".MyContentActivity" />
         <activity android:name=".MyOptionActivity" />
         <activity android:name=".MyAlarmActivity" />
-        <activity android:name=".MyClubActivity" />
+        <activity android:name=".MyGroupActivity" />
         <activity android:name=".MyCalendarActivity">
 
         </activity>

@@ -14,13 +14,13 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Club {
 
-    long id;
-    long category_id;
-    long member_id;
-    long image_id;
-    String name;
-    String local;
-    int max_people;
-    String intro;
-    String create_date;
+    private long id;
+    private long category_id;
+    private long member_id;
+    private long image_id;
+    private String name;
+    private String local;
+    private int max_people;
+    private String intro;
+    private  String create_date;
 }

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import teamproject.com.clubapplication.fragment.MyContentCommentFragment;
 import teamproject.com.clubapplication.fragment.MyContentPostFragment;
 
 public class MyContentPageAdapter extends FragmentStatePagerAdapter {
@@ -18,6 +19,9 @@ public class MyContentPageAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = null;
         if(position==0) {
             fragment = MyContentPostFragment.getInstance();
+        }
+        if(position==1) {
+            fragment = MyContentCommentFragment.getInstance();
         }
         return fragment;
     }

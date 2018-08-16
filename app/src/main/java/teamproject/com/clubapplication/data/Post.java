@@ -12,10 +12,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
-    Long id;
-    Long club_id;
-    Long member_id;
-    String content;
-    String create_date;
+    private Long id;
+    private Long club_id;
+    private Long member_id;
+    private String content;
+    private String create_date;
 
 }

@@ -12,8 +12,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Alarm {
-    long id;
-    long member_id;
-    long reference_id;
-    int type;
+    private long id;
+    private long member_id;
+    private long reference_id;
+    private int type;
 }

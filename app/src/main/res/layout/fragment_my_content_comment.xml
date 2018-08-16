@@ -7,6 +7,7 @@
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#a0b9d2"
         android:id="@+id/myContentPost_listV">
     </se.emilsjolander.stickylistheaders.StickyListHeadersListView>
 

@@ -27,9 +27,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-
-
     }
 
     @OnClick(R.id.btn_login)
@@ -56,6 +53,19 @@ public class LoginActivity extends AppCompatActivity {
     public void loginNewJoin() {
         Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
         startActivity(intent);
+    }
+
+
+    DrawerMenu drawerMenu;
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id.login_menu, R.id.login_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.login_menu, R.id.login_drawer);
+        }
     }
 
 }
