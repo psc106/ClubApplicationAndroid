@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     GridView gvCategory;
     int a = 0;
     GvAdapter gvAdapter;
-    int [] img = {R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground};
+    int [] img = {R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background};
     String[]items_location={"서울","경기","이천","전라도","경상도","충청도","강원도","제주"};
     String[]itmes_category={"여행","음식","음악","문화","기타","등등","모르","겄다","...."};
     ArrayList<Integer> imgs = new ArrayList<>();
