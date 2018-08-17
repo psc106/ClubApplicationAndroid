@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import teamproject.com.clubapplication.Adapter.SearchGroupAdapter;
 
 public class searchGroupActivity extends AppCompatActivity {
 
@@ -40,6 +42,8 @@ public class searchGroupActivity extends AppCompatActivity {
     String[]itmes_category={"여행","음식","음악","문화","기타","등등","모르","겄다","...."};
 
     int check_detail=0;
+
+    SearchGroupAdapter searchGroupAdapter;
 
     private DrawerMenu drawerMenu;
 
@@ -81,5 +85,11 @@ public class searchGroupActivity extends AppCompatActivity {
         } else {
             drawerMenu.restartMenu(this, R.id.search_group_menu, R.id.search_group_drawer);
         }
+    }
+    @OnClick(R.id.btn_make_group_in_search_group)
+    public  void makeGroup(){
+        Intent intent = new Intent(searchGroupActivity.this,MakeGroupActivity.class);
+        startActivity(intent);
+
     }
 }

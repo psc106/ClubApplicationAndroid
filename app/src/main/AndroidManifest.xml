@@ -25,15 +25,20 @@
         <activity android:name=".MyInfoActivity" />
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".searchGroupActivity">
+        </activity>
+        <activity android:name=".ModifyNickNameActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ModifyNickNameActivity" />
         <activity android:name=".MyOptionActivity" />
-        <activity android:name=".GroupManageModifyActivity"></activity>
+        <activity android:name=".GroupManageModifyActivity" />
+        <activity android:name=".GroupManageMemberActivity" />
+        <activity android:name=".GroupHomeActivity" />
+        <activity android:name=".GroupBoardWriteActivity"></activity>
     </application>
 
 </manifest>

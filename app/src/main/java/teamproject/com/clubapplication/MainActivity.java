@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     int check_detail = 0;
     GvAdapter gvAdapter;
     int [] img = {R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background};
+
     String[]items_location={"서울","경기","인천","전라도","경상도","충청도","강원도","제주"};
     String[]itmes_category={"여행","음식","음악","문화","기타","등등","모르","겄다","...."};
     ArrayList<Integer> imgs = new ArrayList<>();
@@ -111,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
     //그룹생성
     @OnClick(R.id.btn_make_group)
     public void makeGroup(View view){
+        Intent intent = new Intent(MainActivity.this,MakeGroupActivity.class);
+        startActivity(intent);
 
     }
 
