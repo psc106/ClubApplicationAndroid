@@ -65,19 +65,21 @@ public class MenuFragment extends Fragment {
                 startActivity(intent);
             }
         } else {
-            loginService.logout();
+            loginService.logout(getActivity());
         }
     }
     @OnClick(R.id.menu_imgV_Profile)
     void onClickProfileImg() {
-        loginService.login(new Member(Member.testData()));
+        loginService.login(getActivity(), new Member(Member.testData()));
     }
     @OnClick(R.id.menu_txt_Name)
     void onClickMemeberInfo() {
-        Intent intent = new Intent(getContext(), MyInfoActivity.class);
-        if(closeMenu(MyInfoActivity.class)){
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
+        if(loginService.getMember()==null) {
+            Intent intent = new Intent(getContext(), MyInfoActivity.class);
+            if(closeMenu(MyInfoActivity.class)){
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
         }
     }
 

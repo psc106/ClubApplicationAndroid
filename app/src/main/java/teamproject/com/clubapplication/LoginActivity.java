@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
+    public static Activity activity;
+
     @BindView(R.id.login_id) EditText login_id;
     @BindView(R.id.login_pw) EditText login_pw;
     @BindView(R.id.btn_login) Button btn_login;
@@ -24,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -68,4 +72,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activity = null;
+    }
 }

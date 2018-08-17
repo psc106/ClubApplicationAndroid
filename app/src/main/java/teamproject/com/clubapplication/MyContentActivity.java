@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication;
 
+import android.app.Activity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.MyContentPageAdapter;
 
 public class MyContentActivity extends AppCompatActivity {
+    public static Activity activity;
 
     @BindView(R.id.myContent_viewPager)
     ViewPager viewPager;
@@ -32,11 +34,10 @@ public class MyContentActivity extends AppCompatActivity {
         }
     }
 
-
-
     MyContentPageAdapter pageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_content);
         ButterKnife.bind(this);
@@ -54,5 +55,10 @@ public class MyContentActivity extends AppCompatActivity {
         } else {
             drawerMenu.restartMenu(this, R.id.myContent_menu, R.id.myContent_drawer);
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activity = null;
     }
 }

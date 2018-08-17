@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,9 +12,11 @@ import teamproject.com.clubapplication.data.TestData;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class MainActivity extends AppCompatActivity {
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -28,5 +31,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             drawerMenu.restartMenu(this, R.id.main_menu, R.id.main_drawer);
         }
+    }
+
+    public void backHomeActivity(Activity otherActivity) {
+        Intent intent = new Intent(otherActivity, this.getClass());
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

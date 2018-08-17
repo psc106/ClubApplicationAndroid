@@ -10,6 +10,7 @@
         android:layout_marginTop="30dp"
         android:orientation="vertical"
         android:gravity="center_horizontal">
+
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switchButton1"
             android:layout_width="wrap_content"

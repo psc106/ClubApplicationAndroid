@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class JoinActivity extends AppCompatActivity {
+    public static Activity activity;
+
     @BindView(R.id.join_id) EditText join_id;
     @BindView(R.id.btn_join_check_id) Button btn_join_check_id;//
 
@@ -41,6 +44,7 @@ public class JoinActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         ButterKnife.bind(this);
@@ -72,5 +76,11 @@ public class JoinActivity extends AppCompatActivity {
         } else {
             drawerMenu.restartMenu(this, R.id.join_menu, R.id.join_drawer);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activity = null;
     }
 }

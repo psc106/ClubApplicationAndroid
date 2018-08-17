@@ -183,6 +183,11 @@
             android:id="@+id/join_mail_address"
             android:layout_width="100dp"
             android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_join_mail_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
 
     </LinearLayout>

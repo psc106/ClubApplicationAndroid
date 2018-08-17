@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import teamproject.com.clubapplication.fragment.IdFindFragment;
 import teamproject.com.clubapplication.fragment.PwFindFragment;
 
 public class FindIdPwActivity extends AppCompatActivity {
+    public static Activity activity;
     Fragment fragment;
 
 
@@ -23,6 +25,7 @@ public class FindIdPwActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_id_pw);
         ButterKnife.bind(this);
@@ -73,4 +76,9 @@ public class FindIdPwActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activity = null;
+    }
 }

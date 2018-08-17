@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication.utils;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -10,6 +11,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import teamproject.com.clubapplication.FindIdPwActivity;
+import teamproject.com.clubapplication.JoinActivity;
+import teamproject.com.clubapplication.LoginActivity;
+import teamproject.com.clubapplication.MainActivity;
+import teamproject.com.clubapplication.MyAlarmActivity;
+import teamproject.com.clubapplication.MyCalendarActivity;
+import teamproject.com.clubapplication.MyContentActivity;
+import teamproject.com.clubapplication.MyGroupActivity;
+import teamproject.com.clubapplication.MyInfoActivity;
+import teamproject.com.clubapplication.MyOptionActivity;
 
 public class CommonUtils {
     public static String getStringFromServer(String pUrl) {
@@ -86,5 +98,14 @@ public class CommonUtils {
         }
 
         return bitmap;
+    }
+
+    public static boolean isLoginNeedActivity(Activity activity) {
+        return (activity.getClass()== MyAlarmActivity.class)||(activity.getClass()!= MyOptionActivity.class)||(activity.getClass()!= MyInfoActivity.class)
+                ||(activity.getClass()!= MyGroupActivity.class)||(activity.getClass()!= MyContentActivity.class)||(activity.getClass()!= MyCalendarActivity.class);
+    }
+
+    public static boolean isLogoutNeedActivity(Activity activity) {
+        return (activity.getClass()== LoginActivity.class)||(activity.getClass()== JoinActivity.class)||(activity.getClass()== FindIdPwActivity.class);
     }
 }
