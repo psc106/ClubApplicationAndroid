@@ -74,7 +74,7 @@ public class MenuFragment extends Fragment {
     }
     @OnClick(R.id.menu_txt_Name)
     void onClickMemeberInfo() {
-        if(loginService.getMember()==null) {
+        if(loginService.getMember()!=null) {
             Intent intent = new Intent(getContext(), MyInfoActivity.class);
             if(closeMenu(MyInfoActivity.class)){
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

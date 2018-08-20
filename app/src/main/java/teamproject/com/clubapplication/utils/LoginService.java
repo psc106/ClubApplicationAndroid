@@ -83,4 +83,8 @@ public class LoginService {
     public Member getMember() {
         return member;
     }
+
+    public boolean isVerifyMember() {
+        return member.getVerify().equals("Y");
+    }
 }

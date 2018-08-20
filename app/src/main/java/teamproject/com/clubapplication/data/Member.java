@@ -21,6 +21,7 @@ public class Member {
     private String local;
     private String email;
     private String phone;
+    private String verify;
 
     public Member(Member member) {
         this.id = member.id;
@@ -32,9 +33,10 @@ public class Member {
         this.local = member.local;
         this.email = member.email;
         this.phone = member.phone;
+        this.verify = member.verify;
     }
 
     public static Member testData() {
-        return new Member(0, "abc1234", "1234", "박성철", "20000923", 1, "경기도 의정부시", "psc106@naver.com",  "01055804310");
+        return new Member(0, "abc1234", "1234", "박성철", "20000923", 0, "경기도 의정부시", "psc106@naver.com",  "01055804310", "N");
     }
 }

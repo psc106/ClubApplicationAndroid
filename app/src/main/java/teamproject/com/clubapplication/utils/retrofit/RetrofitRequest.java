@@ -26,6 +26,12 @@ public interface RetrofitRequest {
     @GET("mobile/checkId.do")
     Call<Integer> checkId(@Query("id") String id);
 
+    @GET("mobile/findId.do")
+    Call<String> findId(@Query("email") String email);
+
+    @GET("mobile/findPw.do")
+    Call<Void> findPw(@Query("email") String email, @Query("id") String id);
+
     @GET("mobile/selectMyAlarm.do")
     Call<ArrayList<Alarm>> selectMyAlarm(@Query("userId") Long userId);
 
@@ -45,4 +51,6 @@ public interface RetrofitRequest {
     @POST("mobile/insertMember.do")
     Call<Void> insertMember(@Field("id") String id, @Field("pw") String pw, @Field("name") String name, @Field("birthday") String birthday,
                             @Field("gender") Integer gender, @Field("local") String local, @Field("email") String email, @Field("phone") String phone);
+
+
 }

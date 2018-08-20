@@ -1,19 +1,32 @@
 package teamproject.com.clubapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import teamproject.com.clubapplication.data.Alarm;
+import teamproject.com.clubapplication.data.Member;
+import teamproject.com.clubapplication.utils.LoadingDialog;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class JoinActivity extends AppCompatActivity {
     public static Activity activity;
+    Context context = this;
 
     @BindView(R.id.join_id) EditText join_id;
     @BindView(R.id.btn_join_check_id) Button btn_join_check_id;//
@@ -63,6 +76,38 @@ public class JoinActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_join_ok)
     public void btnJoinOk() {
+        String loginId = "11";
+        String loginPw = "1";
+        String name = "1";
+        String birthday = "1";
+        int gender = 1;
+        String local ="1";
+        String email = "psc106@naver.com";
+        String phone = "1";
+
+        final LoadingDialog loadingDialog = LoadingDialog.getInstance();
+        loadingDialog.progressON(this, "메일 발송중");
+
+        Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().insertMember(loginId, loginPw, name, birthday, gender, local, email, phone);
+        observer.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "가입?", Toast.LENGTH_SHORT).show();
+                    loadingDialog.progressOFF();
+                    finish();
+                } else {
+                    Log.d("로그", "onResponse: fail");
+                    loadingDialog.progressOFF();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+                loadingDialog.progressOFF();
+            }
+        });
+
 
     }
 

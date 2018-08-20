@@ -159,7 +159,7 @@
                             android:layout_margin="8dp"
                             android:inputType="text"
                             android:background="@null"
-                            android:ems="4"
+                            android:ems="10"
                             android:text="test"
                             android:textSize="18dp"/>
                     </LinearLayout>

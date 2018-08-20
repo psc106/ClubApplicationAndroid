@@ -12,13 +12,12 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import teamproject.com.clubapplication.fragment.IdFindFragment;
-import teamproject.com.clubapplication.fragment.PwFindFragment;
+import teamproject.com.clubapplication.fragment.FindIdFragment;
+import teamproject.com.clubapplication.fragment.FindPwFragment;
 
 public class FindIdPwActivity extends AppCompatActivity {
     public static Activity activity;
     Fragment fragment;
-
 
     @BindView(R.id.btn_find_id) Button btn_find_id;
     @BindView(R.id.btn_find_pw) Button btn_find_pw;
@@ -34,26 +33,25 @@ public class FindIdPwActivity extends AppCompatActivity {
         Integer findIdentifier = intent.getIntExtra("findValue", 1);
 
         if(findIdentifier == 1) {
-            fragment = IdFindFragment.getInstance();
+            fragment = FindIdFragment.getInstance();
         }else if(findIdentifier == 2) {
-            fragment = PwFindFragment.getInstance();
+            fragment = FindPwFragment.getInstance();
         }
 
         goFragment();
-
     }
 
 
     @OnClick(R.id.btn_find_id)
     public void onClick_btn_find_id(View view) {
-        fragment = IdFindFragment.getInstance();
+        fragment = FindIdFragment.getInstance();
 
         goFragment();
     }
 
     @OnClick(R.id.btn_find_pw)
     public void onClick_btn_find_pw(View view) {
-        fragment = PwFindFragment.getInstance();
+        fragment = FindPwFragment.getInstance();
 
         goFragment();
     }
