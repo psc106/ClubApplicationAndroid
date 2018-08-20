@@ -39,4 +39,8 @@ public class Member {
     public static Member testData() {
         return new Member(0, "abc1234", "1234", "박성철", "20000923", 0, "경기도 의정부시", "psc106@naver.com",  "01055804310", "N");
     }
+
+    public boolean isVerifyMember() {
+        return this.verify.equals("Y");
+    }
 }

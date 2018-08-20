@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Alarm;
+import teamproject.com.clubapplication.data.CalendarSchedule;
 import teamproject.com.clubapplication.data.Schedule;
 
 public class MyCalendarGridviewAdapter extends BaseAdapter {
-    ArrayList<Schedule> list;
-    public MyCalendarGridviewAdapter(ArrayList<Schedule> list) {
+    ArrayList<CalendarSchedule> list;
+    public MyCalendarGridviewAdapter(ArrayList<CalendarSchedule> list) {
         this.list = list;
     }
 

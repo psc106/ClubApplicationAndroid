@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import teamproject.com.clubapplication.data.Alarm;
+import teamproject.com.clubapplication.data.CalendarSchedule;
 import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.data.Comment;
 import teamproject.com.clubapplication.data.Member;
@@ -43,6 +44,9 @@ public interface RetrofitRequest {
 
     @GET("mobile/selectMySchedule.do")
     Call<ArrayList<Schedule>> selectMySchedule(@Query("userId") Long userId);
+
+    @GET("mobile/selectMyCalendar.do")
+    Call<ArrayList<CalendarSchedule>> selectMyCalendar(@Query("userId") Long userId, @Query("year") int year, @Query("month") int month);
 
     @GET("mobile/selectMyGroup.do")
     Call<ArrayList<Club>> selectMyClub(@Query("userId") Long userId);

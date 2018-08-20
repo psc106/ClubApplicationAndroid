@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,10 +48,45 @@ public class MyCalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_calendar);
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
-//
+
+        Calendar calendar =  Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+
         calendarArrayList = new ArrayList<>();
-        gridviewAdapter = new MyCalendarGridviewAdapter(new ArrayList<Schedule>());
+        Call<ArrayList<CalendarSchedule>> calendarObserver =
+                RetrofitService.getInstance().getRetrofitRequest().selectMyCalendar(loginService.getMember().getId(), year, month);
+        calendarObserver.enqueue(new Callback<ArrayList<CalendarSchedule>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CalendarSchedule>> call, Response<ArrayList<CalendarSchedule>> response) {
+                if (response.isSuccessful()) {
+                    calendarArrayList.addAll(response.body());
+                } else {
+                    Log.d("로그", "onResponse: fail");
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<CalendarSchedule>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+        gridviewAdapter = new MyCalendarGridviewAdapter(new ArrayList<CalendarSchedule>());
         gridView.setAdapter(gridviewAdapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<Schedule> daySchedules = calendarArrayList.get(position).getTodaySchedule();
+                if(daySchedules==null) {
+                    return;
+                } else {
+                    scheduleArrayList.clear();
+                    scheduleArrayList.addAll(daySchedules);
+                    listviewAdapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         scheduleArrayList = new ArrayList<>();
         Call<ArrayList<Schedule>> scheduleObserver =

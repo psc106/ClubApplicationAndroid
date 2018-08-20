@@ -21,38 +21,38 @@ import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
 *
 *      1-1. 레이아웃의 두번째 줄에 아래의 소스를 추가합니다.
 *      <?xml version="1.0" encoding="utf-8"?> <!--제일 첫줄-->
-*      <android.support.v4.widget.DrawerLayout
-*           android:id="drawer레이아웃 id"
-*           xmlns:android="http://schemas.android.com/apk/res/android"
-*           android:layout_width="match_parent"
-*           android:layout_height="match_parent">
+      <android.support.v4.widget.DrawerLayout
+           android:id="drawer레이아웃 id"
+           xmlns:android="http://schemas.android.com/apk/res/android"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
 *      ...(원본 코드)...
 *
 *      1-2. 레이아웃의 제일 아래에 아래의 소스를 추가합니다.*
 *      ...(원본 코드)...
-*       <FrameLayout
-*           android:id="frame레이아웃 id"
-*           xmlns:android="http://schemas.android.com/apk/res/android"
-*           android:layout_width="240dp"
-*           android:layout_height="match_parent"
-*           android:layout_gravity="left"
-*           android:gravity="center">
-*       </FrameLayout>
-*       </android.support.v4.widget.DrawerLayout>
+       <FrameLayout
+           android:id="frame레이아웃 id"
+           xmlns:android="http://schemas.android.com/apk/res/android"
+           android:layout_width="240dp"
+           android:layout_height="match_parent"
+           android:layout_gravity="left"
+           android:gravity="center">
+       </FrameLayout>
+       </android.support.v4.widget.DrawerLayout>
 *
 *
 *  2) 메뉴를 사용할 activity에 아래의 소스를 추가합니다.
 *
 *      2-1. 아래의 멤버변수를 추가합니다.
-*         private DrawerMenu drawerMenu;
+         private DrawerMenu drawerMenu;
 *
 *      2-2. onResume메소드에 아래 코드를 추가합니다.
 *        ....
-*        if (drawerMenu == null) {
-*            drawerMenu = DrawerMenu.addMenu(this, R.id."frame레이아웃 id", R.id."drawer레이아웃 id");
-*        } else {
-*            drawerMenu.restartMenu(this, R.id."frame레이아웃 id", R.id."drawer레이아웃 id");
-*        }
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id."frame레이아웃 id", R.id."drawer레이아웃 id");
+        } else {
+            drawerMenu.restartMenu(this, R.id."frame레이아웃 id", R.id."drawer레이아웃 id");
+        }
 *       ....
 *
 * */
