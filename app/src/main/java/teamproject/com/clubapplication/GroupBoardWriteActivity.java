@@ -18,6 +18,7 @@ import teamproject.com.clubapplication.fragment.GroupBoardWriteBoardFragment;
 
 public class GroupBoardWriteActivity extends AppCompatActivity {
 
+    private DrawerMenu drawerMenu;
 
     @BindView(R.id.group_board_spinner)
     Spinner groupBoardSpinner;
@@ -65,6 +66,16 @@ public class GroupBoardWriteActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+    @Override
+    protected void onResume() {
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id.group_album_board_write_menu, R.id.group_album_board_write_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.group_album_board_write_menu, R.id.group_album_board_write_drawer);
+        }
+        super.onResume();
 
     }
 }

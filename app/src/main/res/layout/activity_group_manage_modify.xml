@@ -46,6 +46,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent">
                             <TextView
+                                android:id="@+id/group_manage_modify_name"
                                 android:textSize="30dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -60,6 +61,7 @@
                                 android:layout_height="match_parent">
                                 <!-- 인원수 -->
                                 <TextView
+                                    android:id="@+id/group_manage_modify_count"
                                     android:text="6/10"
                                     android:layout_centerVertical="true"
                                     android:layout_alignParentRight="true"
@@ -81,6 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
+                        android:id="@+id/group_manage_modify_maker"
                         android:text="test"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -97,6 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
+                        android:id="@+id/group_manage_modify_category"
                         android:text="test"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -113,6 +117,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
+                        android:id="@+id/group_manage_modify_location"
                         android:text="test"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -132,9 +137,10 @@
                 </LinearLayout>
 
                 <EditText
+                    android:id="@+id/group_manage_modify_info"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="120dp"
                     android:background="@drawable/back"
                     android:text="test"
                     />
@@ -146,6 +152,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/group_manage_modify_btn_ok"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"

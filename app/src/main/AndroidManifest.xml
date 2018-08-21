@@ -24,21 +24,20 @@
         <activity android:name=".TestActivity" />
         <activity android:name=".MyInfoActivity" />
         <activity android:name=".MakeGroupActivity" />
-        <activity android:name=".searchGroupActivity">
-        </activity>
-        <activity android:name=".ModifyNickNameActivity" >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".searchGroupActivity" />
+        <activity android:name=".ModifyNickNameActivity">
         </activity>
         <activity android:name=".MyOptionActivity" />
         <activity android:name=".GroupManageModifyActivity" />
         <activity android:name=".GroupManageMemberActivity" />
-        <activity android:name=".GroupHomeActivity" />
-        <activity android:name=".GroupBoardWriteActivity"></activity>
+        <activity android:name=".GroupHomeActivity" >
+
+        </activity>
+        <activity android:name=".GroupBoardWriteActivity" />
+        <activity android:name=".GroupAlbumDetail" />
+        <activity android:name=".MyGroupActivity" />
+        <activity android:name=".MyAlarmActivity" />
+        <activity android:name=".MyCalendar"></activity>
     </application>
 
 </manifest>

@@ -34,6 +34,7 @@
                 android:text="가입알람"/>
 
             <Switch
+                android:id="@+id/my_option_join"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,6 +53,7 @@
                 android:text="동호회 알람"/>
 
             <Switch
+                android:id="@+id/my_option_club"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,6 +72,7 @@
                 android:text="댓글 알람"/>
 
             <Switch
+                android:id="@+id/my_option_re"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,6 +91,7 @@
                 android:text="일정 알람"/>
 
             <Switch
+                android:id="@+id/my_option_calendar"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,6 +110,7 @@
                 android:text="전체 알람"/>
 
             <Switch
+                android:id="@+id/my_option_all"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
