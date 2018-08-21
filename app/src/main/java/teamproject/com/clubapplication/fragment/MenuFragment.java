@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -93,6 +94,7 @@ public class MenuFragment extends Fragment {
         if(position==0) {
             intent = new Intent(getContext(), MyGroupActivity.class);
             closeClass = MyGroupActivity.class;
+
         } else if(position==1) {
             intent = new Intent(getContext(), MyCalendarActivity.class);
             closeClass = MyCalendarActivity.class;
@@ -106,6 +108,19 @@ public class MenuFragment extends Fragment {
             intent = new Intent(getContext(), MyOptionActivity.class);
             closeClass = MyOptionActivity.class;
         } else  {
+            return;
+        }
+
+        if(loginService.getMember().getVerify().equals("N") && (position>=0 && position<=3)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+            builder.setTitle("정보")        // 제목 설정
+                    .setMessage("메일 인증이 필요한 서비스입니다.")        // 메세지 설정
+                    .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
+                    .setPositiveButton("확인", null);
+            AlertDialog dialog = builder.create();    // 알림창 객체 생성
+            dialog.show();    // 알림창 띄우기
+
             return;
         }
         if(intent!=null) {
@@ -141,6 +156,7 @@ public class MenuFragment extends Fragment {
         } else {
             setLoginMenu();
         }
+
         return view;
     }
 
