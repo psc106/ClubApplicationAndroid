@@ -9,12 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.data.Member;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoginService;
 
 public class MyInfoActivity extends AppCompatActivity {

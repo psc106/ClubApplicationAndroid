@@ -1,14 +1,10 @@
 package teamproject.com.clubapplication;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
-
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -19,13 +15,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.MyAlarmListviewAdapter;
 import teamproject.com.clubapplication.data.Alarm;
-import teamproject.com.clubapplication.data.TestData;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoginService;
-import teamproject.com.clubapplication.utils.bus.BusProvider;
-import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
+import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class MyAlarmActivity extends AppCompatActivity {
+public class MyAlarmActivity extends AppCompatActivity implements RefreshData {
     public static Activity activity;
 
     @BindView(R.id.myAlarm_listV)
@@ -45,6 +40,32 @@ public class MyAlarmActivity extends AppCompatActivity {
         loginService = LoginService.getInstance();
 
         arrayList = new ArrayList<>();
+
+        listviewAdapter = new MyAlarmListviewAdapter(arrayList);
+        listView.setAdapter(listviewAdapter);
+    }
+
+    DrawerMenu drawerMenu;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh();
+
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this, R.id.myAlarm_menu, R.id.myAlarm_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.myAlarm_menu, R.id.myAlarm_drawer);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activity = null;
+    }
+
+    @Override
+    public void refresh() {
         Call<ArrayList<Alarm>> observer = RetrofitService.getInstance().getRetrofitRequest().selectMyAlarm(loginService.getMember().getId());
         observer.enqueue(new Callback<ArrayList<Alarm>>() {
             @Override
@@ -61,25 +82,5 @@ public class MyAlarmActivity extends AppCompatActivity {
             }
         });
 
-        listviewAdapter = new MyAlarmListviewAdapter(arrayList);
-        listView.setAdapter(listviewAdapter);
-    }
-
-    DrawerMenu drawerMenu;
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (drawerMenu == null) {
-            drawerMenu = DrawerMenu.addMenu(this, R.id.myAlarm_menu, R.id.myAlarm_drawer);
-        } else {
-            drawerMenu.restartMenu(this, R.id.myAlarm_menu, R.id.myAlarm_drawer);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        activity = null;
     }
 }

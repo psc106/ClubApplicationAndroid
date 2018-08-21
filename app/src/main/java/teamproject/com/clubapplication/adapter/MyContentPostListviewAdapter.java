@@ -30,7 +30,7 @@ public class MyContentPostListviewAdapter extends BaseAdapter implements StickyL
 
     @Override
     public long getItemId(int position) {
-        return ((Post)getItem(position)).getId();
+        return position;
     }
 
     @Override
@@ -70,13 +70,13 @@ public class MyContentPostListviewAdapter extends BaseAdapter implements StickyL
         return 30000000-Long.parseLong(((Post)getItem(position)).getCreate_date().substring(0, 8));
     }
 
-    private class Horder {
+    class Horder {
         Horder(View view) {
             ButterKnife.bind(this, view);
         }
     }
 
-    private class HeaderHorder {
+    class HeaderHorder {
         HeaderHorder(View view) {
             ButterKnife.bind(this, view);
         }

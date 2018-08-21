@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import teamproject.com.clubapplication.data.TestData;
-import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class MainActivity extends AppCompatActivity {
     public static Activity activity;

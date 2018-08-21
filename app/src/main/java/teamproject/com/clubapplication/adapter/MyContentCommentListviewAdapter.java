@@ -30,7 +30,7 @@ public class MyContentCommentListviewAdapter extends BaseAdapter implements Stic
 
     @Override
     public long getItemId(int position) {
-        return ((Comment)getItem(position)).getId();
+        return position;
     }
 
     @Override
@@ -70,13 +70,13 @@ public class MyContentCommentListviewAdapter extends BaseAdapter implements Stic
         return Long.parseLong(((Comment)getItem(position)).getCreate_date().substring(0, 8));
     }
 
-    private class Horder {
+    class Horder {
         Horder(View view) {
             ButterKnife.bind(this, view);
         }
     }
 
-    private class HeaderHorder {
+    class HeaderHorder {
         HeaderHorder(View view) {
             ButterKnife.bind(this, view);
         }

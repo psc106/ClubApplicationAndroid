@@ -30,14 +30,14 @@ public class MyClubListviewAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return ((Club)getItem(position)).getId();
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Horder horder;
         if(convertView==null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_alarm, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_group, parent, false);
             horder = new Horder(convertView);
             convertView.setTag(horder);
         } else {
@@ -47,7 +47,7 @@ public class MyClubListviewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class Horder {
+    class Horder {
         Horder(View view) {
             ButterKnife.bind(this, view);
         }

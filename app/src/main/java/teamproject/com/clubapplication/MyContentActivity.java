@@ -10,8 +10,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.MyContentPageAdapter;
+import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.RefreshData;
 
-public class MyContentActivity extends AppCompatActivity {
+public class MyContentActivity extends AppCompatActivity implements RefreshData {
     public static Activity activity;
 
     @BindView(R.id.myContent_viewPager)
@@ -60,5 +62,11 @@ public class MyContentActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         activity = null;
+    }
+
+    @Override
+    public void refresh() {
+        RefreshData refreshData = (RefreshData)(pageAdapter.getItem(viewPager.getCurrentItem()));
+        refreshData.refresh();
     }
 }

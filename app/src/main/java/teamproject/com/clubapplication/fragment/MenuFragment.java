@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +32,11 @@ import teamproject.com.clubapplication.MyCalendarActivity;
 import teamproject.com.clubapplication.MyGroupActivity;
 import teamproject.com.clubapplication.MyContentActivity;
 import teamproject.com.clubapplication.MyOptionActivity;
+import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
-import teamproject.com.clubapplication.DrawerMenu;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.MyInfoActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
@@ -87,7 +89,7 @@ public class MenuFragment extends Fragment {
     public void onItemClick(AdapterView<?> parent, int position) {
 
         Intent intent = null;
-        Object closeClass = null;
+        Class<?> closeClass = null;
         if(position==0) {
             intent = new Intent(getContext(), MyGroupActivity.class);
             closeClass = MyGroupActivity.class;
@@ -149,12 +151,17 @@ public class MenuFragment extends Fragment {
         bus.unregister(this);
     }
 
-    public  boolean closeMenu(Object activity) {
-        if(getContext().getClass() != activity) {
+    public  boolean closeMenu(Class<?> activity) {
+        if(getActivity().getClass() != activity) {
             drawerMenu.getMenuDrawer().closeDrawer(Gravity.LEFT, false);
             return true;
         } else {
             drawerMenu.getMenuDrawer().closeDrawers();
+            if(getActivity() instanceof RefreshData) {
+                RefreshData refreshData = (RefreshData) getActivity();
+                refreshData.refresh();
+                Log.d(TAG, "closeMenu: "+1);
+            }
             return false;
         }
 

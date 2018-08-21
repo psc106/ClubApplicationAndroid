@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
+    android:id="@+id/calendar_layout_Background"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </ListView>
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/calendar_txt_Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="1"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/calendar_txt_ScheduleCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calendar_txt_Date"
+        android:layout_centerInParent="true"
+        android:text="1"/>
+</RelativeLayout>

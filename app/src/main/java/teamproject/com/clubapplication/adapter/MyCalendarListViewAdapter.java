@@ -4,9 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Alarm;
@@ -30,25 +33,28 @@ public class MyCalendarListViewAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return ((Schedule)getItem(position)).getId();
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Horder horder;
         if(convertView==null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_alarm, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_calendar, parent, false);
             horder = new Horder(convertView);
             convertView.setTag(horder);
         } else {
             horder=(Horder)convertView.getTag();
         }
-
+        horder.date.setText(list.get(position).getCreate_date());
         return convertView;
     }
 
-    private class Horder {
-        Horder(View view) {
+    class Horder {
+        @BindView(R.id.schedule_txt_date)
+        TextView date;
+
+        public Horder(View view) {
             ButterKnife.bind(this, view);
         }
     }

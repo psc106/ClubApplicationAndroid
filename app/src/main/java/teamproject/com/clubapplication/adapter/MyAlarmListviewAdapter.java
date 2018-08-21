@@ -29,7 +29,7 @@ public class MyAlarmListviewAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return ((Alarm)getItem(position)).getId();
+        return position;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MyAlarmListviewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class Horder {
+    class Horder {
         Horder(View view) {
             ButterKnife.bind(this, view);
         }

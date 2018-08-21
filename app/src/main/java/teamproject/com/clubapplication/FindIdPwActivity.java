@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import teamproject.com.clubapplication.fragment.FindIdFragment;
 import teamproject.com.clubapplication.fragment.FindPwFragment;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class FindIdPwActivity extends AppCompatActivity {
     public static Activity activity;

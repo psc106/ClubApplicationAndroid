@@ -1,15 +1,11 @@
-package teamproject.com.clubapplication;
+package teamproject.com.clubapplication.utils;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 
-import com.squareup.otto.Subscribe;
-
 import teamproject.com.clubapplication.fragment.MenuFragment;
-import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
 
 /*
 *  사용법:

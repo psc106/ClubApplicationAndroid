@@ -11,16 +11,13 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import teamproject.com.clubapplication.data.Alarm;
-import teamproject.com.clubapplication.data.Member;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
