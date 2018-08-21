@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/group_album_detail_drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GroupAlbumDetail"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_margin="10dp"
+            android:id="@+id/img_layout"
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+            <ImageView
+                android:id="@+id/group_album_detail_img"
+                android:background="#999981"
+                android:layout_width="match_parent"
+                android:layout_height="250dp" />
+
+            <Button
+                android:id="@+id/group_album_detail_btn_out"
+                android:layout_alignParentRight="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:alpha="0.5"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/group_album_detail_btn_next"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:alpha="0.5"/>
+        <Button
+            android:id="@+id/group_album_detail_btn_before"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:alpha="0.5"/>
+
+        <RelativeLayout
+            android:layout_below="@+id/img_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <LinearLayout
+                android:id="@+id/tag_box"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+
+                <TextView
+                    android:id="@+id/group_album_detail_tag"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="태그"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/group_album_detail_writer"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/group_album_detail_date"
+                android:layout_below="@+id/tag_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작성자"
+                />
+            <TextView
+                android:layout_marginRight="10dp"
+                android:id="@+id/group_album_detail_date"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tag_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2018/2/2"/>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
+    <FrameLayout
+        android:id="@+id/group_album_detail_menu"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:gravity="center">
+    </FrameLayout>
+</android.support.v4.widget.DrawerLayout>

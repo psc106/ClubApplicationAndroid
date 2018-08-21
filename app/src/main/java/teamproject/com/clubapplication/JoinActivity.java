@@ -51,7 +51,7 @@ public class JoinActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_join_ok) Button btn_join_ok;//
 
-
+    private DrawerMenu drawerMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
@@ -124,5 +124,14 @@ public class JoinActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         activity = null;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (drawerMenu == null) {
+            drawerMenu = DrawerMenu.addMenu(this,R.id.join_menu, R.id.join_drawer);
+        } else {
+            drawerMenu.restartMenu(this, R.id.join_menu, R.id.join_drawer);
+        }
     }
 }
