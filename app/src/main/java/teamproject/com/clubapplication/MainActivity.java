@@ -1,6 +1,5 @@
 package teamproject.com.clubapplication;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +17,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
-import teamproject.com.clubapplication.adapter.GvAdapter;
-import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.adapter.MainGridviewAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static Activity activity;
     @BindView(R.id.text_search)
     EditText search;
     @BindView(R.id.btn_search)
@@ -44,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.gv_category)
     GridView gvCategory;
     int check_detail = 0;
-    GvAdapter gvAdapter;
+    MainGridviewAdapter mainGridviewAdapter;
     int [] img = {R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background};
 
     String[]items_location={"서울","경기","인천","전라도","경상도","충청도","강원도","제주"};
@@ -57,12 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        gvAdapter= new GvAdapter(imgs);
-        gvCategory.setAdapter(gvAdapter);
+        mainGridviewAdapter = new MainGridviewAdapter(imgs);
+        gvCategory.setAdapter(mainGridviewAdapter);
         for(int i = 0 ; i <img.length;i++){
             imgs.add(img[i]);
 
@@ -129,11 +124,5 @@ public class MainActivity extends AppCompatActivity {
         } else {
             drawerMenu.restartMenu(this, R.id.main_menu, R.id.main_drawer);
         }
-    }
-
-    public void backHomeActivity(Activity otherActivity) {
-        Intent intent = new Intent(otherActivity, this.getClass());
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 }

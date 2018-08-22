@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import teamproject.com.clubapplication.R;
 
 
-public class GvAdapter extends BaseAdapter {
+public class MainGridviewAdapter extends BaseAdapter {
     ArrayList<Integer> imgs;
 
-    public GvAdapter(ArrayList<Integer> imgs) {
+    public MainGridviewAdapter(ArrayList<Integer> imgs) {
         this.imgs = imgs;
     }
 

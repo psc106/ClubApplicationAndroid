@@ -15,9 +15,9 @@ import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 
 
-public class GroupBoardWriteAlbumFragment extends Fragment {
+public class GroupWriteAlbumFragment extends Fragment {
 
-    private static GroupBoardWriteAlbumFragment curr = null;
+    private static GroupWriteAlbumFragment curr = null;
     @BindView(R.id.group_board_write_album_img1)
     ImageView groupBoardWriteAlbumImg1;
     @BindView(R.id.group_board_write_check)
@@ -32,9 +32,9 @@ public class GroupBoardWriteAlbumFragment extends Fragment {
     ImageView groupBoardWriteAlbumImg4;
     Unbinder unbinder;
 
-    public static GroupBoardWriteAlbumFragment getinstance() {
+    public static GroupWriteAlbumFragment getinstance() {
         if (curr == null) {
-            curr = new GroupBoardWriteAlbumFragment();
+            curr = new GroupWriteAlbumFragment();
         }
 
         return curr;
@@ -43,7 +43,7 @@ public class GroupBoardWriteAlbumFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_group_board_write_album, container, false);
+        View view = inflater.inflate(R.layout.fragment_group_write_album, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }

@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 import teamproject.com.clubapplication.R;
 
-public class GroupHomeNoticeAdapter extends BaseAdapter {
+public class GroupHomeNoticeListviewAdapter extends BaseAdapter {
 
-    public GroupHomeNoticeAdapter(){
+    public GroupHomeNoticeListviewAdapter(){
 
     }
     @Override

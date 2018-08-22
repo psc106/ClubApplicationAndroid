@@ -4,14 +4,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import teamproject.com.clubapplication.fragment.GroupAlbum;
+import teamproject.com.clubapplication.fragment.GroupAlbumFragment;
 import teamproject.com.clubapplication.fragment.GroupBoardFragment;
-import teamproject.com.clubapplication.fragment.GroupCalendar;
+import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
 import teamproject.com.clubapplication.fragment.GroupHomeFragment;
-import teamproject.com.clubapplication.fragment.GroupManage;
+import teamproject.com.clubapplication.fragment.GroupManageFragment;
 
-public class GroupHomeAdapter extends FragmentStatePagerAdapter {
-    public GroupHomeAdapter(FragmentManager fm) {
+public class GroupHomeViewpagerAdapter extends FragmentStatePagerAdapter {
+    public GroupHomeViewpagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -22,11 +22,11 @@ public class GroupHomeAdapter extends FragmentStatePagerAdapter {
         }else if(position==1){
             return GroupBoardFragment.getInstance();
         }else if(position==2){
-            return GroupCalendar.getInstance();
+            return GroupCalendarFragment.getInstance();
         }else if(position==3){
-            return GroupAlbum.getInstance();
+            return GroupAlbumFragment.getInstance();
         }else if(position==4){
-            return GroupManage.getInstance();
+            return GroupManageFragment.getInstance();
         }
         return null;
     }

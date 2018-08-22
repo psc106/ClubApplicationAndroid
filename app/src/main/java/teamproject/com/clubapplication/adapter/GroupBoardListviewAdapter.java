@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import teamproject.com.clubapplication.R;
 
-public class GroupBoardAdapter extends BaseAdapter{
+public class GroupBoardListviewAdapter extends BaseAdapter{
 
-    public GroupBoardAdapter(){
+    public GroupBoardListviewAdapter(){
 
     }
 

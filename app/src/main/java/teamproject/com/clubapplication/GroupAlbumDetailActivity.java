@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 
-public class GroupAlbumDetail extends AppCompatActivity {
+public class GroupAlbumDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.group_album_detail_img)
     ImageView groupAlbumDetailImg;

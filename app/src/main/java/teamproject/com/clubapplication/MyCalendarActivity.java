@@ -1,150 +1,62 @@
 package teamproject.com.clubapplication;
 
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
 import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import teamproject.com.clubapplication.adapter.MyCalendarGridviewAdapter;
-import teamproject.com.clubapplication.adapter.MyCalendarListViewAdapter;
-import teamproject.com.clubapplication.data.CalendarSchedule;
-import teamproject.com.clubapplication.data.Schedule;
-import teamproject.com.clubapplication.utils.DrawerMenu;
-import teamproject.com.clubapplication.utils.LoginService;
-import teamproject.com.clubapplication.utils.RefreshData;
-import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
+import teamproject.com.clubapplication.utils.SaturdayDecorator;
+import teamproject.com.clubapplication.utils.SundayDecorator;
 
-public class MyCalendarActivity extends AppCompatActivity implements RefreshData {
-    public static Activity activity;
+public class MyCalendarActivity extends AppCompatActivity {
 
-    @BindView(R.id.myCalendar_gridV)
-    GridView gridView;
-    @BindView(R.id.myCalendar_listV)
-    ListView listView;
 
-    MyCalendarGridviewAdapter gridviewAdapter;
-    ArrayList<CalendarSchedule> calendarArrayList;
-    MyCalendarListViewAdapter listviewAdapter;
-    ArrayList<Schedule> scheduleArrayList;
-
-    LoginService loginService;
+    @BindView(R.id.my_calendar_menu)
+    FrameLayout myCalendarMenu;
+    @BindView(R.id.my_calendar_drawer)
+    DrawerLayout myCalendarDrawer;
+    private DrawerMenu drawerMenu;
+    @BindView(R.id.my_calendar)
+    MaterialCalendarView myCalendar;
+    @BindView(R.id.lv_group_calendar)
+    ListView lvGroupCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_calendar);
         ButterKnife.bind(this);
-        loginService = LoginService.getInstance();
 
-        calendarArrayList = new ArrayList<>();
-        gridviewAdapter = new MyCalendarGridviewAdapter(calendarArrayList);
-        gridView.setAdapter(gridviewAdapter);
+        myCalendar.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setMinimumDate(CalendarDay.from(2018, 0, 1))
+                .setMaximumDate(CalendarDay.from(2030, 11, 31))
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
 
-        scheduleArrayList = new ArrayList<>();
-        listviewAdapter = new MyCalendarListViewAdapter(scheduleArrayList);
-        listView.setAdapter(listviewAdapter);
+        myCalendar.addDecorators(
+                new SundayDecorator(),
+                new SaturdayDecorator());
 
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("로그", "onItemClick: "+1);
-                ArrayList<Schedule> daySchedules = calendarArrayList.get(position).getTodaySchedule();
-                if(daySchedules==null || daySchedules.isEmpty()) {
-
-                } else {
-                    Log.d("로그", "onItemClick: "+3);
-                    scheduleArrayList.clear();
-                    scheduleArrayList.addAll(daySchedules);
-                    listviewAdapter.notifyDataSetChanged();
-                }
-            }
-        });
     }
 
-    DrawerMenu drawerMenu;
     @Override
     protected void onResume() {
         super.onResume();
-        refresh();
-
         if (drawerMenu == null) {
-            drawerMenu = DrawerMenu.addMenu(this, R.id.myCalendar_menu, R.id.myCalendar_drawer);
+            drawerMenu = DrawerMenu.addMenu(this, R.id.my_calendar_menu, R.id.my_calendar_drawer);
         } else {
-            drawerMenu.restartMenu(this, R.id.myCalendar_menu, R.id.myCalendar_drawer);
+            drawerMenu.restartMenu(this, R.id.my_calendar_menu, R.id.my_calendar_drawer);
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        activity = null;
-    }
-
-    @Override
-    public void refresh() {
-
-        Calendar calendar =  Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-
-        Call<ArrayList<Schedule>> scheduleObserver =
-                RetrofitService.getInstance().getRetrofitRequest().selectMySchedule(loginService.getMember().getId());
-        scheduleObserver.enqueue(new Callback<ArrayList<Schedule>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Schedule>> call, Response<ArrayList<Schedule>> response) {
-                if (response.isSuccessful()) {
-                    scheduleArrayList.clear();
-                    scheduleArrayList.addAll(response.body());
-                    listviewAdapter.notifyDataSetChanged();
-
-                } else {
-                    Log.d("로그", "onResponse: fail");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Schedule>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
-        Call<ArrayList<CalendarSchedule>> calendarObserver =
-                RetrofitService.getInstance().getRetrofitRequest().selectMyCalendar(loginService.getMember().getId(), year, month);
-        calendarObserver.enqueue(new Callback<ArrayList<CalendarSchedule>>() {
-            @Override
-            public void onResponse(Call<ArrayList<CalendarSchedule>> call, Response<ArrayList<CalendarSchedule>> response) {
-                calendarArrayList.clear();
-                for(int i = 0 ; i < 7; ++i) {
-                    calendarArrayList.add(new CalendarSchedule());
-                }
-                if (response.isSuccessful()) {
-                    calendarArrayList.addAll(response.body());
-                    gridviewAdapter.notifyDataSetChanged();
-                } else {
-                    Log.d("로그", "onResponse: fail");
-                }
-            }
-            @Override
-            public void onFailure(Call<ArrayList<CalendarSchedule>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
-        Log.d("로그", "refresh: "+year+month+loginService.getMember().getId());
-    }
-
 }

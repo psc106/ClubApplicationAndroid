@@ -5,9 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
-
+import android.widget.GridView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,18 +13,18 @@ import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 
 
-public class GroupCalendar extends Fragment {
+public class GroupAlbumFragment extends Fragment {
 
-    private static GroupCalendar curr = null;
 
-    @BindView(R.id.lv_group_calendar)
-    ListView lvGroupCalendar;
+    private static GroupAlbumFragment curr = null;
+    @BindView(R.id.group_album_gv)
+    GridView groupAlbumGv;
     Unbinder unbinder;
 
-    public static GroupCalendar getInstance() {
+    public static GroupAlbumFragment getInstance() {
 
         if (curr == null) {
-            curr = new GroupCalendar();
+            curr = new GroupAlbumFragment();
         }
 
         return curr;
@@ -36,13 +34,9 @@ public class GroupCalendar extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_group_calendar, container, false);
+        View view = inflater.inflate(R.layout.fragment_group_album, container, false);
 
         unbinder = ButterKnife.bind(this, view);
-
-
-
         return view;
     }
 

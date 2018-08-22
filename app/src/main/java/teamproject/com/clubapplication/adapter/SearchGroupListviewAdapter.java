@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import teamproject.com.clubapplication.R;
 
-public class SearchGroupAdapter extends BaseAdapter {
+public class SearchGroupListviewAdapter extends BaseAdapter {
 
-    public SearchGroupAdapter(){
+    public SearchGroupListviewAdapter(){
 
     }
 

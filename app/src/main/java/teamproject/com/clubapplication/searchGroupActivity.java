@@ -15,8 +15,7 @@ import android.widget.Spinner;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import teamproject.com.clubapplication.adapter.SearchGroupAdapter;
-import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.adapter.SearchGroupListviewAdapter;
 
 public class searchGroupActivity extends AppCompatActivity {
 
@@ -44,7 +43,7 @@ public class searchGroupActivity extends AppCompatActivity {
 
     int check_detail=0;
 
-    SearchGroupAdapter searchGroupAdapter;
+    SearchGroupListviewAdapter searchGroupListviewAdapter;
 
     private DrawerMenu drawerMenu;
 

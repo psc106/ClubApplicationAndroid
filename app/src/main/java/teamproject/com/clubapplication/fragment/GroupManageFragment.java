@@ -13,10 +13,10 @@ import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 
 
-public class GroupManage extends Fragment {
+public class GroupManageFragment extends Fragment {
 
 
-    private static GroupManage curr = null;
+    private static GroupManageFragment curr = null;
     @BindView(R.id.group_manage_btn_nickname)
     Button groupManageBtnNickname;
     @BindView(R.id.group_manage_btn_club)
@@ -27,10 +27,10 @@ public class GroupManage extends Fragment {
     Button groupManageBtnDelete;
     Unbinder unbinder;
 
-    public static GroupManage getInstance() {
+    public static GroupManageFragment getInstance() {
 
         if (curr == null) {
-            curr = new GroupManage();
+            curr = new GroupManageFragment();
         }
 
         return curr;

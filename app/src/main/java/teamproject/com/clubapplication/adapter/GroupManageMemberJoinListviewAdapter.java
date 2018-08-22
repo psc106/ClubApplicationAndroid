@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import teamproject.com.clubapplication.R;
 
-public class GroupManageMemberJoinAdapter extends BaseAdapter {
+public class GroupManageMemberJoinListviewAdapter extends BaseAdapter {
 
-    public GroupManageMemberJoinAdapter(){
+    public GroupManageMemberJoinListviewAdapter(){
 
     }
     @Override

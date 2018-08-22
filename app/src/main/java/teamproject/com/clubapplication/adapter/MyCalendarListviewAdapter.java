@@ -1,4 +1,5 @@
 package teamproject.com.clubapplication.adapter;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
-public class MyCalendarAdapter extends BaseAdapter {
+public class MyCalendarListviewAdapter extends BaseAdapter {
 
-    public MyCalendarAdapter() {
+    public MyCalendarListviewAdapter() {
     }
 
     @Override

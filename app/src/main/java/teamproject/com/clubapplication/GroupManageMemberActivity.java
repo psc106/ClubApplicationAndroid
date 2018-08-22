@@ -9,9 +9,8 @@ import android.widget.ListView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import teamproject.com.clubapplication.adapter.GroupManageMemberCheckAdapter;
-import teamproject.com.clubapplication.adapter.GroupManageMemberJoinAdapter;
-import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.adapter.GroupManageMemberCheckListviewAdapter;
+import teamproject.com.clubapplication.adapter.GroupManageMemberJoinListviewAdapter;
 
 public class GroupManageMemberActivity extends AppCompatActivity {
 
@@ -29,8 +28,8 @@ public class GroupManageMemberActivity extends AppCompatActivity {
     DrawerLayout groupManageMemberDrawer;
     private DrawerMenu drawerMenu;
 
-    GroupManageMemberCheckAdapter groupManageMemberCheckAdapter;
-    GroupManageMemberJoinAdapter groupManageMemberJoinAdapter;
+    GroupManageMemberCheckListviewAdapter groupManageMemberCheckAdapter;
+    GroupManageMemberJoinListviewAdapter groupManageMemberJoinListviewAdapter;
 
 
     @Override

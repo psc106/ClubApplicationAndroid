@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import teamproject.com.clubapplication.R;
 
-public class GroupManageMemberCheckAdapter extends BaseAdapter {
+public class GroupManageMemberCheckListviewAdapter extends BaseAdapter {
 
-    public GroupManageMemberCheckAdapter(){
+    public GroupManageMemberCheckListviewAdapter(){
 
     }
 

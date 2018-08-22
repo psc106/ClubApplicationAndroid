@@ -13,9 +13,8 @@ import android.widget.Spinner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import teamproject.com.clubapplication.fragment.GroupBoardWriteAlbumFragment;
-import teamproject.com.clubapplication.fragment.GroupBoardWriteBoardFragment;
-import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.fragment.GroupWriteAlbumFragment;
+import teamproject.com.clubapplication.fragment.groupWriteBoardFragment;
 
 public class GroupBoardWriteActivity extends AppCompatActivity {
 
@@ -35,7 +34,7 @@ public class GroupBoardWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_board_write);
         ButterKnife.bind(this);
 
-        currentFragment = GroupBoardWriteBoardFragment.getInstance();
+        currentFragment = groupWriteBoardFragment.getInstance();
 
 
         Spinner adt_spinner = (Spinner)findViewById(R.id.group_board_spinner);
@@ -50,9 +49,9 @@ public class GroupBoardWriteActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 if(position==0) {
-                    currentFragment = GroupBoardWriteBoardFragment.getInstance();
+                    currentFragment = groupWriteBoardFragment.getInstance();
                 } else if(position==1){
-                    currentFragment = GroupBoardWriteAlbumFragment.getinstance();
+                    currentFragment = GroupWriteAlbumFragment.getinstance();
                 }
                 Log.d(TAG, "onItemSelected: 1 : " + position);
                 fragmentTransaction.replace(R.id.groupWrite_fragment, currentFragment);
@@ -62,7 +61,7 @@ public class GroupBoardWriteActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                currentFragment = GroupBoardWriteBoardFragment.getInstance();
+                currentFragment = groupWriteBoardFragment.getInstance();
                 Log.d(TAG, "onItemSelected: 2");
             }
         });
