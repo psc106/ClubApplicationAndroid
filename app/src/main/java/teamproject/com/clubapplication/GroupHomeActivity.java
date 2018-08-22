@@ -10,7 +10,8 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import teamproject.com.clubapplication.Adapter.GroupHomeAdapter;
+import teamproject.com.clubapplication.adapter.GroupHomeAdapter;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class GroupHomeActivity extends AppCompatActivity {
 

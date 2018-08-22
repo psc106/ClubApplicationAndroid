@@ -29,6 +29,7 @@
         <EditText
             android:id="@+id/join_id"
             android:textSize="12dp"
+            android:background="@drawable/back"
             android:hint="내용을 입력해 주세요"
             android:layout_width="150dp"
             android:layout_height="wrap_content" />
@@ -56,6 +57,7 @@
         <EditText
             android:id="@+id/join_pw1"
             android:textSize="12dp"
+            android:background="@drawable/back"
             android:hint="내용을 입력해 주세요"
             android:layout_width="150dp"
             android:layout_height="wrap_content" />
@@ -77,6 +79,7 @@
         <EditText
             android:id="@+id/join_pw2"
             android:textSize="12dp"
+            android:background="@drawable/back"
             android:hint="내용을 입력해 주세요"
             android:layout_width="150dp"
             android:layout_height="wrap_content" />
@@ -98,6 +101,7 @@
         <EditText
             android:id="@+id/join_name"
             android:textSize="12dp"
+            android:background="@drawable/back"
             android:hint="내용을 입력해 주세요"
             android:layout_width="150dp"
             android:layout_height="wrap_content" />
@@ -120,6 +124,7 @@
             android:id="@+id/join_birth_year"
             android:inputType="number"
             android:layout_width="80dp"
+            android:background="@drawable/back"
             android:layout_height="wrap_content" />
 
         <Spinner
@@ -130,6 +135,7 @@
 
         <EditText
             android:id="@+id/join_birth_day"
+            android:background="@drawable/back"
             android:inputType="number"
             android:layout_width="80dp"
             android:layout_height="wrap_content" />
@@ -170,6 +176,7 @@
 
         <EditText
             android:id="@+id/join_mail_id"
+            android:background="@drawable/back"
             android:layout_width="100dp"
             android:layout_height="wrap_content" />
 
@@ -181,6 +188,7 @@
 
         <EditText
             android:id="@+id/join_mail_address"
+            android:background="@drawable/back"
             android:layout_width="100dp"
             android:layout_height="wrap_content" />
         <Button
@@ -212,12 +220,14 @@
         <EditText
             android:id="@+id/join_phoneNum1"
             android:inputType="number"
+            android:background="@drawable/back"
             android:layout_width="80dp"
             android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/join_phoneNum2"
             android:inputType="number"
+            android:background="@drawable/back"
             android:layout_width="80dp"
             android:layout_height="wrap_content" />
 

@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.fragment.GroupBoardWriteAlbumFragment;
 import teamproject.com.clubapplication.fragment.GroupBoardWriteBoardFragment;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class GroupBoardWriteActivity extends AppCompatActivity {
 

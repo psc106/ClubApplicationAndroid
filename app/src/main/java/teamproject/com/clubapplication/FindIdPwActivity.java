@@ -23,8 +23,6 @@ public class FindIdPwActivity extends AppCompatActivity {
     @BindView(R.id.btn_find_id) Button btn_find_id;
     @BindView(R.id.btn_find_pw) Button btn_find_pw;
 
-    private DrawerMenu drawerMenu;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
@@ -63,15 +61,6 @@ public class FindIdPwActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.find_container, fragment);
         ft.commit();
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (drawerMenu == null) {
-            drawerMenu = DrawerMenu.addMenu(this,R.id.find_id_pw_menu, R.id.find_id_pw_drawer);
-        } else {
-            drawerMenu.restartMenu(this, R.id.find_id_pw_menu, R.id.find_id_pw_drawer);
-        }
     }
 
     DrawerMenu drawerMenu;

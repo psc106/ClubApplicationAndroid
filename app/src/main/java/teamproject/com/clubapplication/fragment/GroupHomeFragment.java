@@ -14,7 +14,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import teamproject.com.clubapplication.Adapter.GroupHomeNoticeAdapter;
+import teamproject.com.clubapplication.adapter.GroupHomeNoticeAdapter;
 import teamproject.com.clubapplication.R;
 
 

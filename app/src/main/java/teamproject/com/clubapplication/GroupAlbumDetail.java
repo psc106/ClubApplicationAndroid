@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class GroupAlbumDetail extends AppCompatActivity {
 

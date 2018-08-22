@@ -1,4 +1,4 @@
-package teamproject.com.clubapplication.Adapter;
+package teamproject.com.clubapplication.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

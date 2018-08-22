@@ -51,7 +51,7 @@ public class MyCalendarListViewAdapter extends BaseAdapter {
     }
 
     class Horder {
-        @BindView(R.id.schedule_txt_date)
+        @BindView(R.id.lv_my_calendar_title)
         TextView date;
 
         public Horder(View view) {

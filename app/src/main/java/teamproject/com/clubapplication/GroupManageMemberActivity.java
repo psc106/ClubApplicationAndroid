@@ -9,8 +9,9 @@ import android.widget.ListView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import teamproject.com.clubapplication.Adapter.GroupManageMemberCheckAdapter;
-import teamproject.com.clubapplication.Adapter.GroupManageMemberJoinAdapter;
+import teamproject.com.clubapplication.adapter.GroupManageMemberCheckAdapter;
+import teamproject.com.clubapplication.adapter.GroupManageMemberJoinAdapter;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class GroupManageMemberActivity extends AppCompatActivity {
 

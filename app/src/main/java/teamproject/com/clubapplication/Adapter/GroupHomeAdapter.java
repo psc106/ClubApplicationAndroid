@@ -1,4 +1,4 @@
-package teamproject.com.clubapplication.Adapter;
+package teamproject.com.clubapplication.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
