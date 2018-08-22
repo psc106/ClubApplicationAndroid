@@ -14,7 +14,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import teamproject.com.clubapplication.adapter.GroupHomeNoticeAdapter;
+import teamproject.com.clubapplication.adapter.GroupHomeNoticeListviewAdapter;
 import teamproject.com.clubapplication.R;
 
 
@@ -40,7 +40,7 @@ public class GroupHomeFragment extends Fragment {
     Button groupHomeBtnJoin;
     Unbinder unbinder;
 
-    GroupHomeNoticeAdapter groupHomeNoticeAdapter;
+    GroupHomeNoticeListviewAdapter groupHomeNoticeListviewAdapter;
 
 
     public static GroupHomeFragment getInstance() {
@@ -56,8 +56,8 @@ public class GroupHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_home, container, false);
 
-//        groupHomeNoticeAdapter = new GroupHomeNoticeAdapter();
-//        groupHomeLvNotice.setAdapter(groupHomeNoticeAdapter);
+//        groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter();
+//        groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
 
 
 
