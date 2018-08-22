@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.adapter.GroupManageMemberCheckListviewAdapter;
 import teamproject.com.clubapplication.adapter.GroupManageMemberJoinListviewAdapter;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class GroupManageMemberActivity extends AppCompatActivity {
 

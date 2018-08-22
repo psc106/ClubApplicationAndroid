@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.GroupHomeViewpagerAdapter;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class GroupHomeActivity extends AppCompatActivity {
 

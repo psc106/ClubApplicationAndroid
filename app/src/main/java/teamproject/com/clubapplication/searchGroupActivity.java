@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.SearchGroupListviewAdapter;
+import teamproject.com.clubapplication.utils.DrawerMenu;
 
 public class searchGroupActivity extends AppCompatActivity {
 

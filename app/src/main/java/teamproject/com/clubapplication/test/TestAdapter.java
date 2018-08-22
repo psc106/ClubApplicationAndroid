@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import teamproject.com.clubapplication.R;
-
 public class TestAdapter extends RecyclerView.Adapter<TestAdapter.Horder> {
 
     ArrayList<String> strings;

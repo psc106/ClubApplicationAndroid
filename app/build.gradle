@@ -63,4 +63,8 @@ dependencies {
     //permission ted
     implementation 'gun0912.ted:tedpermission:2.2.0'
 
+
+//calender
+
+    implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
 }
