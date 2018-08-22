@@ -18,7 +18,7 @@ import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.SearchGroupListviewAdapter;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 
-public class searchGroupActivity extends AppCompatActivity {
+public class SearchGroupActivity extends AppCompatActivity {
 
     @BindView(R.id.text_search_in_search_group)
     EditText textSearchInSearchGroup;
@@ -89,7 +89,7 @@ public class searchGroupActivity extends AppCompatActivity {
     }
     @OnClick(R.id.btn_make_group_in_search_group)
     public  void makeGroup(){
-        Intent intent = new Intent(searchGroupActivity.this,MakeGroupActivity.class);
+        Intent intent = new Intent(SearchGroupActivity.this,MakeGroupActivity.class);
         startActivity(intent);
 
     }

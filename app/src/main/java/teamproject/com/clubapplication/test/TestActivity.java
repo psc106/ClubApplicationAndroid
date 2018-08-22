@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +17,23 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class TestActivity extends AppCompatActivity {
     final int REQUEST_TAKE_ALBUM = 1;
@@ -103,24 +115,35 @@ public class TestActivity extends AppCompatActivity {
                             for (int i = 0; i < clipData.getItemCount(); i++) {
                                 Log.i("3. single choice", String.valueOf(clipData.getItemAt(i).getUri()));
                                 imageList.add(clipData.getItemAt(i).getUri());
+                                Log.d("로그", "1 "+clipData.getItemAt(i).getUri());
                             }
                         }
                     }
 
-//                MultipartBody.Part body1 = ImageUpload.prepareFilePart(this, "image", imageList);
-//                RequestBody description = ImageUpload.createPartFromString("hello, this is description speaking");//json으로 보내면 되지않을까?
-//                Call<ResponseBody> call = RetrofitService.getInstance().getRetrofitRequest().통신메소드(description, body1);
-//                call.enqueue(new Callback<ResponseBody>() {
-//                    @Override
-//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//                    }
-//                });
+                    ArrayList<MultipartBody.Part> parts = new ArrayList<>();
+
+                    for (int i = 0 ; i < imageList.size(); ++i) {
+                        Log.d("로그", "2 "+imageList.get(i));
+                        String name = CommonUtils.getPath(this, imageList.get(i));
+                        parts.add(prepareFilePart(name, imageList.get(i)));
+                    }
+
+                    RequestBody description = createPartFromString("hello, this is description speaking");
+
+                    Call<ResponseBody> call = RetrofitService.getInstance().getRetrofitRequest().test(description, parts);
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if(response.isSuccessful()) {
+                                Log.d("테스트", "onResponse: "+"success");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
 
                 } else {
                     Toast.makeText(this, "사진 선택을 취소하였습니다.", Toast.LENGTH_SHORT).show();
@@ -139,5 +162,28 @@ public class TestActivity extends AppCompatActivity {
         } else {
             drawerMenu.restartMenu(this, R.id.test_menu, R.id.test_drawer);
         }
+    }
+
+    @NonNull
+    private RequestBody createPartFromString(String descriptionString) {
+        return RequestBody.create(
+                okhttp3.MultipartBody.FORM, descriptionString);
+    }
+
+    @NonNull
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
+        // use the FileUtils to get the actual file by uri
+        File file = new File(CommonUtils.getPath(this, fileUri));
+
+        // create RequestBody instance from file
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse(getContentResolver().getType(fileUri)),
+                        file
+                );
+
+        // MultipartBody.Part is used to send also the actual file name
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
 }

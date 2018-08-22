@@ -1,6 +1,7 @@
 package teamproject.com.clubapplication.utils.retrofit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -27,10 +28,10 @@ public interface RetrofitRequest {
     Call<ArrayList<TestData>> getTest();
 
     @Multipart
-    @POST("testImage.do")
-    Call<ResponseBody> uploadFile(
+    @POST("test.do")
+    Call<ResponseBody> test(
             @Part("description") RequestBody description,
-            @Part MultipartBody.Part file);
+            @Part ArrayList<MultipartBody.Part> images);
 
     @GET("mobile/selectLoginUser.do")
     Call<Member> selectLoginUser(@Query("id") String id, @Query("pw") String pw);
