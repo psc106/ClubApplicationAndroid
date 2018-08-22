@@ -34,10 +34,10 @@
 
         </activity>
         <activity android:name=".GroupBoardWriteActivity" />
-        <activity android:name=".GroupAlbumDetail" />
+        <activity android:name=".GroupAlbumDetailActivity" />
         <activity android:name=".MyGroupActivity" />
         <activity android:name=".MyAlarmActivity" />
-        <activity android:name=".MyCalendar"></activity>
+        <activity android:name=".MyCalendarActivity"></activity>
     </application>
 
 </manifest>

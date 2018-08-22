@@ -46,6 +46,8 @@ public class JoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_join);
         ButterKnife.bind(this);
 
+
+
     }
 
     @OnClick(R.id.btn_join_check_id)

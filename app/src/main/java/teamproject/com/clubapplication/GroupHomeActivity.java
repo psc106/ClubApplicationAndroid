@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import teamproject.com.clubapplication.Adapter.GroupHomeAdapter;
+import teamproject.com.clubapplication.adapter.GroupHomeViewpagerAdapter;
 
 public class GroupHomeActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class GroupHomeActivity extends AppCompatActivity {
     DrawerLayout groupHomeDrawer;
     private DrawerMenu drawerMenu;
 
-    GroupHomeAdapter groupHomeAdapter;
+    GroupHomeViewpagerAdapter groupHomeAdapter;
 
 
     @Override
@@ -42,7 +42,7 @@ public class GroupHomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        groupHomeAdapter = new GroupHomeAdapter(getSupportFragmentManager());
+        groupHomeAdapter = new GroupHomeViewpagerAdapter(getSupportFragmentManager());
         groupHomeViewpager.setAdapter(groupHomeAdapter);
 
 
@@ -70,7 +70,7 @@ public class GroupHomeActivity extends AppCompatActivity {
 
     @OnClick(R.id.group_home_btn_setting)
     void movesetting(){
-        groupHomeViewpager.setCurrentItem(0);
+        groupHomeViewpager.setCurrentItem(4);
     }
 
 

@@ -15,9 +15,9 @@ import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 
 
-public class GroupBoardWriteBoardFragment extends Fragment {
+public class groupWriteBoardFragment extends Fragment {
 
-    private static GroupBoardWriteBoardFragment curr = null;
+    private static groupWriteBoardFragment curr = null;
     @BindView(R.id.group_board_write_board_edt)
     EditText groupBoardWriteBoardEdt;
     @BindView(R.id.group_board_write_board_img)
@@ -28,10 +28,10 @@ public class GroupBoardWriteBoardFragment extends Fragment {
     EditText groupBoardWriteBoardTag;
     Unbinder unbinder;
 
-    public static GroupBoardWriteBoardFragment getInstance() {
+    public static groupWriteBoardFragment getInstance() {
 
         if (curr == null) {
-            curr = new GroupBoardWriteBoardFragment();
+            curr = new groupWriteBoardFragment();
         }
 
         return curr;
@@ -40,7 +40,7 @@ public class GroupBoardWriteBoardFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_group_board_write_board, container, false);
+        View view = inflater.inflate(R.layout.fragment_group_write_board, container, false);
 
         unbinder = ButterKnife.bind(this, view);
         return view;

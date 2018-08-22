@@ -21,9 +21,9 @@ import teamproject.com.clubapplication.utils.SaturdayDecorator;
 import teamproject.com.clubapplication.utils.SundayDecorator;
 
 
-public class GroupCalendar extends Fragment {
+public class GroupCalendarFragment extends Fragment {
 
-    private static GroupCalendar curr = null;
+    private static GroupCalendarFragment curr = null;
 
     @BindView(R.id.calendarView)
     MaterialCalendarView calendarView;
@@ -31,10 +31,10 @@ public class GroupCalendar extends Fragment {
     ListView lvGroupCalendar;
     Unbinder unbinder;
 
-    public static GroupCalendar getInstance() {
+    public static GroupCalendarFragment getInstance() {
 
         if (curr == null) {
-            curr = new GroupCalendar();
+            curr = new GroupCalendarFragment();
         }
 
         return curr;

@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import teamproject.com.clubapplication.utils.SaturdayDecorator;
 import teamproject.com.clubapplication.utils.SundayDecorator;
 
-public class MyCalendar extends AppCompatActivity {
+public class MyCalendarActivity extends AppCompatActivity {
 
 
     @BindView(R.id.my_calendar_menu)

@@ -1,4 +1,4 @@
-package teamproject.com.clubapplication.Adapter;
+package teamproject.com.clubapplication.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import teamproject.com.clubapplication.R;
 
-public class SearchGroupAdapter extends BaseAdapter {
+public class SearchGroupListviewAdapter extends BaseAdapter {
 
-    public SearchGroupAdapter(){
+    public SearchGroupListviewAdapter(){
 
     }
 

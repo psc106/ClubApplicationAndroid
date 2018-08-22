@@ -13,18 +13,18 @@ import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 
 
-public class GroupAlbum extends Fragment {
+public class GroupAlbumFragment extends Fragment {
 
 
-    private static GroupAlbum curr = null;
+    private static GroupAlbumFragment curr = null;
     @BindView(R.id.group_album_gv)
     GridView groupAlbumGv;
     Unbinder unbinder;
 
-    public static GroupAlbum getInstance() {
+    public static GroupAlbumFragment getInstance() {
 
         if (curr == null) {
-            curr = new GroupAlbum();
+            curr = new GroupAlbumFragment();
         }
 
         return curr;

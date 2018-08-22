@@ -1,9 +1,10 @@
-package teamproject.com.clubapplication.Adapter;
+package teamproject.com.clubapplication.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,11 +12,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
-public class MyAlarmAdapter extends BaseAdapter {
+public class MyGroupListviewAdapter extends BaseAdapter {
 
-
-    public MyAlarmAdapter() {
-
+    public MyGroupListviewAdapter() {
     }
 
     @Override
@@ -38,24 +37,32 @@ public class MyAlarmAdapter extends BaseAdapter {
 
         Holder holder ;
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_alarm, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_group, parent, false);
             holder= new Holder(convertView);
             convertView.setTag(holder);
         }else{
             holder=(Holder) convertView.getTag();
         }
 
-
         return convertView;
     }
 
+
     static class Holder {
-        @BindView(R.id.lv_my_alarm_img)
-        ImageView lvMyAlarmImg;
-        @BindView(R.id.lv_my_alarm_date)
-        TextView lvMyAlarmDate;
-        @BindView(R.id.lv_my_alarm_txt)
-        TextView lvMyAlarmTxt;
+        @BindView(R.id.lv_my_group_img)
+        ImageView lvMyGroupImg;
+        @BindView(R.id.lv_my_group_title)
+        TextView lvMyGroupTitle;
+        @BindView(R.id.lv_my_group_btn_out)
+        Button lvMyGroupBtnOut;
+        @BindView(R.id.lv_my_group_maker)
+        TextView lvMyGroupMaker;
+        @BindView(R.id.lv_my_group_count)
+        TextView lvMyGroupCount;
+        @BindView(R.id.lv_my_group_category)
+        TextView lvMyGroupCategory;
+        @BindView(R.id.lv_my_group_location)
+        TextView lvMyGroupLocation;
 
         Holder(View view) {
             ButterKnife.bind(this, view);

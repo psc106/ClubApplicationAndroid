@@ -1,4 +1,4 @@
-package teamproject.com.clubapplication.Adapter;
+package teamproject.com.clubapplication.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 import teamproject.com.clubapplication.R;
 
-public class GvAlbumAdapter extends BaseAdapter {
+public class GroupAlbumGridviewAdapter extends BaseAdapter {
 
     ArrayList<Integer> imgs;
 
-    public GvAlbumAdapter(ArrayList<Integer> imgs) {
+    public GroupAlbumGridviewAdapter(ArrayList<Integer> imgs) {
         this.imgs = imgs;
     }
 
