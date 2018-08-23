@@ -3,14 +3,19 @@ package teamproject.com.clubapplication.test;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +23,9 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,11 +38,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.ExternalImage;
 import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class TestActivity extends AppCompatActivity {
+    static String TAG = "로그";
     final int REQUEST_TAKE_ALBUM = 1;
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
@@ -55,10 +64,13 @@ public class TestActivity extends AppCompatActivity {
     TextView textView;
     @BindView(R.id.test_btn)
     TextView btn;
+    @BindView(R.id.test_btn2)
+    TextView btn2;
     @BindView(R.id.test_horizentalListV)
     RecyclerView recyclerView;
+    TestAdapter adapter;
 
-    ArrayList<Uri> imageList;
+    ArrayList<ExternalImage> imageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +79,11 @@ public class TestActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         imageList = new ArrayList<>();
-
+        adapter = new TestAdapter(this, imageList);
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(horizontalLayoutManagaer);
 
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
@@ -75,6 +91,7 @@ public class TestActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         .check();
 
+        final Context context =this;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +102,37 @@ public class TestActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent,"다중 선택은 '포토'를 선택하세요."), 1);
             }
         });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ArrayList<MultipartBody.Part> parts = new ArrayList<>();
+
+                for (int i = 0 ; i < imageList.size(); ++i) {
+                    String name = imageList.get(i).getRealPath();
+                    Uri uri = imageList.get(i).getFileUri();
+                    parts.add(prepareFilePart(name, uri));
+                }
+
+                RequestBody description = createPartFromString("hello, this is description speaking");
+
+                Call<ResponseBody> call = RetrofitService.getInstance().getRetrofitRequest().test(description, parts);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful()) {
+                            Log.d("테스트", "onResponse: "+"success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
     }
 
     @Override
@@ -92,64 +140,35 @@ public class TestActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_TAKE_ALBUM:
-                Log.i("result", String.valueOf(resultCode));
                 if (resultCode == Activity.RESULT_OK) {
 
                     // 멀티 선택을 지원하지 않는 기기에서는 getClipdata()가 없음 > getData()로 접근해야 함
                     if (data.getClipData() == null) {
-                        imageList.add(data.getData());
+                        Log.d(TAG, 1+""+ CommonUtils.getPath(this, data.getData()));
+                        ExternalImage externalImage = new ExternalImage(data.getData(), CommonUtils.getPath(this, data.getData()));
+                        imageList.add(externalImage);
                     } else {
-
                         ClipData clipData = data.getClipData();
-                        Log.i("clipdata", String.valueOf(clipData.getItemCount()));
                         if (clipData.getItemCount() > 10){
                             Toast.makeText(this, "사진은 10개까지 선택가능 합니다.", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        // 멀티 선택에서 하나만 선택했을 경우
-                        else if (clipData.getItemCount() == 1) {
-                            Uri dataStr = clipData.getItemAt(0).getUri();
-                            imageList.add(dataStr);
-
-                        } else if (clipData.getItemCount() > 1 && clipData.getItemCount() < 10) {
+                        } else if (clipData.getItemCount() >= 1 && clipData.getItemCount() < 10) {
                             for (int i = 0; i < clipData.getItemCount(); i++) {
-                                Log.i("3. single choice", String.valueOf(clipData.getItemAt(i).getUri()));
-                                imageList.add(clipData.getItemAt(i).getUri());
-                                Log.d("로그", "1 "+clipData.getItemAt(i).getUri());
+                                Uri dataStr = clipData.getItemAt(i).getUri();
+                                Log.d(TAG, i+""+ CommonUtils.getPath(this, dataStr));
+                                ExternalImage externalImage = new ExternalImage(dataStr, CommonUtils.getPath(this, dataStr));
+                                imageList.add(externalImage);
+                                if(imageList.size()>0)
+                                    Log.d(TAG, ""+imageList.get(0).getRealPath().equals(externalImage.getRealPath()));
                             }
                         }
                     }
-
-                    ArrayList<MultipartBody.Part> parts = new ArrayList<>();
-
-                    for (int i = 0 ; i < imageList.size(); ++i) {
-                        Log.d("로그", "2 "+imageList.get(i));
-                        String name = CommonUtils.getPath(this, imageList.get(i));
-                        parts.add(prepareFilePart(name, imageList.get(i)));
-                    }
-
-                    RequestBody description = createPartFromString("hello, this is description speaking");
-
-                    Call<ResponseBody> call = RetrofitService.getInstance().getRetrofitRequest().test(description, parts);
-                    call.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if(response.isSuccessful()) {
-                                Log.d("테스트", "onResponse: "+"success");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                        }
-                    });
-
                 } else {
                     Toast.makeText(this, "사진 선택을 취소하였습니다.", Toast.LENGTH_SHORT).show();
                 }
-                break;
+            break;
         }
+        adapter.notifyDataSetChanged();
     }
 
     DrawerMenu drawerMenu;

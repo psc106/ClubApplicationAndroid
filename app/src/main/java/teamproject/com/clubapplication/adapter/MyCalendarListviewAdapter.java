@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Schedule;
 
-class MyCalendarListviewAdapter extends BaseAdapter {
+public class MyCalendarListviewAdapter extends BaseAdapter {
 
     ArrayList<Schedule> list;
 

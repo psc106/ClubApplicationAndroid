@@ -13,20 +13,20 @@ import teamproject.com.clubapplication.R;
 
 public class GroupAlbumGridviewAdapter extends BaseAdapter {
 
-    ArrayList<Integer> imgs;
+    ArrayList<?> arrayList;
 
-    public GroupAlbumGridviewAdapter(ArrayList<Integer> imgs) {
-        this.imgs = imgs;
+    public GroupAlbumGridviewAdapter(ArrayList<?> arrayList) {
+        this.arrayList = arrayList;
     }
 
     @Override
     public int getCount() {
-        return imgs.size();
+        return arrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return imgs.get(position);
+        return arrayList.get(position);
     }
 
     @Override
@@ -45,7 +45,6 @@ public class GroupAlbumGridviewAdapter extends BaseAdapter {
        }   else {
             holder=(Holder)convertView.getTag();
        }
-       holder.img.setBackgroundResource(imgs.get(position));
        return  convertView;
 
 

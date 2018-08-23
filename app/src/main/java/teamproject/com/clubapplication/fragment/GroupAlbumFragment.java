@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.adapter.GroupAlbumGridviewAdapter;
 
 
 public class GroupAlbumFragment extends Fragment {
@@ -20,6 +23,9 @@ public class GroupAlbumFragment extends Fragment {
     @BindView(R.id.group_album_gv)
     GridView groupAlbumGv;
     Unbinder unbinder;
+
+    ArrayList<?> arrayList;
+    GroupAlbumGridviewAdapter adapter;
 
     public static GroupAlbumFragment getInstance() {
 

@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication.utils.retrofit;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import teamproject.com.clubapplication.data.Alarm;
 import teamproject.com.clubapplication.data.CalendarSchedule;
 import teamproject.com.clubapplication.data.Club;
@@ -32,6 +34,9 @@ public interface RetrofitRequest {
     Call<ResponseBody> test(
             @Part("description") RequestBody description,
             @Part ArrayList<MultipartBody.Part> images);
+
+    @GET
+    Call<ArrayList<URL>> testImage();
 
     @GET("mobile/selectLoginUser.do")
     Call<Member> selectLoginUser(@Query("id") String id, @Query("pw") String pw);
@@ -68,5 +73,9 @@ public interface RetrofitRequest {
     Call<Void> insertMember(@Field("id") String id, @Field("pw") String pw, @Field("name") String name, @Field("birthday") String birthday,
                             @Field("gender") Integer gender, @Field("local") String local, @Field("email") String email, @Field("phone") String phone);
 
+    @GET
+    Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);
 
+    @GET
+    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
 }
