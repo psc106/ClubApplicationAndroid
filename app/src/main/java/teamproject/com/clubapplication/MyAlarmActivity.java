@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import teamproject.com.clubapplication.adapter.MyAlarmListviewAdapter;
 
 public class MyAlarmActivity extends AppCompatActivity {
 
@@ -19,11 +22,17 @@ public class MyAlarmActivity extends AppCompatActivity {
     DrawerLayout myAlarmDrawer;
     private DrawerMenu drawerMenu;
 
+    MyAlarmListviewAdapter myAlarmListviewAdapter ;
+    ArrayList<?>arrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_alarm);
         ButterKnife.bind(this);
+
+        arrayList=new ArrayList<>();
+        myAlarmListviewAdapter = new MyAlarmListviewAdapter(arrayList);
+        lvMyAlarm.setAdapter(myAlarmListviewAdapter);
 
 
     }

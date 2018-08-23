@@ -8,24 +8,26 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
 
 public class MainGridviewAdapter extends BaseAdapter {
-    ArrayList<Integer> imgs;
+    ArrayList<?> arrayList;
 
-    public MainGridviewAdapter(ArrayList<Integer> imgs) {
-        this.imgs = imgs;
+    public MainGridviewAdapter(ArrayList<?> arrayList) {
+        this.arrayList = arrayList;
     }
 
     @Override
     public int getCount() {
-        return imgs.size();
+        return arrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return imgs.get(position);
+        return arrayList.get(position);
     }
 
     @Override
@@ -35,19 +37,27 @@ public class MainGridviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder =new Holder();
-        if(convertView==null){
-            convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gv_main,parent,false);
-            holder.img=convertView.findViewById(R.id.img_gv);
+        Holder holder = new Holder(convertView);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gv_main, parent, false);
+
             convertView.setTag(holder);
-        }else{
-            holder=(Holder)convertView.getTag();
+        } else {
+            holder = (Holder) convertView.getTag();
         }
-        holder.img.setBackgroundResource(imgs.get(position));
+
         return convertView;
 
     }
-    public class Holder{
-        ImageView img;
+
+
+
+    static class Holder {
+        @BindView(R.id.img_gv)
+        ImageView imgGv;
+
+        Holder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

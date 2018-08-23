@@ -8,23 +8,29 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
 public class MyCalendarListviewAdapter extends BaseAdapter {
 
-    public MyCalendarListviewAdapter() {
+
+    ArrayList<?>arrayList;
+
+    public MyCalendarListviewAdapter(ArrayList<?> arrayList) {
+        this.arrayList = arrayList;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return arrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return arrayList.get(position);
     }
 
     @Override

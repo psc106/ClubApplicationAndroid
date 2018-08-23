@@ -6,16 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import teamproject.com.clubapplication.utils.SaturdayDecorator;
-import teamproject.com.clubapplication.utils.SundayDecorator;
+import teamproject.com.clubapplication.adapter.MyCalendarListviewAdapter;
 
 public class MyCalendarActivity extends AppCompatActivity {
 
@@ -30,22 +27,17 @@ public class MyCalendarActivity extends AppCompatActivity {
     @BindView(R.id.lv_group_calendar)
     ListView lvGroupCalendar;
 
+    ArrayList<?>arrayList;
+    MyCalendarListviewAdapter myCalendarListviewAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_calendar);
         ButterKnife.bind(this);
 
-        myCalendar.state().edit()
-                .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2018, 0, 1))
-                .setMaximumDate(CalendarDay.from(2030, 11, 31))
-                .setCalendarDisplayMode(CalendarMode.MONTHS)
-                .commit();
-
-        myCalendar.addDecorators(
-                new SundayDecorator(),
-                new SaturdayDecorator());
+        arrayList=new ArrayList<>();
+        myCalendarListviewAdapter = new MyCalendarListviewAdapter(arrayList);
+        lvGroupCalendar.setAdapter(myCalendarListviewAdapter);
 
 
     }

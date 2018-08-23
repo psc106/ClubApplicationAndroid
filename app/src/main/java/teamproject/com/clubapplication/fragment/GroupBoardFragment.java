@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -17,6 +19,7 @@ import butterknife.Unbinder;
 import teamproject.com.clubapplication.GroupBoardWriteActivity;
 import teamproject.com.clubapplication.GroupHomeActivity;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.adapter.GroupBoardListviewAdapter;
 
 
 public class GroupBoardFragment extends Fragment {
@@ -32,6 +35,10 @@ public class GroupBoardFragment extends Fragment {
     Button groupBoardBtnWrite;
     Unbinder unbinder;
 
+    ArrayList<?>arrayList;
+    GroupBoardListviewAdapter groupBoardListviewAdapter;
+
+
     public static GroupBoardFragment getInstance() {
 
         if (curr == null) {
@@ -45,9 +52,12 @@ public class GroupBoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_board, container, false);
-
-
         unbinder = ButterKnife.bind(this, view);
+
+        arrayList= new ArrayList<>();
+        groupBoardListviewAdapter=new GroupBoardListviewAdapter(arrayList);
+        listViewGroupBoard.setAdapter(groupBoardListviewAdapter);
+
         return view;
 
     }

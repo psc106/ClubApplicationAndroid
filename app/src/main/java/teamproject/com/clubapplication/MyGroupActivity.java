@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import teamproject.com.clubapplication.adapter.MyGroupListviewAdapter;
 
 public class MyGroupActivity extends AppCompatActivity {
 
@@ -19,11 +22,18 @@ public class MyGroupActivity extends AppCompatActivity {
     DrawerLayout myGroupDrawer;
     private DrawerMenu drawerMenu;
 
+    MyGroupListviewAdapter myGroupListviewAdapter;
+    ArrayList<?> arrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_group);
         ButterKnife.bind(this);
+
+        arrayList= new ArrayList<>();
+        myGroupListviewAdapter = new MyGroupListviewAdapter(arrayList);
+        lvMyGroup.setAdapter(myGroupListviewAdapter);
+
     }
 
     @Override

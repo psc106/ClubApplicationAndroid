@@ -6,21 +6,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
 public class GroupHomeNoticeListviewAdapter extends BaseAdapter {
 
-    public GroupHomeNoticeListviewAdapter(){
+   ArrayList<?>arrayList;
 
+    public GroupHomeNoticeListviewAdapter(ArrayList<?> arrayList) {
+        this.arrayList = arrayList;
     }
+
     @Override
     public int getCount() {
-        return 0;
+        return arrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return arrayList.get(position);
     }
 
     @Override
@@ -30,23 +37,28 @@ public class GroupHomeNoticeListviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder = new Holder();
-        if(convertView==null){
-            convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_home_notice,parent,false);
-            holder.lv_group_home_notice_txt_date = convertView.findViewById(R.id.lv_group_home_notice_txt_date);
-            holder.lv_group_home_notice_txt_notice = convertView.findViewById(R.id.lv_group_home_notice_txt_notice);
+        Holder holder = new Holder(convertView);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_home_notice, parent, false);
+
             convertView.setTag(holder);
-        }else{
-            holder=(Holder) convertView.getTag();
+        } else {
+            holder = (Holder) convertView.getTag();
         }
         //날짜 , 공지
 
         return convertView;
 
     }
-    public class Holder{
-        TextView lv_group_home_notice_txt_date;
-        TextView lv_group_home_notice_txt_notice;
 
+    static class Holder {
+        @BindView(R.id.lv_group_home_notice_txt_date)
+        TextView lvGroupHomeNoticeTxtDate;
+        @BindView(R.id.lv_group_home_notice_txt_notice)
+        TextView lvGroupHomeNoticeTxtNotice;
+
+        Holder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

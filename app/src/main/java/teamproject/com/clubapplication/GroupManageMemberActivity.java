@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.adapter.GroupManageMemberCheckListviewAdapter;
@@ -31,6 +33,8 @@ public class GroupManageMemberActivity extends AppCompatActivity {
     GroupManageMemberCheckListviewAdapter groupManageMemberCheckAdapter;
     GroupManageMemberJoinListviewAdapter groupManageMemberJoinListviewAdapter;
 
+    ArrayList<?>arrayListjoin;
+    ArrayList<?>arrayListcheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,14 @@ public class GroupManageMemberActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
+        arrayListcheck=new ArrayList<>();
+        groupManageMemberCheckAdapter = new GroupManageMemberCheckListviewAdapter(arrayListcheck);
+        groupManageMemberLvCheckMember.setAdapter(groupManageMemberCheckAdapter);
+
+
+        arrayListjoin = new ArrayList<>();
+        groupManageMemberJoinListviewAdapter = new GroupManageMemberJoinListviewAdapter(arrayListjoin);
+        groupManageMemberLvJoin.setAdapter(groupManageMemberJoinListviewAdapter);
     }
 
     @Override

@@ -11,25 +11,27 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
-import teamproject.com.clubapplication.utils.SaturdayDecorator;
-import teamproject.com.clubapplication.utils.SundayDecorator;
+import teamproject.com.clubapplication.adapter.GroupCalendarListviewAdapter;
 
 
 public class GroupCalendarFragment extends Fragment {
 
     private static GroupCalendarFragment curr = null;
 
-    @BindView(R.id.calendarView)
-    MaterialCalendarView calendarView;
+
     @BindView(R.id.lv_group_calendar)
     ListView lvGroupCalendar;
     Unbinder unbinder;
+
+    ArrayList<?>arrayList;
+    GroupCalendarListviewAdapter groupCalendarListviewAdapter;
 
     public static GroupCalendarFragment getInstance() {
 
@@ -49,16 +51,9 @@ public class GroupCalendarFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
 
-        calendarView.state().edit()
-                .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2018, 0, 1))
-                .setMaximumDate(CalendarDay.from(2030, 11, 31))
-                .setCalendarDisplayMode(CalendarMode.MONTHS)
-                .commit();
-
-        calendarView.addDecorators(
-                new SundayDecorator(),
-                new SaturdayDecorator());
+        arrayList=new ArrayList<>();
+        groupCalendarListviewAdapter =new GroupCalendarListviewAdapter(arrayList);
+        lvGroupCalendar.setAdapter(groupCalendarListviewAdapter);
 
 
 

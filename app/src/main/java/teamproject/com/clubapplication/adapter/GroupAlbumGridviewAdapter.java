@@ -9,24 +9,26 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
 public class GroupAlbumGridviewAdapter extends BaseAdapter {
 
-    ArrayList<Integer> imgs;
+    ArrayList<?> arrayList;
 
-    public GroupAlbumGridviewAdapter(ArrayList<Integer> imgs) {
-        this.imgs = imgs;
+    public GroupAlbumGridviewAdapter(ArrayList<?> arrayList) {
+        this.arrayList = arrayList;
     }
 
     @Override
     public int getCount() {
-        return imgs.size();
+        return arrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return imgs.get(position);
+        return arrayList.get(position);
     }
 
     @Override
@@ -36,22 +38,30 @@ public class GroupAlbumGridviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-       Holder holder = new Holder();
-       if (convertView==null){
-             convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gv_group_album,parent,false);
-             holder.img=convertView.findViewById(R.id.gv_album_img) ;
-             holder.tag=convertView.findViewById(R.id.gv_album_txt_tag);
-             convertView.setTag(holder);
-       }   else {
-            holder=(Holder)convertView.getTag();
-       }
-       holder.img.setBackgroundResource(imgs.get(position));
-       return  convertView;
+        Holder holder = new Holder(convertView);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gv_group_album, parent, false);
+
+            convertView.setTag(holder);
+        } else {
+            holder = (Holder) convertView.getTag();
+        }
+
+        return convertView;
 
 
     }
-     public class Holder{
-        TextView tag;
-        ImageView img;
+
+
+
+    static class Holder {
+        @BindView(R.id.gv_album_img)
+        ImageView gvAlbumImg;
+        @BindView(R.id.gv_album_txt_tag)
+        TextView gvAlbumTxtTag;
+
+        Holder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

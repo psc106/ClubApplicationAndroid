@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -41,7 +43,7 @@ public class GroupHomeFragment extends Fragment {
     Unbinder unbinder;
 
     GroupHomeNoticeListviewAdapter groupHomeNoticeListviewAdapter;
-
+    ArrayList<?>arrayList;
 
     public static GroupHomeFragment getInstance() {
         if (curr == null) {
@@ -55,6 +57,11 @@ public class GroupHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_home, container, false);
+
+        arrayList= new ArrayList<>();
+        groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter(arrayList);
+        groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
+
 
 //        groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter();
 //        groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
