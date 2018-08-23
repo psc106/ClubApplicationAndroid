@@ -8,21 +8,28 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
 public class GroupManageMemberJoinListviewAdapter extends BaseAdapter {
 
-    public GroupManageMemberJoinListviewAdapter(){
+    ArrayList<?>arrayList;
 
+    public GroupManageMemberJoinListviewAdapter(ArrayList<?> arrayList) {
+        this.arrayList = arrayList;
     }
+
     @Override
     public int getCount() {
-        return 0;
+        return arrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return arrayList.get(position);
     }
 
     @Override
@@ -32,39 +39,40 @@ public class GroupManageMemberJoinListviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-     Holder holder = new Holder();
-        if(convertView==null){
-            convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_manage_member_join,parent,false);
-            holder.group_manage_member_join_img=convertView.findViewById(R.id.group_manage_member_join_img);
-            holder.group_manage_member_btn_join_no=convertView.findViewById(R.id.group_manage_member_btn_join_no);
-            holder.group_manage_member_btn_join_yes=convertView.findViewById(R.id.group_manage_member_btn_join_yes);
-            holder.group_manage_member_txt_name=convertView.findViewById(R.id.group_manage_member_txt_name);
-            holder.group_manage_member_txt_age=convertView.findViewById(R.id.group_manage_member_txt_age);
-            holder.group_manage_member_txt_gender=convertView.findViewById(R.id.group_manage_member_txt_gender);
-            holder.group_manage_member_txt_location=convertView.findViewById(R.id.group_manage_member_txt_location);
+        Holder holder = new Holder(convertView);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_manage_member_join, parent, false);
+
             convertView.setTag(holder);
-        }else{
-           holder=(Holder) convertView.getTag();
+        } else {
+            holder = (Holder) convertView.getTag();
         }
 
         //이미지 , 이름 , 나이 , 성별 , 지역
 
 
-
         return convertView;
 
 
-
     }
-    public class Holder{
+    static class Holder {
+        @BindView(R.id.group_manage_member_join_img)
+        ImageView groupManageMemberJoinImg;
+        @BindView(R.id.group_manage_member_txt_name)
+        TextView groupManageMemberTxtName;
+        @BindView(R.id.group_manage_member_btn_join_no)
+        Button groupManageMemberBtnJoinNo;
+        @BindView(R.id.group_manage_member_btn_join_yes)
+        Button groupManageMemberBtnJoinYes;
+        @BindView(R.id.group_manage_member_txt_age)
+        TextView groupManageMemberTxtAge;
+        @BindView(R.id.group_manage_member_txt_gender)
+        TextView groupManageMemberTxtGender;
+        @BindView(R.id.group_manage_member_txt_location)
+        TextView groupManageMemberTxtLocation;
 
-        ImageView group_manage_member_join_img;
-        Button group_manage_member_btn_join_no;
-        Button group_manage_member_btn_join_yes;
-        TextView group_manage_member_txt_name;
-        TextView group_manage_member_txt_age;
-        TextView group_manage_member_txt_gender;
-        TextView group_manage_member_txt_location;
-
+        Holder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

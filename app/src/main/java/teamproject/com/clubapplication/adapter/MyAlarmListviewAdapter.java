@@ -1,23 +1,21 @@
 package teamproject.com.clubapplication.adapter;
 
-
-
 import android.view.LayoutInflater;
-
 import android.view.View;
-
 import android.view.ViewGroup;
-
 import android.widget.BaseAdapter;
-
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
 
 
 
-import butterknife.ButterKnife;
+import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 
 import teamproject.com.clubapplication.data.Alarm;
@@ -48,22 +46,29 @@ public class MyAlarmListviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Horder horder;
 
-        if(convertView==null) {
+        Holder holder ;
+        if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_alarm, parent, false);
-            horder = new Horder(convertView);
-            convertView.setTag(horder);
-
-        } else {
-            horder=(Horder)convertView.getTag();
+            holder= new Holder(convertView);
+            convertView.setTag(holder);
+        }else{
+            holder=(Holder) convertView.getTag();
         }
+
 
         return convertView;
     }
 
-    class Horder {
-        Horder(View view) {
+    static class Holder {
+        @BindView(R.id.lv_my_alarm_img)
+        ImageView lvMyAlarmImg;
+        @BindView(R.id.lv_my_alarm_date)
+        TextView lvMyAlarmDate;
+        @BindView(R.id.lv_my_alarm_txt)
+        TextView lvMyAlarmTxt;
+
+        Holder(View view) {
             ButterKnife.bind(this, view);
         }
     }

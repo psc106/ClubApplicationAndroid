@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +47,7 @@ public class SearchGroupActivity extends AppCompatActivity {
     int check_detail=0;
 
     SearchGroupListviewAdapter searchGroupListviewAdapter;
+    ArrayList<?>arrayList;
 
     private DrawerMenu drawerMenu;
 
@@ -53,6 +56,10 @@ public class SearchGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_group);
         ButterKnife.bind(this);
+
+        arrayList = new ArrayList<>();
+        searchGroupListviewAdapter = new SearchGroupListviewAdapter(arrayList);
+        listViewSearchGroup.setAdapter(searchGroupListviewAdapter);
 
         Spinner adt_spinner_category = (Spinner)findViewById(R.id.spinner_category_in_search_group);
         Spinner adt_spinner_location = (Spinner)findViewById(R.id.spinner_location_in_search_group);

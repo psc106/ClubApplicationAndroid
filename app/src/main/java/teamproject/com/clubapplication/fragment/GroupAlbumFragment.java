@@ -24,8 +24,8 @@ public class GroupAlbumFragment extends Fragment {
     GridView groupAlbumGv;
     Unbinder unbinder;
 
-    ArrayList<?> arrayList;
-    GroupAlbumGridviewAdapter adapter;
+    ArrayList<?>arrayList;
+    GroupAlbumGridviewAdapter groupAlbumGridviewAdapter;
 
     public static GroupAlbumFragment getInstance() {
 
@@ -43,6 +43,12 @@ public class GroupAlbumFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_group_album, container, false);
 
         unbinder = ButterKnife.bind(this, view);
+
+        arrayList=new ArrayList<>();
+        groupAlbumGridviewAdapter=new GroupAlbumGridviewAdapter(arrayList);
+        groupAlbumGv.setAdapter(groupAlbumGridviewAdapter);
+
+
         return view;
     }
 

@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     String[]items_location={"서울","경기","인천","전라도","경상도","충청도","강원도","제주"};
     String[]itmes_category={"여행","음식","음악","문화","기타","등등","모르","겄다","...."};
-    ArrayList<Integer> imgs = new ArrayList<>();
 
+    ArrayList<?> arrayList;
 
 
     private DrawerMenu drawerMenu;
@@ -61,10 +61,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mainGridviewAdapter = new MainGridviewAdapter(imgs);
+
+        arrayList= new ArrayList<>();
+        mainGridviewAdapter = new MainGridviewAdapter(arrayList);
         gvCategory.setAdapter(mainGridviewAdapter);
-        for(int i = 0 ; i <img.length;i++){
-            imgs.add(img[i]);
+
 
 
             Spinner adt_spinner_category = (Spinner)findViewById(R.id.spinner_category);
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             adt_spinner_category.setAdapter(adapter2);
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             adt_spinner_location.setAdapter(adapter);
-        }
+
 
 
     }
