@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/test_drawer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,11 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/test_txt_Test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="테스트 액티비티입니다."/>
+            android:text="테스트 액티비티입니다." />
+
         <Button
             android:id="@+id/test_btn"
             android:layout_width="wrap_content"
@@ -22,21 +23,24 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/test_horizentalListV"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
         <Button
             android:id="@+id/test_btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/test_horizentalListV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 
-    <FrameLayout
-    android:id="@+id/test_menu"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="240dp"
-    android:layout_height="match_parent"
-    android:layout_gravity="left"
-    android:gravity="center">
-    </FrameLayout>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/test_menu"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:gravity="center"></FrameLayout>
 </android.support.v4.widget.DrawerLayout>

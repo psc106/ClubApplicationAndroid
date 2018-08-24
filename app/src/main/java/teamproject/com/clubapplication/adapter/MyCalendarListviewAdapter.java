@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.Schedule;
 
 public class MyCalendarListviewAdapter extends BaseAdapter {
 

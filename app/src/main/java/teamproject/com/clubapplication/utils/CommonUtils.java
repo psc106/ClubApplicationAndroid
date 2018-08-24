@@ -13,6 +13,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.ContentResolverCompat;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,9 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 import okhttp3.ResponseBody;
 import teamproject.com.clubapplication.FindIdPwActivity;
@@ -122,6 +126,27 @@ public class CommonUtils {
         }
 
         return bitmap;
+    }
+    public static <T> T[] concatAll(T[] first, T[]... rest) {
+        int totalLength = first.length;
+        for (T[] array : rest) {
+            totalLength += array.length;
+        }
+        T[] result;
+        try {
+            Method arraysCopyOf = Arrays.class.getMethod("copyOf", Object[].class, int.class);
+            result = (T[]) arraysCopyOf.invoke(null, first, totalLength);
+        } catch (Exception e){
+            //Java 6 / Android >= 9 way didn't work, so use the "traditional" approach
+            result = (T[]) java.lang.reflect.Array.newInstance(first.getClass().getComponentType(), totalLength);
+            System.arraycopy(first, 0, result, 0, first.length);
+        }
+        int offset = first.length;
+        for (T[] array : rest) {
+            System.arraycopy(array, 0, result, offset, array.length);
+            offset += array.length;
+        }
+        return result;
     }
 
     private boolean writeResponseBodyToDisk(Context context, ResponseBody body) {
@@ -254,5 +279,8 @@ public class CommonUtils {
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
-
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

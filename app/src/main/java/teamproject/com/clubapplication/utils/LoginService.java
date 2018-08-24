@@ -58,17 +58,16 @@ public class LoginService {
         return member;
     }
 
-    //setMember(Member member) : 현재 로그인중인 멤버를 매개변수 member로 바꾼다.
-    //setMember(null) 로 로그아웃과 비슷한 효과 가능
-    // 사용하지 않는 함수
-    @Deprecated
-    public void setMember(Member member) {
-        this.member = member;
-        if(member!=null) {
-            BusProvider.getInstance().getBus().post(new LoginEvent(1));
-        } else {
-            BusProvider.getInstance().getBus().post(new LoginEvent(0));
+    //refreshMember(Member member) : 현재 로그인중인 멤버를 매개변수 member로 바꾼다.
+    //정보가 다를 경우 로그아웃이 된다.
+    public void refreshMember(Member member) {
+        if(this.member.getId()==member.getId()) {
+            if (member != null) {
+                BusProvider.getInstance().getBus().post(new LoginEvent(1));
+                return;
+            }
         }
+        BusProvider.getInstance().getBus().post(new LoginEvent(0));
     }
 
 

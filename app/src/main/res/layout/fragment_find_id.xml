@@ -8,24 +8,24 @@
 
     <LinearLayout
         android:id="@+id/layout_top"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
         android:layout_width="300dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
 
 
         <LinearLayout
-            android:layout_marginBottom="30dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:text="이메일 : "
-                android:textSize="20dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="이메일 : "
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/findid_edt_Email"
@@ -36,10 +36,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginBottom="30dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal"
             android:visibility="invisible">
 
             <EditText
@@ -50,21 +50,21 @@
 
         <Button
             android:id="@+id/findid_btn_Find"
-            android:layout_gravity="center"
-            android:text="찾기"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="찾기" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/findid_txt_FindId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_below="@id/layout_top"
+        android:layout_marginTop="50dp"
         android:gravity="center_horizontal"
         android:text="asdf"
-        android:textSize="25dp"/>
+        android:textSize="25dp" />
 
 
 </RelativeLayout>

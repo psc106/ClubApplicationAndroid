@@ -1,60 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/find_drawer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
 
-    <LinearLayout
-        android:layout_marginTop="50dp"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_width="280dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btn_find_id"
-                android:text="아이디 찾기"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_find_pw"
-                android:text="비밀번호 찾기"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
-        </LinearLayout>
+                    <Button
+                        android:id="@+id/btn_find_id"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="아이디 찾기" />
 
-        <FrameLayout
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/find_container"
-            android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/btn_find_pw"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="비밀번호 찾기" />
 
-        </FrameLayout>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/find_container"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                </FrameLayout>
 
 
+            </LinearLayout>
 
-    </LinearLayout>
 
+        </RelativeLayout>
+    </ScrollView>
 
-</RelativeLayout>
-
-    <FrameLayout
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/find_menu"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:gravity="center">
-    </FrameLayout>
+        android:gravity="center"></FrameLayout>
 </android.support.v4.widget.DrawerLayout>

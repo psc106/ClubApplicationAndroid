@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,11 +13,16 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.KeyHideActivity;
 import teamproject.com.clubapplication.utils.LoginService;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class MyInfoActivity extends AppCompatActivity {
+public class MyInfoActivity extends KeyHideActivity {
     public static Activity activity;
 
     @BindView(R.id.myInfo_txt_Id)
@@ -67,6 +74,24 @@ public class MyInfoActivity extends AppCompatActivity {
     }
 
     private void initInfo(Member member){
+        if(loginService.getMember().getVerify().equals("N")){
+            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
+            observer.enqueue(new Callback<Member>() {
+                @Override
+                public void onResponse(Call<Member> call, Response<Member> response) {
+                    if (response.isSuccessful()) {
+                        loginService.refreshMember(response.body());
+                    } else {
+                        Log.d("로그", "onResponse: fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Member> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+
         if(member==null){
             ((MainActivity)MainActivity.activity).backHomeActivity(this);
         }

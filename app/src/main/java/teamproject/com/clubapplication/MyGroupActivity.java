@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.MyClubListviewAdapter;
 import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
@@ -64,6 +65,24 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
 
     @Override
     public void refresh() {
+        if(loginService.getMember().getVerify().equals("N")){
+            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
+            observer.enqueue(new Callback<Member>() {
+                @Override
+                public void onResponse(Call<Member> call, Response<Member> response) {
+                    if (response.isSuccessful()) {
+                        loginService.refreshMember(response.body());
+                    } else {
+                        Log.d("로그", "onResponse: fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Member> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+
         Call<ArrayList<Club>> observer = RetrofitService.getInstance().getRetrofitRequest().selectMyClub(loginService.getMember().getId());
         observer.enqueue(new Callback<ArrayList<Club>>() {
             @Override

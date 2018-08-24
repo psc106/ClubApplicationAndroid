@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,10 +19,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.KeyHideActivity;
 import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class JoinActivity extends AppCompatActivity {
+public class JoinActivity extends KeyHideActivity {
     public static Activity activity;
     Context context = this;
 
@@ -74,8 +76,8 @@ public class JoinActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_join_ok)
     public void btnJoinOk() {
-        String loginId = "11";
-        String loginPw = "1";
+        String loginId = "113";
+        String loginPw = "12";
         String name = "1";
         String birthday = "1";
         int gender = 1;

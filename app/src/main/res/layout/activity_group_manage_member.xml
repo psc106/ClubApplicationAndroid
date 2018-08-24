@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/group_manage_member_drawer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".GroupManageMemberActivity"
-    android:orientation="vertical">
 
-    <!--동호회 가입신청-->
-    <LinearLayout
-        android:id="@+id/group_manage_member_join_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_margin="10dp"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".GroupManageMemberActivity">
+
+        <!--동호회 가입신청-->
+        <LinearLayout
+            android:id="@+id/group_manage_member_join_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="동호회 가입 신청"/>
-        <ListView
-            android:id="@+id/group_manage_member_lv_join"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="동호회 가입 신청" />
+
+            <ListView
+                android:id="@+id/group_manage_member_lv_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ListView>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <!--동호회 회원목록-->
-    <LinearLayout
-        android:id="@+id/group_manage_member_check_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_margin="10dp"
+        <!--동호회 회원목록-->
+        <LinearLayout
+            android:id="@+id/group_manage_member_check_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="동호회 회원 목록"/>
-        <ListView
-            android:id="@+id/group_manage_member_lv_check_member"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
-        </ListView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="동호회 회원 목록" />
+
+            <ListView
+                android:id="@+id/group_manage_member_lv_check_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </ListView>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
-    <FrameLayout
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/group_manage_member_menu"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:gravity="center">
-    </FrameLayout>
+        android:gravity="center"></FrameLayout>
 </android.support.v4.widget.DrawerLayout>

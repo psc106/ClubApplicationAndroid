@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +20,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.SearchGroupListviewAdapter;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.KeyHideActivity;
 
-public class SearchGroupActivity extends AppCompatActivity {
+public class SearchGroupActivity extends KeyHideActivity {
 
     @BindView(R.id.text_search_in_search_group)
     EditText textSearchInSearchGroup;

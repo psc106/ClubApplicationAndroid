@@ -4,14 +4,21 @@ import android.app.Activity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.MyContentPageAdapter;
+import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class MyContentActivity extends AppCompatActivity implements RefreshData {
     public static Activity activity;
@@ -37,12 +44,14 @@ public class MyContentActivity extends AppCompatActivity implements RefreshData 
     }
 
     MyContentPageAdapter pageAdapter;
+    LoginService loginService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_content);
         ButterKnife.bind(this);
+        loginService = LoginService.getInstance();
         pageAdapter = new MyContentPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pageAdapter);
     }
@@ -66,6 +75,42 @@ public class MyContentActivity extends AppCompatActivity implements RefreshData 
 
     @Override
     public void refresh() {
+        if(loginService.getMember().getVerify().equals("N")){
+            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
+            observer.enqueue(new Callback<Member>() {
+                @Override
+                public void onResponse(Call<Member> call, Response<Member> response) {
+                    if (response.isSuccessful()) {
+                        loginService.refreshMember(response.body());
+                    } else {
+                        Log.d("로그", "onResponse: fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Member> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+
+        if(loginService.getMember().getVerify().equals("N")){
+            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
+            observer.enqueue(new Callback<Member>() {
+                @Override
+                public void onResponse(Call<Member> call, Response<Member> response) {
+                    if (response.isSuccessful()) {
+                        loginService.refreshMember(response.body());
+                    } else {
+                        Log.d("로그", "onResponse: fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Member> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+
         RefreshData refreshData = (RefreshData)(pageAdapter.getItem(viewPager.getCurrentItem()));
         refreshData.refresh();
     }

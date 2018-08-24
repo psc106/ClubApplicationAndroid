@@ -4,8 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,31 +15,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".JoinActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".FindIdPwActivity" />
-        <activity android:name=".test.TestActivity">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".MyInfoActivity" />
+        <activity android:name=".test.TestActivity"></activity>
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".SearchGroupActivity" />
-        <activity android:name=".ModifyNickNameActivity">
-        </activity>
+        <activity android:name=".ModifyNickNameActivity"></activity>
         <activity android:name=".MyOptionActivity" />
+        <activity android:name=".IntroActivity"/>
+
         <activity android:name=".GroupManageModifyActivity" />
         <activity android:name=".GroupManageMemberActivity" />
-        <activity android:name=".GroupHomeActivity" >
-
-        </activity>
+        <activity android:name=".GroupHomeActivity"></activity>
         <activity android:name=".GroupBoardWriteActivity" />
         <activity android:name=".GroupAlbumDetailActivity" />
+
+        <activity android:name=".MyInfoActivity" />
+        <activity android:name=".MyContentActivity" />
         <activity android:name=".MyGroupActivity" />
         <activity android:name=".MyAlarmActivity" />
         <activity android:name=".MyCalendarActivity"></activity>

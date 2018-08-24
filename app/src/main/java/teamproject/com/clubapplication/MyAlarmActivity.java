@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.MyAlarmListviewAdapter;
 import teamproject.com.clubapplication.data.Alarm;
+import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
@@ -66,6 +67,24 @@ public class MyAlarmActivity extends AppCompatActivity implements RefreshData {
 
     @Override
     public void refresh() {
+        if(loginService.getMember().getVerify().equals("N")){
+            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
+            observer.enqueue(new Callback<Member>() {
+                @Override
+                public void onResponse(Call<Member> call, Response<Member> response) {
+                    if (response.isSuccessful()) {
+                        loginService.refreshMember(response.body());
+                    } else {
+                        Log.d("로그", "onResponse: fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Member> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+
         Call<ArrayList<Alarm>> observer = RetrofitService.getInstance().getRetrofitRequest().selectMyAlarm(loginService.getMember().getId());
         observer.enqueue(new Callback<ArrayList<Alarm>>() {
             @Override

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,16 +14,26 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import teamproject.com.clubapplication.adapter.MainGridviewAdapter;
+import teamproject.com.clubapplication.db.DBManager;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.KeyHideActivity;
+import teamproject.com.clubapplication.utils.LoginService;
+import teamproject.com.clubapplication.utils.bus.BusProvider;
+import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends KeyHideActivity {
     public static Activity activity;
 
     @BindView(R.id.text_search)
@@ -45,40 +56,41 @@ public class MainActivity extends AppCompatActivity {
     GridView gvCategory;
     int check_detail = 0;
     MainGridviewAdapter mainGridviewAdapter;
-    int [] img = {R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background};
-
-    String[]items_location={"서울","경기","인천","전라도","경상도","충청도","강원도","제주"};
-    String[]itmes_category={"여행","음식","음악","문화","기타","등등","모르","겄다","...."};
+    int [] imgList = {};
 
     ArrayList<?> arrayList;
-
+    DBManager dbManager;
 
     private DrawerMenu drawerMenu;
+    LoginService loginService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
         super.onCreate(savedInstanceState);
+        activity = this;
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         arrayList= new ArrayList<>();
         mainGridviewAdapter = new MainGridviewAdapter(arrayList);
         gvCategory.setAdapter(mainGridviewAdapter);
+        loginService = LoginService.getInstance();
 
+        dbManager = new DBManager(this,DBManager.DB_NAME,null,DBManager.CURRENT_VERSION);
 
+        String[] noneSelect = {"선택"};
+        String[] itmes_category= {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
+        String[] items_location= CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
+        itmes_category = CommonUtils.concatAll(noneSelect, itmes_category);
 
-            Spinner adt_spinner_category = (Spinner)findViewById(R.id.spinner_category);
-            Spinner adt_spinner_location = (Spinner)findViewById(R.id.spinner_location);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,items_location);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,itmes_category);
-            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            adt_spinner_category.setAdapter(adapter2);
-            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            adt_spinner_location.setAdapter(adapter);
-
-
+        Spinner adt_spinner_category = (Spinner)findViewById(R.id.spinner_category);
+        Spinner adt_spinner_location = (Spinner)findViewById(R.id.spinner_location);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,items_location);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,itmes_category);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adt_spinner_category.setAdapter(adapter2);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adt_spinner_location.setAdapter(adapter);
 
     }
 
@@ -125,12 +137,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(loginService.getMember()==null || !loginService.getMember().isVerifyMember()){
+            btn_make_group.setVisibility(View.GONE);
+        } else {
+            if(btn_make_group.getVisibility()==View.GONE)
+                btn_make_group.setVisibility(View.VISIBLE);
+        }
+
         if (drawerMenu == null) {
             drawerMenu = DrawerMenu.addMenu(this, R.id.main_menu, R.id.main_drawer);
         } else {
             drawerMenu.restartMenu(this, R.id.main_menu, R.id.main_drawer);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
     public void backHomeActivity(Activity otherActivity) {
         Intent intent = new Intent(otherActivity, this.getClass());
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);

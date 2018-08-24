@@ -1,13 +1,19 @@
 package teamproject.com.clubapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,8 +21,9 @@ import butterknife.OnClick;
 import teamproject.com.clubapplication.fragment.FindIdFragment;
 import teamproject.com.clubapplication.fragment.FindPwFragment;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.KeyHideActivity;
 
-public class FindIdPwActivity extends AppCompatActivity {
+public class FindIdPwActivity extends KeyHideActivity {
     public static Activity activity;
     Fragment fragment;
 
@@ -80,4 +87,5 @@ public class FindIdPwActivity extends AppCompatActivity {
         super.onDestroy();
         activity = null;
     }
+
 }

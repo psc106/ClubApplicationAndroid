@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +20,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +31,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.ExternalImage;
 import teamproject.com.clubapplication.utils.CommonUtils;
@@ -68,9 +62,13 @@ public class TestActivity extends AppCompatActivity {
     TextView btn2;
     @BindView(R.id.test_horizentalListV)
     RecyclerView recyclerView;
+    @BindView(R.id.test_horizentalListV2)
+    RecyclerView recyclerView2;
     TestAdapter adapter;
+    TestAdapter2 adapter2;
 
     ArrayList<ExternalImage> imageList;
+    ArrayList<String> urlList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +76,43 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
 
-        imageList = new ArrayList<>();
-        adapter = new TestAdapter(this, imageList);
-        recyclerView.setAdapter(adapter);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManagaer);
-
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        .check();
+                .check();
+
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        imageList = new ArrayList<>();
+        adapter = new TestAdapter(this, imageList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(horizontalLayoutManagaer);
+
+        LinearLayoutManager horizontalLayoutManagaer2
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        urlList = new ArrayList<>();
+        adapter2 = new TestAdapter2(this, urlList);
+        recyclerView2.setAdapter(adapter2);
+        recyclerView2.setLayoutManager(horizontalLayoutManagaer2);
+
+        Call<ArrayList<String>> call = RetrofitService.getInstance().getRetrofitRequest().testImage();
+        call.enqueue(new Callback<ArrayList<String>>() {
+            @Override
+            public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                if(response.isSuccessful()) {
+                    urlList.clear();
+                    urlList.addAll(response.body());
+                    adapter2.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+
+            }
+        });
 
         final Context context =this;
         btn.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +145,9 @@ public class TestActivity extends AppCompatActivity {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.isSuccessful()) {
                             Log.d("테스트", "onResponse: "+"success");
+                            imageList.clear();
+                            adapter.notifyDataSetChanged();
+                            refresh();
                         }
                     }
 
@@ -130,6 +156,25 @@ public class TestActivity extends AppCompatActivity {
 
                     }
                 });
+
+            }
+        });
+    }
+
+    void refresh() {
+        Call<ArrayList<String>> call = RetrofitService.getInstance().getRetrofitRequest().testImage();
+        call.enqueue(new Callback<ArrayList<String>>() {
+            @Override
+            public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                if(response.isSuccessful()) {
+                    urlList.clear();
+                    urlList.addAll(response.body());
+                    adapter2.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<String>> call, Throwable t) {
 
             }
         });

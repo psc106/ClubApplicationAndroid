@@ -4,12 +4,19 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.widget.CompoundButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.AppSetting;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoginService;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class MyOptionActivity extends AppCompatActivity {
     public static Activity activity;
@@ -88,6 +95,24 @@ public class MyOptionActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(LoginService.getInstance().getMember().getVerify().equals("N")){
+            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(LoginService.getInstance().getMember().getId());
+            observer.enqueue(new Callback<Member>() {
+                @Override
+                public void onResponse(Call<Member> call, Response<Member> response) {
+                    if (response.isSuccessful()) {
+                        LoginService.getInstance().refreshMember(response.body());
+                    } else {
+                        Log.d("로그", "onResponse: fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Member> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
 
         if (drawerMenu == null) {
             drawerMenu = DrawerMenu.addMenu(this, R.id.myOption_menu, R.id.myOption_drawer);
