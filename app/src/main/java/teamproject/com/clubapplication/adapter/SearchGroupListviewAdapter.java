@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.Club;
 
 public class SearchGroupListviewAdapter extends BaseAdapter {
 
-   ArrayList<?>arrayList;
+   ArrayList<Club>arrayList;
 
-    public SearchGroupListviewAdapter(ArrayList<?> arrayList) {
+    public SearchGroupListviewAdapter(ArrayList<Club> arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -40,9 +41,10 @@ public class SearchGroupListviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder = new Holder(convertView);
+        Holder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_search_group, parent, false);
+            holder= new Holder(convertView);
 
             convertView.setTag(holder);
         } else {

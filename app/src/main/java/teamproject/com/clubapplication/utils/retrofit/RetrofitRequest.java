@@ -48,10 +48,10 @@ public interface RetrofitRequest {
     Call<Integer> checkId(@Query("id") String id);
 
     @GET("mobile/findId.do")
-    Call<String> findId(@Query("email") String email);
+    Call<String> findId(@Query("id") String id);
 
     @GET("mobile/findPw.do")
-    Call<Void> findPw(@Query("email") String email, @Query("id") String id);
+    Call<Void> findPw(@Query("id") String id);
 
     @GET("mobile/selectMyAlarm.do")
     Call<ArrayList<Alarm>> selectMyAlarm(@Query("userId") Long userId);
@@ -74,11 +74,13 @@ public interface RetrofitRequest {
     @FormUrlEncoded
     @POST("mobile/insertMember.do")
     Call<Void> insertMember(@Field("id") String id, @Field("pw") String pw, @Field("name") String name, @Field("birthday") String birthday,
-                            @Field("gender") Integer gender, @Field("local") String local, @Field("email") String email, @Field("phone") String phone);
+                            @Field("gender") Integer gender, @Field("local") String local, @Field("phone") String phone);
+
+    @GET("mobile/searchClub.do")
+    Call<ArrayList<Club>> selectSearchClub(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
 
     @GET
     Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);
-
     @GET
     Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
 }

@@ -1,7 +1,6 @@
 package teamproject.com.clubapplication.utils;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,9 +11,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.content.ContentResolverCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.GridView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,7 +35,6 @@ import okhttp3.ResponseBody;
 import teamproject.com.clubapplication.FindIdPwActivity;
 import teamproject.com.clubapplication.JoinActivity;
 import teamproject.com.clubapplication.LoginActivity;
-import teamproject.com.clubapplication.MainActivity;
 import teamproject.com.clubapplication.MyAlarmActivity;
 import teamproject.com.clubapplication.MyCalendarActivity;
 import teamproject.com.clubapplication.MyContentActivity;
@@ -50,6 +51,52 @@ public class CommonUtils {
 
     public static boolean isLogoutNeedActivity(Activity activity) {
         return (activity.getClass()== LoginActivity.class)||(activity.getClass()== JoinActivity.class)||(activity.getClass()== FindIdPwActivity.class);
+    }
+    public static int setListviewHeightBasedOnChildren(ListView listView) {
+        ListAdapter adapter = listView.getAdapter();
+        if (adapter == null) {
+            // pre-condition
+            return 0;
+        }
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+        return params.height;
+    }
+    public static int setGridviewHeightBasedOnChildren(GridView gridView) {
+        ListAdapter adapter = gridView.getAdapter();
+        if (adapter == null) {
+
+            // pre-condition
+            return 0;
+        }
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(gridView.getWidth(), View.MeasureSpec.AT_MOST);
+
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, gridView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        totalHeight = totalHeight/gridView.getNumColumns();
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = totalHeight + (gridView.getVerticalSpacing() * (adapter.getCount() - 1));
+        gridView.setLayoutParams(params);
+        gridView.requestLayout();
+        return params.height;
     }
 
     public static String getStringFromServer(String pUrl) {

@@ -45,22 +45,22 @@ public class MyCalendarGridviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Horder horder;
+        Holder holder;
         if(convertView==null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.gridview_my_calendar, parent, false);
-            horder = new Horder(convertView);
-            convertView.setTag(horder);
+            holder = new Holder(convertView);
+            convertView.setTag(holder);
         } else {
-            horder=(Horder)convertView.getTag();
+            holder=(Holder)convertView.getTag();
         }
 
         if(position<7){
-            horder.date.setText(weekEng[position]);
-            horder.scheduleCount.setVisibility(View.GONE);
+            holder.date.setText(weekEng[position]);
+            holder.scheduleCount.setVisibility(View.GONE);
         } else {
-            if(horder.scheduleCount.getVisibility()==View.GONE)
-                horder.scheduleCount.setVisibility(View.VISIBLE);
-            horder.background.setBackgroundColor(Color.TRANSPARENT);
+            if(holder.scheduleCount.getVisibility()==View.GONE)
+                holder.scheduleCount.setVisibility(View.VISIBLE);
+            holder.background.setBackgroundColor(Color.TRANSPARENT);
 
             if (list.get(position).getDay()!=null &&!list.get(position).getDay().equals("")) {
                 ArrayList<Schedule> schedules = list.get(position).getTodaySchedule();
@@ -69,18 +69,18 @@ public class MyCalendarGridviewAdapter extends BaseAdapter {
                 Calendar calendar = Calendar.getInstance();
                 int today = Integer.parseInt(sdf.format(calendar.getTime()));
                 int scheduleDay = Integer.parseInt(list.get(position).getDay());
-                horder.date.setText(list.get(position).getDay().substring(4, 6) + "/" + list.get(position).getDay().substring(6));
+                holder.date.setText(list.get(position).getDay().substring(4, 6) + "/" + list.get(position).getDay().substring(6));
 
                 if (schedules.isEmpty()) {
-                    horder.scheduleCount.setText("");
+                    holder.scheduleCount.setText("");
                 } else {
-                    horder.scheduleCount.setText("" + schedules.size());
+                    holder.scheduleCount.setText("" + schedules.size());
                     if (today > scheduleDay) {
-                        horder.background.setBackgroundColor(Color.parseColor("#787878"));
+                        holder.background.setBackgroundColor(Color.parseColor("#787878"));
                     } else if (today == scheduleDay) {
-                        horder.background.setBackgroundColor(Color.parseColor("#AAFA82"));
+                        holder.background.setBackgroundColor(Color.parseColor("#AAFA82"));
                     } else {
-                        horder.background.setBackgroundColor(Color.parseColor("#BEEFFF"));
+                        holder.background.setBackgroundColor(Color.parseColor("#BEEFFF"));
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class MyCalendarGridviewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class Horder {
+    class Holder {
         @BindView(R.id.calendar_layout_Background)
         RelativeLayout background;
         @BindView(R.id.calendar_txt_Date)
@@ -96,7 +96,7 @@ public class MyCalendarGridviewAdapter extends BaseAdapter {
         @BindView(R.id.calendar_txt_ScheduleCount)
         TextView scheduleCount;
 
-        public Horder(View view) {
+        public Holder(View view) {
             ButterKnife.bind(this, view);
         }
     }

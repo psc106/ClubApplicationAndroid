@@ -2,10 +2,8 @@ package teamproject.com.clubapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,11 +16,20 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.SearchGroupListviewAdapter;
+import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.db.DBManager;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.DrawerMenu;
-import teamproject.com.clubapplication.utils.KeyHideActivity;
+import teamproject.com.clubapplication.utils.RefreshData;
+import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class SearchGroupActivity extends KeyHideActivity {
+public class SearchGroupActivity extends KeyHideActivity implements RefreshData {
+    private DrawerMenu drawerMenu;
 
     @BindView(R.id.text_search_in_search_group)
     EditText textSearchInSearchGroup;
@@ -43,50 +50,51 @@ public class SearchGroupActivity extends KeyHideActivity {
     @BindView(R.id.btn_make_group_in_search_group)
     Button btnMakeGroupInSearchGroup;
 
-    String[]items_location={"서울","경기","인천","전라도","경상도","충청도","강원도","제주"};
-    String[]itmes_category={"여행","음식","음악","문화","기타","등등","모르","겄다","...."};
+    String[] noneSelect = {"선택"};
+    String[] items_category = {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
+    String[] items_location;
+    int page;
 
-    int check_detail=0;
+    ArrayList<Club> arrayList;
+    DBManager dbManager;
 
     SearchGroupListviewAdapter searchGroupListviewAdapter;
-    ArrayList<?>arrayList;
-
-    private DrawerMenu drawerMenu;
+    String local;
+    String main;
+    Long category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_group);
         ButterKnife.bind(this);
+        dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
+        items_location = dbManager.getDoSi();
+        Intent intent = getIntent();
+        local = intent.getStringExtra("local");
+        main = intent.getStringExtra("main");
+        category = intent.getLongExtra("category", -1);
+        page = 1;
 
         arrayList = new ArrayList<>();
         searchGroupListviewAdapter = new SearchGroupListviewAdapter(arrayList);
         listViewSearchGroup.setAdapter(searchGroupListviewAdapter);
 
-        Spinner adt_spinner_category = (Spinner)findViewById(R.id.spinner_category_in_search_group);
-        Spinner adt_spinner_location = (Spinner)findViewById(R.id.spinner_location_in_search_group);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,items_location);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,itmes_category);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adt_spinner_category.setAdapter(adapter2);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adt_spinner_location.setAdapter(adapter);
+
+        items_location = CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
+        items_category = CommonUtils.concatAll(noneSelect, items_category);
+        ArrayAdapter<String> adapterLocal = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_location);
+        ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_category);
+        adapterLocal.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLocationInSearchGroup.setAdapter(adapterLocal);
+        spinnerCategoryInSearchGroup.setAdapter(adapterCategory);
 
     }
     @OnClick(R.id.btn_search_detail_in_search_group)
     public void searchDetail(View view) {
-        Log.d("asd", "commit");
-        if (check_detail == 0) {
-            searchLocationInSearchGroup.setVisibility(View.VISIBLE);
-            searchCategoryInSearchGroup.setVisibility(View.VISIBLE);
-            check_detail = 1;
-        } else if (check_detail == 1) {
-            searchLocationInSearchGroup.setVisibility(View.GONE);
-            searchCategoryInSearchGroup.setVisibility(View.GONE);
-            check_detail = 0;
-        }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -95,11 +103,33 @@ public class SearchGroupActivity extends KeyHideActivity {
         } else {
             drawerMenu.restartMenu(this, R.id.search_group_menu, R.id.search_group_drawer);
         }
+
+        Call<ArrayList<Club>> observer = RetrofitService.getInstance().getRetrofitRequest().selectSearchClub(main, local, category);
+        observer.enqueue(new Callback<ArrayList<Club>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Club>> call, Response<ArrayList<Club>> response) {
+                if(response.isSuccessful()){
+                    arrayList.addAll(response.body());
+                    searchGroupListviewAdapter.notifyDataSetChanged();
+
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<Club>> call, Throwable t) {
+
+            }
+        });
+
     }
     @OnClick(R.id.btn_make_group_in_search_group)
     public  void makeGroup(){
         Intent intent = new Intent(SearchGroupActivity.this,MakeGroupActivity.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    public void refresh() {
 
     }
 }

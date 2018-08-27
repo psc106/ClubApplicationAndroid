@@ -1,9 +1,6 @@
 package teamproject.com.clubapplication;
 
 import android.os.Bundle;
-import android.renderscript.Sampler;
-import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +10,7 @@ import android.widget.Spinner;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.utils.DrawerMenu;
-import teamproject.com.clubapplication.utils.KeyHideActivity;
+import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 
 public class MakeGroupActivity extends KeyHideActivity {
 

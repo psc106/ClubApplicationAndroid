@@ -2,8 +2,6 @@ package teamproject.com.clubapplication;
 
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -13,7 +11,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.utils.DrawerMenu;
-import teamproject.com.clubapplication.utils.KeyHideActivity;
+import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 
 public class ModifyNickNameActivity extends KeyHideActivity {
 

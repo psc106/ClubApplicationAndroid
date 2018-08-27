@@ -1,10 +1,8 @@
-package teamproject.com.clubapplication.utils;
+package teamproject.com.clubapplication.utils.customView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -36,6 +34,7 @@ public class KeyHideActivity extends AppCompatActivity {
         if(ev.getAction()==MotionEvent.ACTION_DOWN){
             firstY = ev.getY();
             firstX = ev.getX();
+
         }
         if(ev.getAction() == MotionEvent.ACTION_UP) {
             float lastY = ev.getY();

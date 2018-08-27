@@ -77,6 +77,7 @@ public class MyCalendarActivity extends AppCompatActivity implements RefreshData
         calendarArrayList = new ArrayList<>();
         gridviewAdapter = new MyCalendarGridviewAdapter(calendarArrayList);
         gridView.setAdapter(gridviewAdapter);
+
         scheduleArrayList = new ArrayList<>();
         listviewAdapter = new MyCalendarListviewAdapter(scheduleArrayList);
         listView.setAdapter(listviewAdapter);

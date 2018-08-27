@@ -2,10 +2,8 @@ package teamproject.com.clubapplication;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,7 +16,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
-import teamproject.com.clubapplication.utils.KeyHideActivity;
+import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
@@ -97,7 +95,7 @@ public class MyInfoActivity extends KeyHideActivity {
         }
         idTxt.setText(member.getLogin_id());
         nameTxt.setText(member.getName());
-        emailEdt.setText(member.getEmail());
+        emailEdt.setText(member.getLogin_id());
         localEdt.setText(member.getLocal());
         profileImg.setBackgroundColor(Color.parseColor("#0fffff"));
 
