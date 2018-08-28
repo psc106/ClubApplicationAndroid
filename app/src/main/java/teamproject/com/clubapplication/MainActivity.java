@@ -3,6 +3,9 @@ package teamproject.com.clubapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -51,6 +54,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     LinearLayout mainLayoutAdvancedSearch;
     @BindView(R.id.main_gridV_category)
     ScrollGridview mainGridVCategory;
+//    GridView mainGridVCategory;
     @BindView(R.id.main_btn_MakeGroup)
     Button mainBtnMakeGroup;
 
@@ -109,7 +113,6 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
 
         mainGridviewAdapter = new MainGridviewAdapter(arrayList);
         mainGridVCategory.setAdapter(mainGridviewAdapter);
-        mainGridVCategory.setExpanded(true);
 
         items_location = CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
         items_category = CommonUtils.concatAll(noneSelect, items_category);
@@ -120,6 +123,11 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         mainSpinnerLocation.setAdapter(adapterLocal);
         mainSpinnerCategory.setAdapter(adapterCategory);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle("타이틀");
 
     }
 
@@ -174,4 +182,12 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
             });
         }
     }
+
+    private void setupToolbar(){
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        // Show menu icon
+//        final ActionBar ab = getSupportActionBar();
+    }
+
 }

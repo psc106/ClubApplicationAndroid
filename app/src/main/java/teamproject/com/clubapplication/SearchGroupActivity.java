@@ -1,9 +1,12 @@
 package teamproject.com.clubapplication;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,20 +36,28 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
 
     @BindView(R.id.text_search_in_search_group)
     EditText textSearchInSearchGroup;
+
     @BindView(R.id.btn_search_in_search_group)
     Button btnSearchInSearchGroup;
+
     @BindView(R.id.btn_search_detail_in_search_group)
     Button btnSearchDetailInSearchGroup;
+
     @BindView(R.id.spinner_location_in_search_group)
     Spinner spinnerLocationInSearchGroup;
+
     @BindView(R.id.search_location_in_search_group)
     LinearLayout searchLocationInSearchGroup;
+
     @BindView(R.id.spinner_category_in_search_group)
     Spinner spinnerCategoryInSearchGroup;
+
     @BindView(R.id.search_category_in_search_group)
     LinearLayout searchCategoryInSearchGroup;
+
     @BindView(R.id.list_view_search_group)
     ListView listViewSearchGroup;
+
     @BindView(R.id.btn_make_group_in_search_group)
     Button btnMakeGroupInSearchGroup;
 
@@ -54,6 +65,7 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
     String[] items_category = {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
     String[] items_location;
     int page;
+    int resultCount;
 
     ArrayList<Club> arrayList;
     DBManager dbManager;
@@ -74,11 +86,13 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
         local = intent.getStringExtra("local");
         main = intent.getStringExtra("main");
         category = intent.getLongExtra("category", -1);
-        page = 1;
 
         arrayList = new ArrayList<>();
         searchGroupListviewAdapter = new SearchGroupListviewAdapter(arrayList);
         listViewSearchGroup.setAdapter(searchGroupListviewAdapter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            listViewSearchGroup.setNestedScrollingEnabled(true);
+        }
 
 
         items_location = CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
@@ -90,6 +104,8 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
         spinnerLocationInSearchGroup.setAdapter(adapterLocal);
         spinnerCategoryInSearchGroup.setAdapter(adapterCategory);
 
+        page = 1;
+        getData();
     }
     @OnClick(R.id.btn_search_detail_in_search_group)
     public void searchDetail(View view) {
@@ -104,21 +120,6 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
             drawerMenu.restartMenu(this, R.id.search_group_menu, R.id.search_group_drawer);
         }
 
-        Call<ArrayList<Club>> observer = RetrofitService.getInstance().getRetrofitRequest().selectSearchClub(main, local, category);
-        observer.enqueue(new Callback<ArrayList<Club>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Club>> call, Response<ArrayList<Club>> response) {
-                if(response.isSuccessful()){
-                    arrayList.addAll(response.body());
-                    searchGroupListviewAdapter.notifyDataSetChanged();
-
-                }
-            }
-            @Override
-            public void onFailure(Call<ArrayList<Club>> call, Throwable t) {
-
-            }
-        });
 
     }
     @OnClick(R.id.btn_make_group_in_search_group)
@@ -130,6 +131,46 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
 
     @Override
     public void refresh() {
+        page = 1;
+        getCount();
+    }
+
+    public void getData() {
+        Call<ArrayList<Club>> observer = RetrofitService.getInstance().getRetrofitRequest().selectClubInPage(main, local, category, page);
+        observer.enqueue(new Callback<ArrayList<Club>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Club>> call, Response<ArrayList<Club>> response) {
+                if(response.isSuccessful()){
+                    arrayList.addAll(response.body());
+                    CommonUtils.setListviewHeightBasedOnChildren(listViewSearchGroup);
+                    searchGroupListviewAdapter.notifyDataSetChanged();
+                    CommonUtils.setListviewHeightBasedOnChildren(listViewSearchGroup);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Club>> call, Throwable t) {
+            }
+        });
+    }
+
+    public void getCount(){
+        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getResultCount(main, local, category);
+        observer.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful()){
+                    resultCount = response.body();
+                    if(resultCount>0) {
+                        arrayList.clear();
+                        getData();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+            }
+        });
 
     }
 }

@@ -76,8 +76,11 @@ public interface RetrofitRequest {
     Call<Void> insertMember(@Field("id") String id, @Field("pw") String pw, @Field("name") String name, @Field("birthday") String birthday,
                             @Field("gender") Integer gender, @Field("local") String local, @Field("phone") String phone);
 
-    @GET("mobile/searchClub.do")
-    Call<ArrayList<Club>> selectSearchClub(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
+    @GET("mobile/selectClubInPage.do")
+    Call<ArrayList<Club>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Long category, @Query("page") Integer page);
+
+    @GET("mobile/getResultCount.do")
+    Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
 
     @GET
     Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);

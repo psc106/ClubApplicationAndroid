@@ -62,7 +62,7 @@ public class FindPwFragment extends Fragment {
         final LoadingDialog loadingDialog = LoadingDialog.getInstance();
         loadingDialog.progressON(getActivity(), "메일 발송중");
 
-        Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().findPw(email, id);
+        Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().findPw(id);
         observer.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
