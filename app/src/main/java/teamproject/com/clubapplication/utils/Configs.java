@@ -3,13 +3,13 @@ package teamproject.com.clubapplication.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class AppSetting {
+public class Configs {
     private Context context;
     private SharedPreferences alarmSetting;
-    private static AppSetting appLocalSetting;
+    private static Configs appLocalSetting;
 
-    private AppSetting(){}
-    private AppSetting(Context context){
+    private Configs(){}
+    private Configs(Context context){
         setContext(context);
     }
     private static String[] keyArray = {"master", "club/agree", "club/new", "club/schedule", "comment"};
@@ -20,9 +20,9 @@ public class AppSetting {
     public static final int COMMENT_ALARM = 4;
 
 
-    public static AppSetting getInstance(Context context) {
+    public static Configs getInstance(Context context) {
         if(appLocalSetting==null){
-            appLocalSetting = new AppSetting(context);
+            appLocalSetting = new Configs(context);
         }
         return appLocalSetting;
     }

@@ -13,7 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.data.Member;
-import teamproject.com.clubapplication.utils.AppSetting;
+import teamproject.com.clubapplication.utils.Configs;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
@@ -36,7 +36,7 @@ public class MyOptionActivity extends AppCompatActivity {
     @BindView(R.id.myOption_Comment)
     SwitchCompat commentSwitch;
 
-    AppSetting appSetting;
+    Configs configs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +44,16 @@ public class MyOptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_option);
         ButterKnife.bind(this);
-        appSetting = AppSetting.getInstance(getApplicationContext());
+        configs = Configs.getInstance(getApplicationContext());
 
-        masterSwitch.setChecked(appSetting.getAlarmSetting(AppSetting.MASTER_ALARM));
+        masterSwitch.setChecked(configs.getAlarmSetting(Configs.MASTER_ALARM));
         setSubAlarmCheck(masterSwitch.isChecked());
         setSubAlarmClickable(masterSwitch.isChecked());
 
         masterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                appSetting.setAlarmSetting(AppSetting.MASTER_ALARM ,isChecked);
+                configs.setAlarmSetting(Configs.MASTER_ALARM ,isChecked);
                 setSubAlarmCheck(isChecked);
                 setSubAlarmClickable(isChecked);
             }
@@ -62,7 +62,7 @@ public class MyOptionActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(masterSwitch.isChecked())
-                    appSetting.setAlarmSetting(AppSetting.CLUB_AGREE_ALARM ,isChecked);
+                    configs.setAlarmSetting(Configs.CLUB_AGREE_ALARM ,isChecked);
             }
         });
         clubNewSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -70,7 +70,7 @@ public class MyOptionActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(masterSwitch.isChecked())
-                    appSetting.setAlarmSetting(AppSetting.CLUB_NEW_ALARM ,isChecked);
+                    configs.setAlarmSetting(Configs.CLUB_NEW_ALARM ,isChecked);
             }
         });
         clubScheduleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -78,7 +78,7 @@ public class MyOptionActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(masterSwitch.isChecked())
-                    appSetting.setAlarmSetting(AppSetting.CLUB_SCHEDULE_ALARM ,isChecked);
+                    configs.setAlarmSetting(Configs.CLUB_SCHEDULE_ALARM ,isChecked);
             }
         });
         commentSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -86,7 +86,7 @@ public class MyOptionActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(masterSwitch.isChecked())
-                    appSetting.setAlarmSetting(AppSetting.COMMENT_ALARM ,isChecked);
+                    configs.setAlarmSetting(Configs.COMMENT_ALARM ,isChecked);
             }
         });
     }
@@ -133,10 +133,10 @@ public class MyOptionActivity extends AppCompatActivity {
             clubScheduleSwitch.setChecked(check);
             commentSwitch.setChecked(check);
         } else {
-            clubAgreeSwitch.setChecked(appSetting.getAlarmSetting(AppSetting.CLUB_AGREE_ALARM));
-            clubNewSwitch.setChecked(appSetting.getAlarmSetting(AppSetting.CLUB_NEW_ALARM));
-            clubScheduleSwitch.setChecked(appSetting.getAlarmSetting(AppSetting.CLUB_SCHEDULE_ALARM));
-            commentSwitch.setChecked(appSetting.getAlarmSetting(AppSetting.COMMENT_ALARM));
+            clubAgreeSwitch.setChecked(configs.getAlarmSetting(Configs.CLUB_AGREE_ALARM));
+            clubNewSwitch.setChecked(configs.getAlarmSetting(Configs.CLUB_NEW_ALARM));
+            clubScheduleSwitch.setChecked(configs.getAlarmSetting(Configs.CLUB_SCHEDULE_ALARM));
+            commentSwitch.setChecked(configs.getAlarmSetting(Configs.COMMENT_ALARM));
         }
     }
     void setSubAlarmClickable(boolean check) {

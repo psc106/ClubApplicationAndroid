@@ -74,8 +74,10 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     public void search(View view) {
         Intent intent = new Intent(this, SearchGroupActivity.class);
         if(mainLayoutAdvancedSearch.getVisibility()!=View.GONE) {
-            intent.putExtra("local", (String) mainSpinnerLocation.getSelectedItem());
-            intent.putExtra("category", mainSpinnerCategory.getSelectedItemId());
+            if(mainSpinnerLocation.getSelectedItemId()!=0)
+                intent.putExtra("local", mainSpinnerLocation.getSelectedItemId());
+            if(mainSpinnerCategory.getSelectedItemId()!=0)
+                intent.putExtra("category", mainSpinnerCategory.getSelectedItemId());
         }
         if(mainEditSearch.getText()!=null && !mainEditSearch.getText().toString().equals("")) {
             intent.putExtra("main", mainEditSearch.getText().toString());
@@ -107,10 +109,9 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
-        arrayList = new ArrayList<>(new ArrayList<>(Arrays.asList(items_category)));
-
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
 
+        arrayList = new ArrayList<>(new ArrayList<>(Arrays.asList(items_category)));
         mainGridviewAdapter = new MainGridviewAdapter(arrayList);
         mainGridVCategory.setAdapter(mainGridviewAdapter);
 
@@ -123,10 +124,10 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         mainSpinnerLocation.setAdapter(adapterLocal);
         mainSpinnerCategory.setAdapter(adapterCategory);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.main_collapsingLayout);
         collapsingToolbarLayout.setTitle("타이틀");
 
     }

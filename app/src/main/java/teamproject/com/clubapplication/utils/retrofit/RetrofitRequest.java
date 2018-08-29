@@ -38,6 +38,11 @@ public interface RetrofitRequest {
     @GET("test2.do")
     Call<ArrayList<String>> testImage();
 
+
+    @Multipart
+    @POST("mobile/insertClub.do")
+    Call<Long> insertClub(@Part MultipartBody.Part image, @Part("category") RequestBody category, @Part("userId") RequestBody userId, @Part("name") RequestBody name, @Part("local") RequestBody local, @Part("maxPeople") RequestBody maxPeople, @Part("intro") RequestBody intro);
+
     @GET("mobile/selectLoginUser.do")
     Call<Member> selectLoginUser(@Query("id") String id, @Query("pw") String pw);
 

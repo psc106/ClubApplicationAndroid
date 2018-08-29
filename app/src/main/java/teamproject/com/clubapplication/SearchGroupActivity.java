@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.db.DBManager;
 import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
@@ -40,26 +42,76 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
     @BindView(R.id.btn_search_in_search_group)
     Button btnSearchInSearchGroup;
 
-    @BindView(R.id.btn_search_detail_in_search_group)
-    Button btnSearchDetailInSearchGroup;
+    @BindView(R.id.search_btn_AdvancedSearch)
+    Button advancedBtn;
 
     @BindView(R.id.spinner_location_in_search_group)
     Spinner spinnerLocationInSearchGroup;
 
-    @BindView(R.id.search_location_in_search_group)
-    LinearLayout searchLocationInSearchGroup;
 
     @BindView(R.id.spinner_category_in_search_group)
     Spinner spinnerCategoryInSearchGroup;
-
-    @BindView(R.id.search_category_in_search_group)
-    LinearLayout searchCategoryInSearchGroup;
 
     @BindView(R.id.list_view_search_group)
     ListView listViewSearchGroup;
 
     @BindView(R.id.btn_make_group_in_search_group)
     Button btnMakeGroupInSearchGroup;
+
+    @BindView(R.id.search_layout_AdvancedSearch)
+    LinearLayout advancedLayout;
+
+    @OnClick(R.id.btn_search_in_search_group)
+    void research() {
+        String tmpLocal = null;
+        String tmpMain = null;
+        Long tmpCategory = -1L;
+
+        Intent intent = new Intent(this, SearchGroupActivity.class);
+        if (advancedLayout.getVisibility() != View.GONE) {
+            Log.d("로그", "1");
+            if (spinnerLocationInSearchGroup.getSelectedItemId() != 0) {
+                Log.d("로그", "2");
+                tmpLocal = (String) spinnerLocationInSearchGroup.getSelectedItem();
+                intent.putExtra("local", tmpLocal);
+            }
+            if (spinnerCategoryInSearchGroup.getSelectedItemId() != 0) {
+                Log.d("로그", "3");
+                tmpCategory = spinnerCategoryInSearchGroup.getSelectedItemId();
+                intent.putExtra("category", tmpCategory);
+            }
+        }
+        if (textSearchInSearchGroup.getText() != null && !textSearchInSearchGroup.getText().toString().equals("")) {
+            Log.d("로그", "4");
+            tmpMain = textSearchInSearchGroup.getText().toString();
+            intent.putExtra("main", tmpMain);
+        }
+        Log.d("로그", "5");
+        if (((local == null && tmpLocal == null) || ((local != null && tmpLocal != null) && local.equals(tmpLocal))) &&
+                ((main == null && tmpMain == null) || ((main != null && tmpMain != null) && main.equals(tmpMain))) &&
+            category == tmpCategory) {
+            Log.d("로그", "6");
+            refresh();
+        } else {
+            Log.d("로그", "7");
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.search_btn_AdvancedSearch)
+    public void searchDetail(View view) {
+        if(advancedLayout.getVisibility()!=View.GONE) {
+            advancedLayout.setVisibility(View.GONE);
+        } else {
+            advancedLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @OnClick(R.id.btn_make_group_in_search_group)
+    public  void makeGroup(){
+        Intent intent = new Intent(SearchGroupActivity.this,MakeGroupActivity.class);
+        startActivity(intent);
+    }
 
     String[] noneSelect = {"선택"};
     String[] items_category = {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
@@ -69,6 +121,7 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
 
     ArrayList<Club> arrayList;
     DBManager dbManager;
+    LoginService loginService;
 
     SearchGroupListviewAdapter searchGroupListviewAdapter;
     String local;
@@ -81,19 +134,18 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
         setContentView(R.layout.activity_search_group);
         ButterKnife.bind(this);
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
+        loginService = LoginService.getInstance();
         items_location = dbManager.getDoSi();
+
         Intent intent = getIntent();
         local = intent.getStringExtra("local");
         main = intent.getStringExtra("main");
-        category = intent.getLongExtra("category", -1);
+        category = intent.getLongExtra("category", -1L);
+
 
         arrayList = new ArrayList<>();
         searchGroupListviewAdapter = new SearchGroupListviewAdapter(arrayList);
         listViewSearchGroup.setAdapter(searchGroupListviewAdapter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            listViewSearchGroup.setNestedScrollingEnabled(true);
-        }
-
 
         items_location = CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
         items_category = CommonUtils.concatAll(noneSelect, items_category);
@@ -104,30 +156,24 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
         spinnerLocationInSearchGroup.setAdapter(adapterLocal);
         spinnerCategoryInSearchGroup.setAdapter(adapterCategory);
 
-        page = 1;
-        getData();
+        refresh();
     }
-    @OnClick(R.id.btn_search_detail_in_search_group)
-    public void searchDetail(View view) {
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (loginService.getMember() == null || !loginService.getMember().isVerifyMember()) {
+            btnMakeGroupInSearchGroup.setVisibility(View.GONE);
+        } else {
+            if (btnMakeGroupInSearchGroup.getVisibility() == View.GONE)
+                btnMakeGroupInSearchGroup.setVisibility(View.VISIBLE);
+        }
         if (drawerMenu == null) {
             drawerMenu = DrawerMenu.addMenu(this, R.id.search_group_menu, R.id.search_group_drawer);
         } else {
             drawerMenu.restartMenu(this, R.id.search_group_menu, R.id.search_group_drawer);
         }
-
-
     }
-    @OnClick(R.id.btn_make_group_in_search_group)
-    public  void makeGroup(){
-        Intent intent = new Intent(SearchGroupActivity.this,MakeGroupActivity.class);
-        startActivity(intent);
-    }
-
 
     @Override
     public void refresh() {

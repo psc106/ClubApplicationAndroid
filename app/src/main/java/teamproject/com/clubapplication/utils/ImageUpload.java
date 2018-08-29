@@ -41,11 +41,5 @@ public class ImageUpload {
         cursor.close();
         return result;
     }
-//    액티비티에서 사용할경우 다음과 같이 작성한다.
-
-//    File file = new File(this, getRealPathFromURI(uri));
-//    MultipartBody.Part body1 = prepareFilePart("image", uri);
-//    RequestBody description = createPartFromString("hello, this is description speaking");
-//    Call<ResponseBody> call = RetrofitService.getInstance().getRetrofitRequest().통신메소드(description, body1);
 
 }
