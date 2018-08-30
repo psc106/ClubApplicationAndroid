@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication.utils.customView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ public class KeyHideActivity extends AppCompatActivity {
         if(ev.getAction()==MotionEvent.ACTION_DOWN){
             firstY = ev.getY();
             firstX = ev.getX();
-
         }
         if(ev.getAction() == MotionEvent.ACTION_UP) {
             float lastY = ev.getY();
@@ -73,6 +73,7 @@ public class KeyHideActivity extends AppCompatActivity {
                     inputMethodManager.hideSoftInputFromWindow(viewNew.getWindowToken(), 0);
 
                     viewNew.clearFocus();
+                    viewNew.requestFocus();
 
                     return consumed;
                 }

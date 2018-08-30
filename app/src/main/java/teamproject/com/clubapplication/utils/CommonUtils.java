@@ -15,9 +15,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -328,6 +331,18 @@ public class CommonUtils {
                 cursor.close();
         }
         return null;
+    }
+
+    public static void initSpinner(Context context, View view, String[] datas, String[] firstSelection){
+        if(view instanceof Spinner){
+            String[] allData = datas;
+            if(firstSelection!=null){
+                allData = CommonUtils.concatAll(firstSelection, datas);
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, allData);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ((Spinner) view).setAdapter(adapter);
+        }
     }
 
     public static boolean isExternalStorageDocument(Uri uri) {

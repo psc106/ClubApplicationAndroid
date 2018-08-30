@@ -32,8 +32,6 @@ public class MyInfoActivity extends KeyHideActivity {
     @BindView(R.id.myInfo_txt_Name)
     TextView nameTxt;
 
-    @BindView(R.id.myInfo_edt_Email)
-    EditText emailEdt;
     @BindView(R.id.myInfo_edt_Local)
     EditText localEdt;
 
@@ -95,7 +93,6 @@ public class MyInfoActivity extends KeyHideActivity {
         }
         idTxt.setText(member.getLogin_id());
         nameTxt.setText(member.getName());
-        emailEdt.setText(member.getLogin_id());
         localEdt.setText(member.getLocal());
         profileImg.setBackgroundColor(Color.parseColor("#0fffff"));
 
@@ -104,10 +101,10 @@ public class MyInfoActivity extends KeyHideActivity {
 
         String genderStr = "";
         switch (member.getGender()) {
-            case 0:
+            case 1:
                 genderStr="남";
                 break;
-            case 1:
+            case 2:
                 genderStr="여";
                 break;
             default:

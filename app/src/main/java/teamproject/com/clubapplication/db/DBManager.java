@@ -19,7 +19,12 @@ public class DBManager extends SQLiteOpenHelper {
     private final static String LOCAL_DO_SI = "localDoSi";
     private final static String LOCAL_SI_GUN_GU = "localSiGunGu";
 
-    private String datas[] = {"서울특별시	11010	종로구", "서울특별시	11020	중구", "서울특별시	11030	용산구", "서울특별시	11040	성동구", "서울특별시	11050	광진구", "서울특별시	11060	동대문구", "서울특별시	11070	중랑구",
+    private final static String CATEGORY_TABLE = "category";
+    private final static String CATEGORY_CODE = "categoryCode";
+    private final static String CATEGORY_NAME = "categoryName";
+
+    private String categoryDatas[] = {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
+    private String localDatas[] = {"서울특별시	11010	종로구", "서울특별시	11020	중구", "서울특별시	11030	용산구", "서울특별시	11040	성동구", "서울특별시	11050	광진구", "서울특별시	11060	동대문구", "서울특별시	11070	중랑구",
             "서울특별시	11080	성북구", "서울특별시	11090	강북구", "서울특별시	11100	도봉구", "서울특별시	11110	노원구", "서울특별시	11120	은평구", "서울특별시	11130	서대문구", "서울특별시	11140	마포구",
             "서울특별시	11150	양천구", "서울특별시	11160	강서구", "서울특별시	11170	구로구", "서울특별시	11180	금천구", "서울특별시	11190	영등포구", "서울특별시	11200	동작구", "서울특별시	11210	관악구",
             "서울특별시	11220	서초구", "서울특별시	11230	강남구", "서울특별시	11240	송파구", "서울특별시	11250	강동구", "부산광역시	21010	중구", "부산광역시	21020	서구", "부산광역시	21030	동구",
@@ -69,10 +74,22 @@ public class DBManager extends SQLiteOpenHelper {
                         LOCAL_CODE, LOCAL_DO_SI, LOCAL_SI_GUN_GU);
         db.execSQL(query);
 
-        for(int i = 0 ; i < datas.length; ++i) {
-            String[] tmp = datas[i].split(("\t"));
+        for(int i = 0; i < localDatas.length; ++i) {
+            String[] tmp = localDatas[i].split(("\t"));
             query = String.format("INSERT INTO %s ", LOCAL_TABLE)+
                     String.format("VALUES(%s, '%s', '%s')", tmp[1], tmp[0], tmp[2]);
+            db.execSQL(query);
+        }
+
+        query = String.format("CREATE TABLE '%s' ", CATEGORY_TABLE)+
+                String.format( "( '%s' INTEGER PRIMARY KEY AUTOINCREMENT"+
+                                ", '%s' TEXT",
+                        CATEGORY_CODE, CATEGORY_NAME);
+        db.execSQL(query);
+
+        for(int i = 1; i < categoryDatas.length; ++i) {
+            query = String.format("INSERT INTO %s ", CATEGORY_TABLE)+
+                    String.format("VALUES(%d, '%s')", i, categoryDatas[i-1]);
             db.execSQL(query);
         }
     }
@@ -80,6 +97,7 @@ public class DBManager extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         query = "DROP TABLE "+LOCAL_TABLE;
+        query = "DROP TABLE "+CATEGORY_TABLE;
         db.execSQL(query);
         onCreate(db);
     }
@@ -142,6 +160,21 @@ public class DBManager extends SQLiteOpenHelper {
             koreaLocal = new KoreaLocal(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
         }
         return koreaLocal;
+    }
+
+
+    public String[] getCategory() {
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        query = String.format(  "SELECT %s ", CATEGORY_NAME) +
+                String.format(  " FROM %s ", CATEGORY_TABLE);
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            arrayList.add(cursor.getString(0));
+        }
+        return arrayList.toArray(new String[0]);
     }
 //        Log.d(TAG, "dbsc3: "+arrayList);
 //        Log.d(TAG, "getCurrentEventCountOnTime: "+query);

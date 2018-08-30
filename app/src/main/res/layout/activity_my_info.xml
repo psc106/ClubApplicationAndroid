@@ -5,10 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -16,7 +12,8 @@
             <ScrollView
                 android:id="@+id/myInfo_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -35,7 +32,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="18dp"
+                        android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
@@ -45,7 +42,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
@@ -68,7 +65,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
@@ -91,7 +88,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
@@ -114,7 +111,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
@@ -137,7 +134,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
@@ -151,7 +148,33 @@
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
                                 android:background="@null"
-                                android:ems="4"
+                                android:ems="6"
+                                android:inputType="textPassword"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/myInfo_layout_PwCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_margin="8dp"
+                                android:text="비밀번호 확인"
+                                android:textSize="18dp" />
+
+                            <EditText
+                                android:id="@+id/myinfo_edt_PwCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_margin="8dp"
+                                android:background="@null"
+                                android:ems="6"
                                 android:inputType="textPassword"
                                 android:textSize="18dp" />
                         </LinearLayout>
@@ -162,7 +185,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
@@ -178,7 +201,7 @@
                                 android:background="@null"
                                 android:ems="10"
                                 android:inputType="text"
-                                android:text="test"
+                                android:text="test12345 tteettsdfga"
                                 android:textSize="18dp" />
                         </LinearLayout>
 
@@ -188,11 +211,11 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_margin="8dp"
-                                android:text="Email"
+                                android:text="전화번호"
                                 android:textSize="18dp" />
 
                             <EditText
@@ -204,22 +227,22 @@
                                 android:background="@null"
                                 android:ems="10"
                                 android:inputType="text"
-                                android:text="test@test.test"
+                                android:text="000-0000-0000"
                                 android:textSize="18dp" />
                         </LinearLayout>
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/myInfo_btn_modify"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="수정" />
                 </LinearLayout>
             </ScrollView>
-        </RelativeLayout>
 
-    </ScrollView>
+            <Button
+                android:id="@+id/myInfo_btn_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:text="수정" />
+        </RelativeLayout>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/myInfo_menu"
