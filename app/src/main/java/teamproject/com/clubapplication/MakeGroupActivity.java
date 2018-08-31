@@ -1,23 +1,25 @@
 package teamproject.com.clubapplication;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +30,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import teamproject.com.clubapplication.adapter.MainGridviewAdapter;
 import teamproject.com.clubapplication.data.ExternalImage;
 import teamproject.com.clubapplication.db.DBManager;
 import teamproject.com.clubapplication.utils.CommonUtils;
@@ -58,9 +59,11 @@ public class MakeGroupActivity extends KeyHideActivity {
     EditText textGroupInfo;
     @BindView(R.id.make_btn_Make)
     Button makeBtn;
+    @BindView(R.id.make_btn_CancelImage)
+    ImageButton cancelBtn;
 
     String[] noneSelect = {"선택"};
-    String[] items_category = {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
+    String[] items_category;
     String[] items_location;
 
     DBManager dbManager;
@@ -68,6 +71,13 @@ public class MakeGroupActivity extends KeyHideActivity {
     private DrawerMenu drawerMenu;
     ExternalImage externalImage;
 
+    @OnClick(R.id.make_btn_CancelImage)
+    void photoCancel() {
+        if(cancelBtn.getVisibility()== View.VISIBLE) {
+            cancelBtn.setVisibility(View.GONE);
+            GlideApp.with(this).load(new ColorDrawable(Color.parseColor("#3789b0"))).into(imgGroupPhoto);
+        }
+    }
     @OnClick(R.id.btn_select_group_photo)
     void photoSelect() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -79,7 +89,9 @@ public class MakeGroupActivity extends KeyHideActivity {
     @OnClick(R.id.make_btn_Make)
     void make() {
         if(loginService.getMember()!=null) {
-            MultipartBody.Part part = prepareFilePart(externalImage.getRealPath(), externalImage.getFileUri());
+            MultipartBody.Part part = null;
+            if(cancelBtn.getVisibility()==View.VISIBLE)
+                part = prepareFilePart(externalImage.getRealPath(), externalImage.getFileUri());
             RequestBody category = createPartFromString(String.valueOf(spinnerGroupCategory.getSelectedItemId()));
             RequestBody userId = createPartFromString(String.valueOf(loginService.getMember().getId()));
             RequestBody maxPeople = createPartFromString(String.valueOf(countEdt.getText().toString()));
@@ -125,14 +137,11 @@ public class MakeGroupActivity extends KeyHideActivity {
         loginService = LoginService.getInstance();
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
 
-        items_location = CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
-        items_category = CommonUtils.concatAll(noneSelect, items_category);
-        ArrayAdapter<String> adapterLocal = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_location);
-        ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_category);
-        adapterLocal.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGroupLocation.setAdapter(adapterLocal);
-        spinnerGroupCategory.setAdapter(adapterCategory);
+        items_location = dbManager.getDoSi();
+        items_category = dbManager.getCategory();
+
+        CommonUtils.initSpinner(this, spinnerGroupLocation, items_location, noneSelect);
+        CommonUtils.initSpinner(this, spinnerGroupCategory, items_category, noneSelect);
     }
     @Override
     protected void onResume() {
@@ -153,6 +162,8 @@ public class MakeGroupActivity extends KeyHideActivity {
 
                     externalImage = new ExternalImage(data.getData(), CommonUtils.getPath(this, data.getData()));
                     GlideApp.with(this).load(externalImage.getFileUri()).centerCrop().into(imgGroupPhoto);
+                    if(cancelBtn.getVisibility()==View.GONE)
+                        cancelBtn.setVisibility(View.VISIBLE);
 
                 } else {
                     Toast.makeText(this, "사진 선택을 취소하였습니다.", Toast.LENGTH_SHORT).show();

@@ -11,28 +11,35 @@ import teamproject.com.clubapplication.fragment.GroupHomeFragment;
 import teamproject.com.clubapplication.fragment.GroupManageFragment;
 
 public class GroupHomeViewpagerAdapter extends FragmentStatePagerAdapter {
-    public GroupHomeViewpagerAdapter(FragmentManager fm) {
+    private int tabCount;
+    public GroupHomeViewpagerAdapter(FragmentManager fm, int tabCount) {
         super(fm);
+        this.tabCount = tabCount;
+
     }
 
     @Override
     public Fragment getItem(int position) {
         if(position==0){
-            return GroupHomeFragment.getInstance();
+            return new GroupHomeFragment();
         }else if(position==1){
-            return GroupBoardFragment.getInstance();
+            return new GroupBoardFragment();
         }else if(position==2){
-            return GroupCalendarFragment.getInstance();
+            return new GroupAlbumFragment();
         }else if(position==3){
-            return GroupAlbumFragment.getInstance();
+            return new GroupCalendarFragment();
         }else if(position==4){
-            return GroupManageFragment.getInstance();
+            return new GroupManageFragment();
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 5;
+        return tabCount;
+    }
+
+    public void setTabCount(int tabCount) {
+        this.tabCount = tabCount;
     }
 }

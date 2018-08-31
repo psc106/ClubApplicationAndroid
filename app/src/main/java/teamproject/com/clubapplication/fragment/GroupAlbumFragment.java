@@ -14,9 +14,10 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupAlbumGridviewAdapter;
+import teamproject.com.clubapplication.utils.RefreshData;
 
 
-public class GroupAlbumFragment extends Fragment {
+public class GroupAlbumFragment extends Fragment implements RefreshData {
 
 
     private static GroupAlbumFragment curr = null;
@@ -26,16 +27,6 @@ public class GroupAlbumFragment extends Fragment {
 
     ArrayList<?>arrayList;
     GroupAlbumGridviewAdapter groupAlbumGridviewAdapter;
-
-    public static GroupAlbumFragment getInstance() {
-
-        if (curr == null) {
-            curr = new GroupAlbumFragment();
-        }
-
-        return curr;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,5 +48,10 @@ public class GroupAlbumFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }

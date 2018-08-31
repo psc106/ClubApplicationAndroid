@@ -100,7 +100,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     ArrayList<String> arrayList;
 
     String[] noneSelect = {"선택"};
-    String[] items_category = {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
+    String[] items_category;
     String[] items_location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,18 +111,15 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         loginService = LoginService.getInstance();
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
 
+        items_location = dbManager.getDoSi();
+        items_category = dbManager.getCategory();
+
         arrayList = new ArrayList<>(new ArrayList<>(Arrays.asList(items_category)));
         mainGridviewAdapter = new MainGridviewAdapter(arrayList);
         mainGridVCategory.setAdapter(mainGridviewAdapter);
 
-        items_location = CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
-        items_category = CommonUtils.concatAll(noneSelect, items_category);
-        ArrayAdapter<String> adapterLocal = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_location);
-        ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_category);
-        adapterLocal.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mainSpinnerLocation.setAdapter(adapterLocal);
-        mainSpinnerCategory.setAdapter(adapterCategory);
+        CommonUtils.initSpinner(this, mainSpinnerLocation, items_location, noneSelect);
+        CommonUtils.initSpinner(this, mainSpinnerCategory, items_category, noneSelect);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);

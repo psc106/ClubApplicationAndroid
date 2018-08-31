@@ -75,41 +75,6 @@ public class MyContentActivity extends AppCompatActivity implements RefreshData 
 
     @Override
     public void refresh() {
-        if(loginService.getMember().getVerify().equals("N")){
-            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
-            observer.enqueue(new Callback<Member>() {
-                @Override
-                public void onResponse(Call<Member> call, Response<Member> response) {
-                    if (response.isSuccessful()) {
-                        loginService.refreshMember(response.body());
-                    } else {
-                        Log.d("로그", "onResponse: fail");
-                    }
-                }
-                @Override
-                public void onFailure(Call<Member> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
-        }
-
-        if(loginService.getMember().getVerify().equals("N")){
-            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
-            observer.enqueue(new Callback<Member>() {
-                @Override
-                public void onResponse(Call<Member> call, Response<Member> response) {
-                    if (response.isSuccessful()) {
-                        loginService.refreshMember(response.body());
-                    } else {
-                        Log.d("로그", "onResponse: fail");
-                    }
-                }
-                @Override
-                public void onFailure(Call<Member> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
-        }
 
         RefreshData refreshData = (RefreshData)(pageAdapter.getItem(viewPager.getCurrentItem()));
         refreshData.refresh();

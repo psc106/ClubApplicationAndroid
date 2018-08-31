@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,7 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
     @Override
     protected void onResume() {
         super.onResume();
+        refresh();
 
         if (drawerMenu == null) {
             drawerMenu = DrawerMenu.addMenu(this, R.id.myGroup_menu, R.id.myGroup_drawer);
@@ -65,30 +67,17 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
 
     @Override
     public void refresh() {
-        if(loginService.getMember().getVerify().equals("N")){
-            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
-            observer.enqueue(new Callback<Member>() {
-                @Override
-                public void onResponse(Call<Member> call, Response<Member> response) {
-                    if (response.isSuccessful()) {
-                        loginService.refreshMember(response.body());
-                    } else {
-                        Log.d("로그", "onResponse: fail");
-                    }
-                }
-                @Override
-                public void onFailure(Call<Member> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
-        }
+
+        Toast.makeText(this, "나와라", Toast.LENGTH_SHORT).show();
 
         Call<ArrayList<Club>> observer = RetrofitService.getInstance().getRetrofitRequest().selectMyClub(loginService.getMember().getId());
         observer.enqueue(new Callback<ArrayList<Club>>() {
             @Override
             public void onResponse(Call<ArrayList<Club>> call, Response<ArrayList<Club>> response) {
                 if (response.isSuccessful()) {
+                    arrayList.clear();
                     arrayList.addAll(response.body());
+                    listviewAdapter.notifyDataSetChanged();
                 } else {
                     Log.d("로그", "onResponse: fail");
                 }

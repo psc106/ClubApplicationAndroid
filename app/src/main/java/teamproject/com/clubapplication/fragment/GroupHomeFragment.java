@@ -11,16 +11,25 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import teamproject.com.clubapplication.GroupHomeActivity;
 import teamproject.com.clubapplication.adapter.GroupHomeNoticeListviewAdapter;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.ClubMemberClass;
+import teamproject.com.clubapplication.utils.RefreshData;
+import teamproject.com.clubapplication.utils.bus.BusProvider;
+import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
 
 
-public class GroupHomeFragment extends Fragment {
+public class GroupHomeFragment extends Fragment  implements RefreshData {
     private static GroupHomeFragment curr = null;
     @BindView(R.id.group_home_img)
     ImageView groupHomeImg;
@@ -43,32 +52,26 @@ public class GroupHomeFragment extends Fragment {
     Unbinder unbinder;
 
     GroupHomeNoticeListviewAdapter groupHomeNoticeListviewAdapter;
-    ArrayList<?>arrayList;
-
-    public static GroupHomeFragment getInstance() {
-        if (curr == null) {
-            curr = new GroupHomeFragment();
-        }
-
-        return curr;
-    }
-
+    ArrayList<?> arrayList;
+    Bus bus;
+    ClubMemberClass clubMemberClass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_home, container, false);
 
         unbinder = ButterKnife.bind(this, view);
+        bus = BusProvider.getInstance().getBus();
+        bus.register(this);
 
         arrayList= new ArrayList<>();
         groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter(arrayList);
         groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
-
+        clubMemberClass = ((GroupHomeActivity)getActivity()).getClubMemberClass();
 
 //        groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter();
 //        groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
-
-
+        refresh();
 
         return view;
 
@@ -78,5 +81,19 @@ public class GroupHomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        bus.unregister(this);
+    }
+
+    @Override
+    public void refresh() {
+        if(clubMemberClass!=null) {
+
+        }
+    }
+
+    @Subscribe
+    void finishLoad(ClubLoadEvent clubLoadEvent) {
+        this.clubMemberClass = clubLoadEvent.getClubMemberClass();
+        refresh();
     }
 }

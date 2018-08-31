@@ -12,51 +12,16 @@
         android:orientation="vertical"
         tools:context=".GroupHomeActivity">
 
-        <LinearLayout
+        <android.support.design.widget.TabLayout
+            android:id="@+id/groupHome_tabLayout"
+            app:tabIndicatorHeight="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/group_home_btn_home"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="홈" />
-
-            <Button
-                android:id="@+id/group_home_btn_board"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="게시판" />
-
-            <Button
-                android:id="@+id/group_home_btn_schedule"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="일정" />
-
-            <Button
-                android:id="@+id/group_home_btn_album"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="앨범" />
-
-            <Button
-                android:id="@+id/group_home_btn_setting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="관리" />
-        </LinearLayout>
+            android:layout_height="wrap_content"/>
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/group_home_viewpager"
+            android:id="@+id/groupHome_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

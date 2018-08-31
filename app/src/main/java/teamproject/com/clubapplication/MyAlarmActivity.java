@@ -83,6 +83,7 @@ public class MyAlarmActivity extends AppCompatActivity implements RefreshData {
                     t.printStackTrace();
                 }
             });
+            return;
         }
 
         Call<ArrayList<Alarm>> observer = RetrofitService.getInstance().getRetrofitRequest().selectMyAlarm(loginService.getMember().getId());
@@ -90,7 +91,9 @@ public class MyAlarmActivity extends AppCompatActivity implements RefreshData {
             @Override
             public void onResponse(Call<ArrayList<Alarm>> call, Response<ArrayList<Alarm>> response) {
                 if (response.isSuccessful()) {
+                    arrayList.clear();
                     arrayList.addAll(response.body());
+                    listviewAdapter.notifyDataSetChanged();
                 } else {
                     Log.d("로그", "onResponse: fail");
                 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import teamproject.com.clubapplication.data.KoreaLocal;
@@ -12,7 +14,7 @@ public class DBManager extends SQLiteOpenHelper {
     private String TAG = "버그";
 
     public final static String DB_NAME = "com.teamproject.clubapp.db";
-    public final static int CURRENT_VERSION = 100;
+    public final static int CURRENT_VERSION = 121;
 
     private final static String LOCAL_TABLE = "local";
     private final static String LOCAL_CODE = "localCode";
@@ -67,38 +69,41 @@ public class DBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        query = String.format("CREATE TABLE '%s' ", LOCAL_TABLE)+
-                String.format( "( '%s' INTEGER PRIMARY KEY AUTOINCREMENT"+
-                                ", '%s' TEXT"+
+        query = String.format("CREATE TABLE '%s' ", LOCAL_TABLE) +
+                String.format("( '%s' INTEGER PRIMARY KEY AUTOINCREMENT" +
+                                ", '%s' TEXT" +
                                 ", '%s' TEXT)",
                         LOCAL_CODE, LOCAL_DO_SI, LOCAL_SI_GUN_GU);
         db.execSQL(query);
 
-        for(int i = 0; i < localDatas.length; ++i) {
+        for (int i = 0; i < localDatas.length; ++i) {
             String[] tmp = localDatas[i].split(("\t"));
-            query = String.format("INSERT INTO %s ", LOCAL_TABLE)+
+            query = String.format("INSERT INTO %s ", LOCAL_TABLE) +
                     String.format("VALUES(%s, '%s', '%s')", tmp[1], tmp[0], tmp[2]);
             db.execSQL(query);
         }
 
-        query = String.format("CREATE TABLE '%s' ", CATEGORY_TABLE)+
-                String.format( "( '%s' INTEGER PRIMARY KEY AUTOINCREMENT"+
-                                ", '%s' TEXT",
+        query = String.format("CREATE TABLE '%s' ", CATEGORY_TABLE) +
+                String.format("( '%s' INTEGER PRIMARY KEY AUTOINCREMENT" +
+                                ", '%s' TEXT)",
                         CATEGORY_CODE, CATEGORY_NAME);
         db.execSQL(query);
 
-        for(int i = 1; i < categoryDatas.length; ++i) {
-            query = String.format("INSERT INTO %s ", CATEGORY_TABLE)+
-                    String.format("VALUES(%d, '%s')", i, categoryDatas[i-1]);
+        for (int i = 1; i < categoryDatas.length; ++i) {
+            query = String.format("INSERT INTO %s ", CATEGORY_TABLE) +
+                    String.format("VALUES(%d, '%s')", i, categoryDatas[i - 1]);
             db.execSQL(query);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        query = "DROP TABLE "+LOCAL_TABLE;
-        query = "DROP TABLE "+CATEGORY_TABLE;
+        query = "DROP TABLE " + LOCAL_TABLE;
         db.execSQL(query);
+        Log.d(TAG, "onUpgrade: "+query);
+        query = "DROP TABLE " + CATEGORY_TABLE;
+        db.execSQL(query);
+        Log.d(TAG, "onUpgrade: "+query);
         onCreate(db);
     }
 
@@ -106,9 +111,9 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<String> arrayList = new ArrayList<>();
 
-        query = String.format(  "SELECT DISTINCT %s ", LOCAL_DO_SI) +
-                String.format(  " FROM %s ", LOCAL_TABLE) +
-                String.format(  " ORDER BY %s ", LOCAL_CODE);
+        query = String.format("SELECT DISTINCT %s ", LOCAL_DO_SI) +
+                String.format(" FROM %s ", LOCAL_TABLE) +
+                String.format(" ORDER BY %s ", LOCAL_CODE);
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
@@ -121,8 +126,8 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<String> arrayList = new ArrayList<>();
 
-        query = String.format(  "SELECT %s ", LOCAL_SI_GUN_GU) +
-                String.format(  " FROM %s ", LOCAL_TABLE);
+        query = String.format("SELECT %s ", LOCAL_SI_GUN_GU) +
+                String.format(" FROM %s ", LOCAL_TABLE);
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
@@ -136,9 +141,9 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<String> arrayList = new ArrayList<>();
 
-        query = String.format(  "SELECT %s ", LOCAL_SI_GUN_GU) +
-                String.format(  " FROM %s ", LOCAL_TABLE) +
-                String.format(  " WHERE %s like '%s' ", LOCAL_DO_SI, doSi);
+        query = String.format("SELECT %s ", LOCAL_SI_GUN_GU) +
+                String.format(" FROM %s ", LOCAL_TABLE) +
+                String.format(" WHERE %s like '%s' ", LOCAL_DO_SI, doSi);
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
@@ -151,9 +156,9 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         KoreaLocal koreaLocal = null;
 
-        query =                 "SELECT * " +
-                String.format(  " FROM %s ", LOCAL_TABLE) +
-                String.format(  " WHERE %s = %d ", LOCAL_CODE, code);
+        query = "SELECT * " +
+                String.format(" FROM %s ", LOCAL_TABLE) +
+                String.format(" WHERE %s = %d ", LOCAL_CODE, code);
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
@@ -167,8 +172,8 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<String> arrayList = new ArrayList<>();
 
-        query = String.format(  "SELECT %s ", CATEGORY_NAME) +
-                String.format(  " FROM %s ", CATEGORY_TABLE);
+        query = String.format("SELECT %s ", CATEGORY_NAME) +
+                String.format(" FROM %s ", CATEGORY_TABLE);
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {

@@ -20,9 +20,10 @@ import teamproject.com.clubapplication.GroupBoardWriteActivity;
 import teamproject.com.clubapplication.GroupHomeActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupBoardListviewAdapter;
+import teamproject.com.clubapplication.utils.RefreshData;
 
 
-public class GroupBoardFragment extends Fragment {
+public class GroupBoardFragment extends Fragment  implements RefreshData {
 
     private static GroupBoardFragment curr = null;
     @BindView(R.id.list_view_group_board)
@@ -37,17 +38,6 @@ public class GroupBoardFragment extends Fragment {
 
     ArrayList<?>arrayList;
     GroupBoardListviewAdapter groupBoardListviewAdapter;
-
-
-    public static GroupBoardFragment getInstance() {
-
-        if (curr == null) {
-            curr = new GroupBoardFragment();
-        }
-
-        return curr;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,5 +62,10 @@ public class GroupBoardFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }

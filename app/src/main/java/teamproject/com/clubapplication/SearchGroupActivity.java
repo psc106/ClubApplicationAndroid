@@ -114,7 +114,7 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
     }
 
     String[] noneSelect = {"선택"};
-    String[] items_category = {"취미1", "취미2", "취미3", "취미4", "취미5", "취미6", "취미7", "취미8", "취미9"};
+    String[] items_category;
     String[] items_location;
     int page;
     int resultCount;
@@ -147,14 +147,11 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
         searchGroupListviewAdapter = new SearchGroupListviewAdapter(arrayList);
         listViewSearchGroup.setAdapter(searchGroupListviewAdapter);
 
-        items_location = CommonUtils.concatAll(noneSelect, dbManager.getDoSi());
-        items_category = CommonUtils.concatAll(noneSelect, items_category);
-        ArrayAdapter<String> adapterLocal = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_location);
-        ArrayAdapter<String> adapterCategory = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items_category);
-        adapterLocal.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLocationInSearchGroup.setAdapter(adapterLocal);
-        spinnerCategoryInSearchGroup.setAdapter(adapterCategory);
+        items_location = dbManager.getDoSi();
+        items_category = dbManager.getCategory();
+
+        CommonUtils.initSpinner(this, spinnerLocationInSearchGroup, items_location, noneSelect);
+        CommonUtils.initSpinner(this, spinnerCategoryInSearchGroup, items_category, noneSelect);
 
         refresh();
     }

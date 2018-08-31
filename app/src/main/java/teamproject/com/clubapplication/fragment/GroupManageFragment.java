@@ -11,9 +11,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.utils.RefreshData;
 
 
-public class GroupManageFragment extends Fragment {
+public class GroupManageFragment extends Fragment  implements RefreshData {
 
 
     private static GroupManageFragment curr = null;
@@ -26,16 +27,6 @@ public class GroupManageFragment extends Fragment {
     @BindView(R.id.group_manage_btn_delete)
     Button groupManageBtnDelete;
     Unbinder unbinder;
-
-    public static GroupManageFragment getInstance() {
-
-        if (curr == null) {
-            curr = new GroupManageFragment();
-        }
-
-        return curr;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,5 +42,10 @@ public class GroupManageFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }

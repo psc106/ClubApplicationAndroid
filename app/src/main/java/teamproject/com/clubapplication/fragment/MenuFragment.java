@@ -27,6 +27,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import teamproject.com.clubapplication.LoginActivity;
 import teamproject.com.clubapplication.MyAlarmActivity;
 import teamproject.com.clubapplication.MyCalendarActivity;
@@ -41,6 +44,7 @@ import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.MyInfoActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 @SuppressLint("ValidFragment")
 public class MenuFragment extends Fragment {
@@ -73,10 +77,13 @@ public class MenuFragment extends Fragment {
     }
     @OnClick(R.id.menu_imgV_Profile)
     void onClickProfileImg() {
+
+        refreshLogin();
         loginService.login(getActivity(), new Member(Member.testData()));
     }
     @OnClick(R.id.menu_txt_Name)
     void onClickMemeberInfo() {
+        refreshLogin();
         if(loginService.getMember()!=null) {
             Intent intent = new Intent(getContext(), MyInfoActivity.class);
             if(closeMenu(MyInfoActivity.class)){
@@ -88,6 +95,7 @@ public class MenuFragment extends Fragment {
 
     @OnItemClick(R.id.menu_listV_MenuList)
     public void onItemClick(AdapterView<?> parent, int position) {
+        refreshLogin();
 
         Intent intent = null;
         Class<?> closeClass = null;
@@ -201,6 +209,28 @@ public class MenuFragment extends Fragment {
             setLogoutMenu();
         } else if(event.getState()==1) {
             setLoginMenu();
+        }
+    }
+
+    public void refreshLogin() {
+
+        if(loginService.getMember().getVerify().equals("N")){
+            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
+            observer.enqueue(new Callback<Member>() {
+                @Override
+                public void onResponse(Call<Member> call, Response<Member> response) {
+                    if (response.isSuccessful()) {
+                        loginService.refreshMember(response.body());
+                    } else {
+                        Log.d("로그", "onResponse: fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Member> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+            return;
         }
     }
 }

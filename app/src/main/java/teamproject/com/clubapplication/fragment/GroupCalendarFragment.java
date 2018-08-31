@@ -19,9 +19,10 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupCalendarListviewAdapter;
+import teamproject.com.clubapplication.utils.RefreshData;
 
 
-public class GroupCalendarFragment extends Fragment {
+public class GroupCalendarFragment extends Fragment  implements RefreshData {
 
     private static GroupCalendarFragment curr = null;
 
@@ -32,16 +33,6 @@ public class GroupCalendarFragment extends Fragment {
 
     ArrayList<?>arrayList;
     GroupCalendarListviewAdapter groupCalendarListviewAdapter;
-
-    public static GroupCalendarFragment getInstance() {
-
-        if (curr == null) {
-            curr = new GroupCalendarFragment();
-        }
-
-        return curr;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,5 +56,10 @@ public class GroupCalendarFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }

@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.ClubMemberClass;
+import teamproject.com.clubapplication.data.Member;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class LoginEvent {
-    //0 로그아웃
-    //1 로그인
-    private int state;
+public class ClubLoadEvent {
+    ClubMemberClass clubMemberClass;
 }

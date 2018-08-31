@@ -19,6 +19,7 @@ import retrofit2.http.Url;
 import teamproject.com.clubapplication.data.Alarm;
 import teamproject.com.clubapplication.data.CalendarSchedule;
 import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.Comment;
 import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.data.Post;
@@ -38,52 +39,53 @@ public interface RetrofitRequest {
     @GET("test2.do")
     Call<ArrayList<String>> testImage();
 
-
+    //클럽생성
     @Multipart
     @POST("mobile/insertClub.do")
     Call<Long> insertClub(@Part MultipartBody.Part image, @Part("category") RequestBody category, @Part("userId") RequestBody userId, @Part("name") RequestBody name, @Part("local") RequestBody local, @Part("maxPeople") RequestBody maxPeople, @Part("intro") RequestBody intro);
 
+    //클럽
+    @GET("mobile/selectClub.do")
+    Call<ClubMemberClass> selectClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
+
+
+    //로그인
     @GET("mobile/selectLoginUser.do")
     Call<Member> selectLoginUser(@Query("id") String id, @Query("pw") String pw);
-
     @GET("mobile/refreshMemberInfo.do")
     Call<Member> refreshLoginUser(@Query("id") Long id);
 
+    //가입
     @GET("mobile/checkId.do")
     Call<Integer> checkId(@Query("id") String id);
-
-    @GET("mobile/findId.do")
-    Call<String> findId(@Query("id") String id);
-
-    @GET("mobile/findPw.do")
-    Call<Void> findPw(@Query("id") String id);
-
-    @GET("mobile/selectMyAlarm.do")
-    Call<ArrayList<Alarm>> selectMyAlarm(@Query("userId") Long userId);
-
-    @GET("mobile/selectMyPost.do")
-    Call<ArrayList<Post>> selectMyPost(@Query("userId") Long userId);
-
-    @GET("mobile/selectMyComment.do")
-    Call<ArrayList<Comment>> selectMyComment(@Query("userId") Long userId);
-
-    @GET("mobile/selectMySchedule.do")
-    Call<ArrayList<Schedule>> selectMySchedule(@Query("userId") Long userId);
-
-    @GET("mobile/selectMyCalendar.do")
-    Call<ArrayList<CalendarSchedule>> selectMyCalendar(@Query("userId") Long userId, @Query("year") int year, @Query("month") int month);
-
-    @GET("mobile/selectMyGroup.do")
-    Call<ArrayList<Club>> selectMyClub(@Query("userId") Long userId);
-
     @FormUrlEncoded
     @POST("mobile/insertMember.do")
     Call<Void> insertMember(@Field("id") String id, @Field("pw") String pw, @Field("name") String name, @Field("birthday") String birthday,
                             @Field("gender") Integer gender, @Field("local") String local, @Field("phone") String phone);
 
+    //정보찾기
+    @GET("mobile/findId.do")
+    Call<String> findId(@Query("id") String id);
+    @GET("mobile/findPw.do")
+    Call<Void> findPw(@Query("id") String id);
+
+    //메뉴
+    @GET("mobile/selectMyAlarm.do")
+    Call<ArrayList<Alarm>> selectMyAlarm(@Query("userId") Long userId);
+    @GET("mobile/selectMyPost.do")
+    Call<ArrayList<Post>> selectMyPost(@Query("userId") Long userId);
+    @GET("mobile/selectMyComment.do")
+    Call<ArrayList<Comment>> selectMyComment(@Query("userId") Long userId);
+    @GET("mobile/selectMySchedule.do")
+    Call<ArrayList<Schedule>> selectMySchedule(@Query("userId") Long userId);
+    @GET("mobile/selectMyCalendar.do")
+    Call<ArrayList<CalendarSchedule>> selectMyCalendar(@Query("userId") Long userId, @Query("year") int year, @Query("month") int month);
+    @GET("mobile/selectMyGroup.do")
+    Call<ArrayList<Club>> selectMyClub(@Query("userId") Long userId);
+
+    //클럽 검색
     @GET("mobile/selectClubInPage.do")
     Call<ArrayList<Club>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Long category, @Query("page") Integer page);
-
     @GET("mobile/getResultCount.do")
     Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
 
