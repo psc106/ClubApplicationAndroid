@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import teamproject.com.clubapplication.GroupBoardWriteActivity;
-import teamproject.com.clubapplication.GroupHomeActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupBoardListviewAdapter;
 import teamproject.com.clubapplication.utils.RefreshData;

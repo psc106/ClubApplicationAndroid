@@ -9,15 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 
 import java.io.File;
 
@@ -106,7 +103,7 @@ public class MakeGroupActivity extends KeyHideActivity {
                     if(response.isSuccessful()){
                         if(response.body()>0){
                             Log.d("로그", "onResponse: 1");
-                            Intent intent = new Intent(activity, GroupHomeActivity.class);
+                            Intent intent = new Intent(activity, GroupActivity.class);
                             intent.putExtra("clubId", response.body());
                             startActivity(intent);
                             activity.finish();

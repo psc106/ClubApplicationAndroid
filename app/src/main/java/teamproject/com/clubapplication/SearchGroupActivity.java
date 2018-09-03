@@ -1,19 +1,15 @@
 package teamproject.com.clubapplication;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -147,6 +143,14 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
         searchGroupListviewAdapter = new SearchGroupListviewAdapter(arrayList);
         listViewSearchGroup.setAdapter(searchGroupListviewAdapter);
 
+        listViewSearchGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), GroupActivity.class);
+                intent.putExtra("clubId", arrayList.get(position).getId());
+                startActivity(intent);
+            }
+        });
         items_location = dbManager.getDoSi();
         items_category = dbManager.getCategory();
 

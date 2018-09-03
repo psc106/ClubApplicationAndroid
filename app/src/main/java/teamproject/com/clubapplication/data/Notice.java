@@ -6,12 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class ClubMemberClass {
-    Club club;
-    String memberClass; //'O', 'N', 'Y', 'A'
+public class Notice {
+    private long id;
+    private long club_id;
+    private String content;
+    private String create_date;
+
 }

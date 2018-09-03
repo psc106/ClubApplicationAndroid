@@ -48,10 +48,11 @@ import teamproject.com.clubapplication.MyOptionActivity;
 
 public class CommonUtils {
     public static String TAG = "로그";
+    public static String serverURL = "http://192.168.0.70:8090/club_application/";
 
     public static boolean isLoginNeedActivity(Activity activity) {
-        return (activity.getClass()== MyAlarmActivity.class)||(activity.getClass()!= MyOptionActivity.class)||(activity.getClass()!= MyInfoActivity.class)
-                ||(activity.getClass()!= MyGroupActivity.class)||(activity.getClass()!= MyContentActivity.class)||(activity.getClass()!= MyCalendarActivity.class);
+        return (activity.getClass()== MyAlarmActivity.class)||(activity.getClass()== MyOptionActivity.class)||(activity.getClass()== MyInfoActivity.class)
+                ||(activity.getClass()== MyGroupActivity.class)||(activity.getClass()== MyContentActivity.class)||(activity.getClass()== MyCalendarActivity.class);
     }
 
     public static boolean isLogoutNeedActivity(Activity activity) {

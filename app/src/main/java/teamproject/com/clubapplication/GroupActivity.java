@@ -3,6 +3,7 @@ package teamproject.com.clubapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,9 @@ import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.GroupHomeViewpagerAdapter;
 import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.data.ClubMemberClass;
+import teamproject.com.clubapplication.fragment.GroupAlbumFragment;
+import teamproject.com.clubapplication.fragment.GroupBoardFragment;
+import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
 import teamproject.com.clubapplication.fragment.GroupHomeFragment;
 import teamproject.com.clubapplication.fragment.GroupManageFragment;
 import teamproject.com.clubapplication.utils.DrawerMenu;
@@ -30,7 +34,7 @@ import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class GroupHomeActivity extends AppCompatActivity implements RefreshData {
+public class GroupActivity extends AppCompatActivity implements RefreshData {
 
     @BindView(R.id.groupHome_viewpager)
     ViewPager viewpager;
@@ -45,7 +49,6 @@ public class GroupHomeActivity extends AppCompatActivity implements RefreshData 
     GroupHomeViewpagerAdapter homeAdapter;
     LoginService loginService;
     private ClubMemberClass clubMemberClass = null;
-    boolean isLoad = false;
     Bus bus;
     Long clubId;
 
@@ -59,7 +62,9 @@ public class GroupHomeActivity extends AppCompatActivity implements RefreshData 
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
 
-        homeAdapter = new GroupHomeViewpagerAdapter(getSupportFragmentManager(), 5);
+        homeAdapter = new GroupHomeViewpagerAdapter(getSupportFragmentManager());
+        homeAdapter.addFragment(new GroupHomeFragment(), "HOME",0);
+        viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(homeAdapter);
         tabLayout.setupWithViewPager(viewpager);
 
@@ -76,8 +81,9 @@ public class GroupHomeActivity extends AppCompatActivity implements RefreshData 
                 @Override
                 public void onResponse(Call<ClubMemberClass> call, Response<ClubMemberClass> response) {
                     if(response.isSuccessful()){
+                        clubMemberClass = response.body();
+
                         BusProvider.getInstance().getBus().post(new ClubLoadEvent(response.body()));
-                        isLoad = true;
                     }
                 }
 
@@ -111,6 +117,7 @@ public class GroupHomeActivity extends AppCompatActivity implements RefreshData 
         return clubMemberClass;
     }
 
+
     @Subscribe
     void finishLoad(ClubLoadEvent clubLoadEvent) {
         if(this.clubId==clubLoadEvent.getClubMemberClass().getClub().getId()) {
@@ -120,21 +127,17 @@ public class GroupHomeActivity extends AppCompatActivity implements RefreshData 
 
     @Override
     public void refresh() {
-        if(clubMemberClass!=null) {
-            if (clubMemberClass.getMemberClass().equals("N") && clubMemberClass.getMemberClass().equals("O")) {
-                tabLayout.removeAllTabs();
-                tabLayout.addTab(tabLayout.newTab().setText("홈"));
-                tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-            } else {
-                tabLayout.removeAllTabs();
-                tabLayout.addTab(tabLayout.newTab().setText("홈"));
-                tabLayout.addTab(tabLayout.newTab().setText("게시판"));
-                tabLayout.addTab(tabLayout.newTab().setText("앨범"));
-                tabLayout.addTab(tabLayout.newTab().setText("일정"));
-                tabLayout.addTab(tabLayout.newTab().setText("관리"));
-                tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-            }
-            homeAdapter.setTabCount(tabLayout.getTabCount());
+        if(clubMemberClass.getMemberClass().equals("O")||clubMemberClass.getMemberClass().equals("N")) {
+            homeAdapter.clearFragment();
+            homeAdapter.addFragment(new GroupHomeFragment(), "HOME",0);
+            homeAdapter.notifyDataSetChanged();
+        } else {
+            homeAdapter.clearFragment();
+            homeAdapter.addFragment(new GroupHomeFragment(), "HOME",0);
+            homeAdapter.addFragment(new GroupBoardFragment(),"게시판", 1);
+            homeAdapter.addFragment(new GroupAlbumFragment(),"앨범", 2);
+            homeAdapter.addFragment(new GroupCalendarFragment(),"일정", 3);
+            homeAdapter.addFragment(new GroupManageFragment(),"설정", 4);
             homeAdapter.notifyDataSetChanged();
         }
     }

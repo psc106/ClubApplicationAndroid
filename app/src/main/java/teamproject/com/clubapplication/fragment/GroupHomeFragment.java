@@ -19,18 +19,24 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import teamproject.com.clubapplication.GroupHomeActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import teamproject.com.clubapplication.GroupActivity;
 import teamproject.com.clubapplication.adapter.GroupHomeNoticeListviewAdapter;
 import teamproject.com.clubapplication.R;
-import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.data.ClubMemberClass;
+import teamproject.com.clubapplication.data.Notice;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
+import teamproject.com.clubapplication.utils.glide.GlideApp;
+import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 
 public class GroupHomeFragment extends Fragment  implements RefreshData {
-    private static GroupHomeFragment curr = null;
+
     @BindView(R.id.group_home_img)
     ImageView groupHomeImg;
     @BindView(R.id.group_home_txt_group_name)
@@ -52,9 +58,10 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
     Unbinder unbinder;
 
     GroupHomeNoticeListviewAdapter groupHomeNoticeListviewAdapter;
-    ArrayList<?> arrayList;
+    ArrayList<Notice> arrayList;
     Bus bus;
     ClubMemberClass clubMemberClass;
+    int page = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,14 +74,15 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
         arrayList= new ArrayList<>();
         groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter(arrayList);
         groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
-        clubMemberClass = ((GroupHomeActivity)getActivity()).getClubMemberClass();
-
-//        groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter();
-//        groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
-        refresh();
+        clubMemberClass = ((GroupActivity)getActivity()).getClubMemberClass();
 
         return view;
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
     }
 
     @Override
@@ -83,11 +91,38 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
         unbinder.unbind();
         bus.unregister(this);
     }
+    String imgUrl = null;
 
     @Override
     public void refresh() {
         if(clubMemberClass!=null) {
+            Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
+            imgObserver.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    GlideApp.with(getContext()).load(CommonUtils.serverURL+response.body()).into(groupHomeImg);
+                }
 
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+
+            Call<ArrayList<Notice>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubNotice(clubMemberClass.getClub().getId(), page);
+            observer.enqueue(new Callback<ArrayList<Notice>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Notice>> call, Response<ArrayList<Notice>> response) {
+                    if(response.isSuccessful()) {
+                        arrayList.clear();
+                        arrayList.addAll(response.body());
+                        groupHomeNoticeListviewAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<Notice>> call, Throwable t) {
+                }
+            });
         }
     }
 

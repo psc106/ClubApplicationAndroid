@@ -1,9 +1,12 @@
 package teamproject.com.clubapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,7 +19,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.MyClubListviewAdapter;
 import teamproject.com.clubapplication.data.Club;
-import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
@@ -45,6 +47,15 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
 
         listviewAdapter = new MyClubListviewAdapter(arrayList);
         listView.setAdapter(listviewAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(activity, GroupActivity.class);
+                intent.putExtra("clubId", arrayList.get(position).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     DrawerMenu drawerMenu;

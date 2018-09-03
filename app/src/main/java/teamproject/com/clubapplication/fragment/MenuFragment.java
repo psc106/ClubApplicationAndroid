@@ -144,7 +144,7 @@ public class MenuFragment extends Fragment {
     Bus bus;
     ArrayAdapter adapter;
     LoginService loginService;
-    String[] menuList = {"내 동호회", "내 일정", "내 알림", "내 글", "설정"};
+    String[] menuList = {"홈", "내 동호회", "내 일정", "내 알림", "내 글", "설정"};
 
 
     @Nullable

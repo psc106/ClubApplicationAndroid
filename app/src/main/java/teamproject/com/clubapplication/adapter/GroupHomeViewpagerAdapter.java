@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import teamproject.com.clubapplication.fragment.GroupAlbumFragment;
 import teamproject.com.clubapplication.fragment.GroupBoardFragment;
 import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
@@ -11,35 +14,41 @@ import teamproject.com.clubapplication.fragment.GroupHomeFragment;
 import teamproject.com.clubapplication.fragment.GroupManageFragment;
 
 public class GroupHomeViewpagerAdapter extends FragmentStatePagerAdapter {
-    private int tabCount;
-    public GroupHomeViewpagerAdapter(FragmentManager fm, int tabCount) {
-        super(fm);
-        this.tabCount = tabCount;
 
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
+
+    public GroupHomeViewpagerAdapter(FragmentManager fm) {
+        super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-        if(position==0){
-            return new GroupHomeFragment();
-        }else if(position==1){
-            return new GroupBoardFragment();
-        }else if(position==2){
-            return new GroupAlbumFragment();
-        }else if(position==3){
-            return new GroupCalendarFragment();
-        }else if(position==4){
-            return new GroupManageFragment();
-        }
-        return null;
+        return mFragmentList.get(position);
     }
 
     @Override
     public int getCount() {
-        return tabCount;
+        return mFragmentList.size();
     }
 
-    public void setTabCount(int tabCount) {
-        this.tabCount = tabCount;
+
+    public void addFragment(Fragment fragment, String title, int position) {
+        mFragmentList.add(position, fragment);
+        mFragmentTitleList.add(position, title);
+    }
+
+    public void removeFragment(Fragment fragment, int position) {
+        mFragmentList.remove(position);
+        mFragmentTitleList.remove(position);
+    }
+    public void clearFragment() {
+        mFragmentList.clear();
+        mFragmentTitleList.clear();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mFragmentTitleList.get(position);
     }
 }

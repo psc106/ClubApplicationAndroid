@@ -2,7 +2,6 @@ package teamproject.com.clubapplication.utils.retrofit;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -17,11 +16,13 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import teamproject.com.clubapplication.data.Alarm;
+import teamproject.com.clubapplication.data.AlbumImage;
 import teamproject.com.clubapplication.data.CalendarSchedule;
 import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.Comment;
 import teamproject.com.clubapplication.data.Member;
+import teamproject.com.clubapplication.data.Notice;
 import teamproject.com.clubapplication.data.Post;
 import teamproject.com.clubapplication.data.Schedule;
 import teamproject.com.clubapplication.data.TestData;
@@ -39,6 +40,7 @@ public interface RetrofitRequest {
     @GET("test2.do")
     Call<ArrayList<String>> testImage();
 
+
     //클럽생성
     @Multipart
     @POST("mobile/insertClub.do")
@@ -47,7 +49,23 @@ public interface RetrofitRequest {
     //클럽
     @GET("mobile/selectClub.do")
     Call<ClubMemberClass> selectClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
+    @GET("mobile/selectClubProfileImg")
+    Call<String> selectClubProfileImg(@Query("clubId") Long clubId);
 
+    @GET("mobile/selectClubNotice.do")
+    Call<ArrayList<Notice>> selectClubNotice(@Query("clubId") Long clubId, @Query("page") Integer page);
+    @GET("mobile/getNoticeCount.do")
+    Call<Integer> getNoticeCount(@Query("clubId") Long clubId);
+
+    @GET("mobile/selectClubPost.do")
+    Call<ArrayList<Post>> selectClubPost(@Query("clubId") Long clubId, @Query("page") Integer page);
+    @GET("mobile/getPostCout.do")
+    Call<Integer> getPostCout(@Query("clubId") Long clubId);
+
+    @GET("mobile/selectClubAlbum.do")
+    Call<ArrayList<AlbumImage>> selectClubAlbum(@Query("clubId") Long clubId, @Query("page") Integer page);
+    @GET("mobile/getAlbumCount.do")
+    Call<Integer> getAlbumCount(@Query("clubId") Long clubId);
 
     //로그인
     @GET("mobile/selectLoginUser.do")
@@ -88,9 +106,9 @@ public interface RetrofitRequest {
     Call<ArrayList<Club>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Long category, @Query("page") Integer page);
     @GET("mobile/getResultCount.do")
     Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
-
-    @GET
-    Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);
-    @GET
-    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
+//
+//    @GET
+//    Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);
+//    @GET
+//    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
 }

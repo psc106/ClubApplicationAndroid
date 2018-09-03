@@ -35,7 +35,7 @@
 
         <activity android:name=".GroupManageModifyActivity" />
         <activity android:name=".GroupManageMemberActivity" />
-        <activity android:name=".GroupHomeActivity"></activity>
+        <activity android:name=".GroupActivity"></activity>
         <activity android:name=".GroupBoardWriteActivity" />
         <activity android:name=".GroupAlbumDetailActivity" />
 

@@ -6,12 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter
 @ToString
-public class ClubMemberClass {
-    Club club;
-    String memberClass; //'O', 'N', 'Y', 'A'
+@NoArgsConstructor
+@AllArgsConstructor
+public class AlbumImage {
+    Long id;
+    Long club_id;
+    Long member_id;
+    Long image_id;
+    Long tag_id;
+    String create_date;
 }

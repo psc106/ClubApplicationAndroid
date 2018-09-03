@@ -124,9 +124,6 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.main_collapsingLayout);
-        collapsingToolbarLayout.setTitle("타이틀");
-
     }
 
     @Override
