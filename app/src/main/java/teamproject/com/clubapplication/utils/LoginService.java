@@ -85,10 +85,13 @@ public class LoginService {
 
         if(JoinActivity.activity!=null) {
             JoinActivity.activity.finish();
+            JoinActivity.activity=null;
         }else if(LoginActivity.activity!=null) {
             LoginActivity.activity.finish();
+            LoginActivity.activity=null;
         }else if(FindIdPwActivity.activity!=null) {
             FindIdPwActivity.activity.finish();
+            FindIdPwActivity.activity=null;
         }
 
         BusProvider.getInstance().getBus().post(new LoginEvent(1));
@@ -107,18 +110,25 @@ public class LoginService {
 
         if(MyAlarmActivity.activity!=null) {
             MyAlarmActivity.activity.finish();
+            MyAlarmActivity.activity=null;
         }else if(MyCalendarActivity.activity!=null) {
             MyCalendarActivity.activity.finish();
+            MyCalendarActivity.activity=null;
         }else if(MyContentActivity.activity!=null) {
             MyContentActivity.activity.finish();
+            MyContentActivity.activity=null;
         }else if(MyGroupActivity.activity!=null) {
             MyGroupActivity.activity.finish();
+            MyGroupActivity.activity=null;
         }else if(MyInfoActivity.activity!=null) {
             MyInfoActivity.activity.finish();
+            MyInfoActivity.activity=null;
         }else if(MyOptionActivity.activity!=null) {
             MyOptionActivity.activity.finish();
+            MyOptionActivity.activity=null;
         }else if(MakeGroupActivity.activity!=null) {
             MakeGroupActivity.activity.finish();
+            MakeGroupActivity.activity=null;
         }
 
         BusProvider.getInstance().getBus().post(new LoginEvent(0));

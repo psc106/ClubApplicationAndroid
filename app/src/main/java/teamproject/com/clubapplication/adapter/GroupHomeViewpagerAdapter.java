@@ -3,6 +3,7 @@ package teamproject.com.clubapplication.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,11 @@ public class GroupHomeViewpagerAdapter extends FragmentStatePagerAdapter {
         return mFragmentList.size();
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        // refresh all fragments when data set changed
+        return PagerAdapter.POSITION_NONE;
+    }
 
     public void addFragment(Fragment fragment, String title, int position) {
         mFragmentList.add(position, fragment);

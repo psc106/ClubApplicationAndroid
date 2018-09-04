@@ -11,10 +11,11 @@ import butterknife.ButterKnife;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Post;
+import teamproject.com.clubapplication.data.PostView;
 
 public class MyContentPostListviewAdapter extends BaseAdapter implements StickyListHeadersAdapter {
-    private ArrayList<Post> list;
-    public MyContentPostListviewAdapter(ArrayList<Post> list) {
+    private ArrayList<PostView> list;
+    public MyContentPostListviewAdapter(ArrayList<PostView> list) {
         this.list = list;
     }
 

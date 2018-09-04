@@ -19,6 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.PostView;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.adapter.MyContentPostListviewAdapter;
 import teamproject.com.clubapplication.data.Post;
@@ -39,7 +40,7 @@ public class MyContentPostFragment extends Fragment implements RefreshData{
     StickyListHeadersListView stickyListV;
 
 
-    ArrayList<Post> arrayList ;
+    ArrayList<PostView> arrayList ;
     MyContentPostListviewAdapter adapter;
     Unbinder unbinder;
     LoginService loginService;
@@ -71,11 +72,11 @@ public class MyContentPostFragment extends Fragment implements RefreshData{
 
     @Override
     public void refresh() {
-        Call<ArrayList<Post>> observer =
+        Call<ArrayList<PostView>> observer =
                 RetrofitService.getInstance().getRetrofitRequest().selectMyPost(loginService.getMember().getId());
-        observer.enqueue(new Callback<ArrayList<Post>>() {
+        observer.enqueue(new Callback<ArrayList<PostView>>() {
             @Override
-            public void onResponse(Call<ArrayList<Post>> call, Response<ArrayList<Post>> response) {
+            public void onResponse(Call<ArrayList<PostView>> call, Response<ArrayList<PostView>> response) {
                 if (response.isSuccessful()) {
                     arrayList.clear();
                     arrayList.addAll(response.body());
@@ -87,7 +88,7 @@ public class MyContentPostFragment extends Fragment implements RefreshData{
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Post>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<PostView>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

@@ -31,6 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.LoginActivity;
+import teamproject.com.clubapplication.MainActivity;
 import teamproject.com.clubapplication.MyAlarmActivity;
 import teamproject.com.clubapplication.MyCalendarActivity;
 import teamproject.com.clubapplication.MyGroupActivity;
@@ -48,10 +49,16 @@ import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 @SuppressLint("ValidFragment")
 public class MenuFragment extends Fragment {
-    public MenuFragment(){};
-    public MenuFragment(DrawerMenu drawerMenu){
+    public MenuFragment() {
+    }
+
+    ;
+
+    public MenuFragment(DrawerMenu drawerMenu) {
         this.drawerMenu = drawerMenu;
-    };
+    }
+
+    ;
     private DrawerMenu drawerMenu;
 
     @BindView(R.id.menu_btn_Login)
@@ -65,29 +72,30 @@ public class MenuFragment extends Fragment {
 
     @OnClick(R.id.menu_btn_Login)
     void onClickLoginBtn() {
-        if(loginService.getMember()==null) {
+        if (loginService.getMember() == null) {
             Intent intent = new Intent(getContext(), LoginActivity.class);
             if (closeMenu(LoginActivity.class)) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         } else {
             loginService.logout(getActivity());
         }
     }
+
     @OnClick(R.id.menu_imgV_Profile)
     void onClickProfileImg() {
-
-        refreshLogin();
-        loginService.login(getActivity(), new Member(Member.testData()));
+//        refreshLogin();
+//        loginService.login(getActivity(), new Member(Member.testData()));
     }
+
     @OnClick(R.id.menu_txt_Name)
     void onClickMemeberInfo() {
-        refreshLogin();
-        if(loginService.getMember()!=null) {
+        if (loginService.getMember() != null) {
+            refreshLogin();
             Intent intent = new Intent(getContext(), MyInfoActivity.class);
-            if(closeMenu(MyInfoActivity.class)){
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            if (closeMenu(MyInfoActivity.class)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         }
@@ -95,45 +103,63 @@ public class MenuFragment extends Fragment {
 
     @OnItemClick(R.id.menu_listV_MenuList)
     public void onItemClick(AdapterView<?> parent, int position) {
-        refreshLogin();
 
         Intent intent = null;
         Class<?> closeClass = null;
-        if(position==0) {
+        if (position == 0) {
+            intent = new Intent(getContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            closeClass = MainActivity.class;
+        } else if (position == 1) {
             intent = new Intent(getContext(), MyGroupActivity.class);
             closeClass = MyGroupActivity.class;
-
-        } else if(position==1) {
+        } else if (position == 2) {
             intent = new Intent(getContext(), MyCalendarActivity.class);
             closeClass = MyCalendarActivity.class;
-        } else if(position==2) {
+        } else if (position == 3) {
             intent = new Intent(getContext(), MyAlarmActivity.class);
             closeClass = MyAlarmActivity.class;
-        } else if(position==3) {
+        } else if (position == 4) {
             intent = new Intent(getContext(), MyContentActivity.class);
             closeClass = MyContentActivity.class;
-        } else if(position==4) {
+        } else if (position == 5) {
             intent = new Intent(getContext(), MyOptionActivity.class);
             closeClass = MyOptionActivity.class;
-        } else  {
+        } else {
             return;
         }
 
-        if(loginService.getMember().getVerify().equals("N") && (position>=0 && position<=3)) {
+        if (loginService.getMember() == null && (position >= 1 && position <= 4)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
             builder.setTitle("정보")        // 제목 설정
-                    .setMessage("메일 인증이 필요한 서비스입니다.")        // 메세지 설정
+                    .setMessage("로그인이 필요한 서비스입니다.")        // 메세지 설정
                     .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
                     .setPositiveButton("확인", null);
             AlertDialog dialog = builder.create();    // 알림창 객체 생성
             dialog.show();    // 알림창 띄우기
 
             return;
+        } else if (loginService.getMember() != null) {
+            refreshLogin();
+
+            if (loginService.getMember().getVerify().equals("N") && (position >= 1 && position <= 4)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setTitle("정보")        // 제목 설정
+                        .setMessage("메일 인증이 필요한 서비스입니다.")        // 메세지 설정
+                        .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
+                        .setPositiveButton("확인", null);
+                AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                dialog.show();    // 알림창 띄우기
+
+                return;
+            }
         }
-        if(intent!=null) {
-            if(closeMenu(closeClass)){
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        if (intent != null) {
+            if (closeMenu(closeClass)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         }
@@ -159,7 +185,7 @@ public class MenuFragment extends Fragment {
         menuListV.setAdapter(adapter);
 
         loginService = LoginService.getInstance();
-        if(loginService.getMember()==null){
+        if (loginService.getMember() == null) {
             setLogoutMenu();
         } else {
             setLoginMenu();
@@ -175,16 +201,16 @@ public class MenuFragment extends Fragment {
         bus.unregister(this);
     }
 
-    public  boolean closeMenu(Class<?> activity) {
-        if(getActivity().getClass() != activity) {
+    public boolean closeMenu(Class<?> activity) {
+        if (getActivity().getClass() != activity) {
             drawerMenu.getMenuDrawer().closeDrawer(Gravity.LEFT, false);
             return true;
         } else {
             drawerMenu.getMenuDrawer().closeDrawers();
-            if(getActivity() instanceof RefreshData) {
+            if (getActivity() instanceof RefreshData) {
                 RefreshData refreshData = (RefreshData) getActivity();
                 refreshData.refresh();
-                Log.d(TAG, "closeMenu: "+1);
+                Log.d(TAG, "closeMenu: " + 1);
             }
             return false;
         }
@@ -192,29 +218,29 @@ public class MenuFragment extends Fragment {
     }
 
     public void setLogoutMenu() {
-       // profileImg.setVisibility(View.GONE);
-        menuListV.setVisibility(View.GONE);
+        // profileImg.setVisibility(View.GONE);
+//        menuListV.setVisibility(View.GONE);
         nameTxt.setText("로그인이 필요합니다.");
     }
 
     public void setLoginMenu() {
         //profileImg.setVisibility(View.VISIBLE);
-        menuListV.setVisibility(View.VISIBLE);
-        nameTxt.setText(loginService.getMember().getName()+" 님("+loginService.getMember().getLogin_id()+")");
+//        menuListV.setVisibility(View.VISIBLE);
+        nameTxt.setText(loginService.getMember().getName() + " 님(" + loginService.getMember().getLogin_id() + ")");
     }
 
     @Subscribe
     public void FinishLoad(LoginEvent event) {
-        if(event.getState()==0) {
+        if (event.getState() == 0) {
             setLogoutMenu();
-        } else if(event.getState()==1) {
+        } else if (event.getState() == 1) {
             setLoginMenu();
         }
     }
 
     public void refreshLogin() {
 
-        if(loginService.getMember().getVerify().equals("N")){
+        if (loginService.getMember().getVerify().equals("N")) {
             Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
             observer.enqueue(new Callback<Member>() {
                 @Override
@@ -225,6 +251,7 @@ public class MenuFragment extends Fragment {
                         Log.d("로그", "onResponse: fail");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<Member> call, Throwable t) {
                     t.printStackTrace();

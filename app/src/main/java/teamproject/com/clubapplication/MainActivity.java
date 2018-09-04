@@ -1,17 +1,17 @@
 package teamproject.com.clubapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.ActionBar;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -54,7 +54,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     LinearLayout mainLayoutAdvancedSearch;
     @BindView(R.id.main_gridV_category)
     ScrollGridview mainGridVCategory;
-//    GridView mainGridVCategory;
+    //    GridView mainGridVCategory;
     @BindView(R.id.main_btn_MakeGroup)
     Button mainBtnMakeGroup;
 
@@ -62,7 +62,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     @OnClick(R.id.main_btn_AdvancedSearch)
     public void searchDetail(View view) {
         Log.d("asd", "commit");
-        if(mainLayoutAdvancedSearch.getVisibility()==View.GONE) {
+        if (mainLayoutAdvancedSearch.getVisibility() == View.GONE) {
             mainLayoutAdvancedSearch.setVisibility(View.VISIBLE);
         } else {
             mainLayoutAdvancedSearch.setVisibility(View.GONE);
@@ -73,13 +73,13 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     @OnClick(R.id.main_btn_search)
     public void search(View view) {
         Intent intent = new Intent(this, SearchGroupActivity.class);
-        if(mainLayoutAdvancedSearch.getVisibility()!=View.GONE) {
-            if(mainSpinnerLocation.getSelectedItemId()!=0)
+        if (mainLayoutAdvancedSearch.getVisibility() != View.GONE) {
+            if (mainSpinnerLocation.getSelectedItemId() != 0)
                 intent.putExtra("local", mainSpinnerLocation.getSelectedItemId());
-            if(mainSpinnerCategory.getSelectedItemId()!=0)
+            if (mainSpinnerCategory.getSelectedItemId() != 0)
                 intent.putExtra("category", mainSpinnerCategory.getSelectedItemId());
         }
-        if(mainEditSearch.getText()!=null && !mainEditSearch.getText().toString().equals("")) {
+        if (mainEditSearch.getText() != null && !mainEditSearch.getText().toString().equals("")) {
             intent.putExtra("main", mainEditSearch.getText().toString());
         }
         startActivity(intent);
@@ -102,6 +102,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     String[] noneSelect = {"선택"};
     String[] items_category;
     String[] items_location;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +122,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         CommonUtils.initSpinner(this, mainSpinnerLocation, items_location, noneSelect);
         CommonUtils.initSpinner(this, mainSpinnerCategory, items_category, noneSelect);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
     }
@@ -159,30 +160,48 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
 
     @Override
     public void refresh() {
-        if(loginService.getMember()!=null && loginService.getMember().getVerify().equals("N")){
+        if (loginService.getMember() != null && loginService.getMember().getVerify().equals("N")) {
             Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());
             observer.enqueue(new Callback<Member>() {
                 @Override
-                public void onResponse(Call<Member> call, Response<Member> response) {
+                public void onResponse(@NonNull Call<Member> call, @NonNull Response<Member> response) {
                     if (response.isSuccessful()) {
                         loginService.refreshMember(response.body());
                     } else {
                         Log.d("로그", "onResponse: fail");
                     }
                 }
+
                 @Override
-                public void onFailure(Call<Member> call, Throwable t) {
+                public void onFailure(@NonNull Call<Member> call, @NonNull Throwable t) {
                     t.printStackTrace();
                 }
             });
         }
     }
 
-    private void setupToolbar(){
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        // Show menu icon
-//        final ActionBar ab = getSupportActionBar();
-    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
+// 여기서 부터는 알림창의 속성 설정
+        builder.setTitle("종료 확인")        // 제목 설정
+                .setMessage("앱을 종료 하시 겠습니까?")        // 메세지 설정
+                .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    // 확인 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    // 취소 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();    // 알림창 객체 생성
+        dialog.show();    // 알림창 띄우기
+    }
 }

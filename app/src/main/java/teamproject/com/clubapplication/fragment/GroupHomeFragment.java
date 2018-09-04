@@ -25,6 +25,7 @@ import retrofit2.Response;
 import teamproject.com.clubapplication.GroupActivity;
 import teamproject.com.clubapplication.adapter.GroupHomeNoticeListviewAdapter;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.Notice;
 import teamproject.com.clubapplication.utils.CommonUtils;
@@ -62,6 +63,7 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
     Bus bus;
     ClubMemberClass clubMemberClass;
     int page = 1;
+    int count = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,39 +93,63 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
         unbinder.unbind();
         bus.unregister(this);
     }
-    String imgUrl = null;
 
     @Override
     public void refresh() {
+        page = 1;
         if(clubMemberClass!=null) {
             Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
             imgObserver.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    GlideApp.with(getContext()).load(CommonUtils.serverURL+response.body()).into(groupHomeImg);
+                    GlideApp.with(getContext()).load(CommonUtils.serverURL+response.body()).centerCrop().into(groupHomeImg);
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                 }
             });
+            getCount();
+        }
+    }
 
-            Call<ArrayList<Notice>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubNotice(clubMemberClass.getClub().getId(), page);
-            observer.enqueue(new Callback<ArrayList<Notice>>() {
-                @Override
-                public void onResponse(Call<ArrayList<Notice>> call, Response<ArrayList<Notice>> response) {
-                    if(response.isSuccessful()) {
-                        arrayList.clear();
+    public void getData() {
+
+        Call<ArrayList<Notice>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubNotice(clubMemberClass.getClub().getId(), page);
+        observer.enqueue(new Callback<ArrayList<Notice>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Notice>> call, Response<ArrayList<Notice>> response) {
+                if(response.isSuccessful()) {
+                    if (response.body() != null) {
                         arrayList.addAll(response.body());
                         groupHomeNoticeListviewAdapter.notifyDataSetChanged();
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ArrayList<Notice>> call, Throwable t) {
+            @Override
+            public void onFailure(Call<ArrayList<Notice>> call, Throwable t) {
+            }
+        });
+    }
+
+    public void getCount(){
+        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getNoticeCount(clubMemberClass.getClub().getId());
+        observer.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful()){
+                    count = response.body();
+                    if(count>0) {
+                        arrayList.clear();
+                        getData();
+                    }
                 }
-            });
-        }
+            }
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+            }
+        });
     }
 
     @Subscribe

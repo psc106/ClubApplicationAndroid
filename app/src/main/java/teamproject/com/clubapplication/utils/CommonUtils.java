@@ -56,7 +56,7 @@ public class CommonUtils {
     }
 
     public static boolean isLogoutNeedActivity(Activity activity) {
-        return (activity.getClass()== LoginActivity.class)||(activity.getClass()== JoinActivity.class)||(activity.getClass()== FindIdPwActivity.class);
+        return (activity.getClass()== JoinActivity.class)||(activity.getClass()== FindIdPwActivity.class);
     }
     public static void setListviewHeightBasedOnChildren(ListView listView) {
         ListAdapter adapter = listView.getAdapter();

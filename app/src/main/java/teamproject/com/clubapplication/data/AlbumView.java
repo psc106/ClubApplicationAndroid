@@ -11,11 +11,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlbumImage {
+public class AlbumView {
     Long id;
-    Long club_id;
-    Long member_id;
-    Long image_id;
     Long tag_id;
+    String url;
+    String nickname;
+    String realName;
     String create_date;
 }

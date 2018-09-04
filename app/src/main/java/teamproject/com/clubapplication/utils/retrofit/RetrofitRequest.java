@@ -15,17 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import teamproject.com.clubapplication.data.Alarm;
-import teamproject.com.clubapplication.data.AlbumImage;
-import teamproject.com.clubapplication.data.CalendarSchedule;
-import teamproject.com.clubapplication.data.Club;
-import teamproject.com.clubapplication.data.ClubMemberClass;
-import teamproject.com.clubapplication.data.Comment;
-import teamproject.com.clubapplication.data.Member;
-import teamproject.com.clubapplication.data.Notice;
-import teamproject.com.clubapplication.data.Post;
-import teamproject.com.clubapplication.data.Schedule;
-import teamproject.com.clubapplication.data.TestData;
+import teamproject.com.clubapplication.data.*;
 
 public interface RetrofitRequest {
     @GET("androidTest.do")
@@ -49,7 +39,7 @@ public interface RetrofitRequest {
     //클럽
     @GET("mobile/selectClub.do")
     Call<ClubMemberClass> selectClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
-    @GET("mobile/selectClubProfileImg")
+    @GET("mobile/selectClubProfileImg.do")
     Call<String> selectClubProfileImg(@Query("clubId") Long clubId);
 
     @GET("mobile/selectClubNotice.do")
@@ -58,12 +48,12 @@ public interface RetrofitRequest {
     Call<Integer> getNoticeCount(@Query("clubId") Long clubId);
 
     @GET("mobile/selectClubPost.do")
-    Call<ArrayList<Post>> selectClubPost(@Query("clubId") Long clubId, @Query("page") Integer page);
+    Call<ArrayList<PostView>> selectClubPost(@Query("clubId") Long clubId, @Query("page") Integer page);
     @GET("mobile/getPostCout.do")
     Call<Integer> getPostCout(@Query("clubId") Long clubId);
 
     @GET("mobile/selectClubAlbum.do")
-    Call<ArrayList<AlbumImage>> selectClubAlbum(@Query("clubId") Long clubId, @Query("page") Integer page);
+    Call<ArrayList<AlbumView>> selectClubAlbum(@Query("clubId") Long clubId, @Query("page") Integer page);
     @GET("mobile/getAlbumCount.do")
     Call<Integer> getAlbumCount(@Query("clubId") Long clubId);
 
@@ -91,7 +81,7 @@ public interface RetrofitRequest {
     @GET("mobile/selectMyAlarm.do")
     Call<ArrayList<Alarm>> selectMyAlarm(@Query("userId") Long userId);
     @GET("mobile/selectMyPost.do")
-    Call<ArrayList<Post>> selectMyPost(@Query("userId") Long userId);
+    Call<ArrayList<PostView>> selectMyPost(@Query("userId") Long userId);
     @GET("mobile/selectMyComment.do")
     Call<ArrayList<Comment>> selectMyComment(@Query("userId") Long userId);
     @GET("mobile/selectMySchedule.do")

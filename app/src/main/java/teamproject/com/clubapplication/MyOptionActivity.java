@@ -96,23 +96,7 @@ public class MyOptionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(LoginService.getInstance().getMember().getVerify().equals("N")){
-            Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(LoginService.getInstance().getMember().getId());
-            observer.enqueue(new Callback<Member>() {
-                @Override
-                public void onResponse(Call<Member> call, Response<Member> response) {
-                    if (response.isSuccessful()) {
-                        LoginService.getInstance().refreshMember(response.body());
-                    } else {
-                        Log.d("로그", "onResponse: fail");
-                    }
-                }
-                @Override
-                public void onFailure(Call<Member> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
-        }
+
 
         if (drawerMenu == null) {
             drawerMenu = DrawerMenu.addMenu(this, R.id.myOption_menu, R.id.myOption_drawer);

@@ -66,6 +66,7 @@ public class LoginActivity extends KeyHideActivity {
                     Member member = response.body();
                     if(member!=null) {
                         loginService.login(activity, member);
+                        finish();
 
                     } else {
                         //포커스?

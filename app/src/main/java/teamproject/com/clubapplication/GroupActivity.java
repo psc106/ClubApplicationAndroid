@@ -32,6 +32,7 @@ import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
+import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class GroupActivity extends AppCompatActivity implements RefreshData {
@@ -63,26 +64,24 @@ public class GroupActivity extends AppCompatActivity implements RefreshData {
         bus.register(this);
 
         homeAdapter = new GroupHomeViewpagerAdapter(getSupportFragmentManager());
-        homeAdapter.addFragment(new GroupHomeFragment(), "HOME",0);
+        homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(homeAdapter);
         tabLayout.setupWithViewPager(viewpager);
 
         clubId = intent.getLongExtra("clubId", -1);
-        if(clubId==-1) {
+        if (clubId == -1) {
             //실패처리
-        }
-        else {
+        } else {
             Long userId = -1L;
-            if(loginService.getMember()!=null)
+            if (loginService.getMember() != null)
                 userId = loginService.getMember().getId();
             Call<ClubMemberClass> observer = RetrofitService.getInstance().getRetrofitRequest().selectClub(clubId, userId);
             observer.enqueue(new Callback<ClubMemberClass>() {
                 @Override
                 public void onResponse(Call<ClubMemberClass> call, Response<ClubMemberClass> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         clubMemberClass = response.body();
-
                         BusProvider.getInstance().getBus().post(new ClubLoadEvent(response.body()));
                     }
                 }
@@ -120,25 +119,56 @@ public class GroupActivity extends AppCompatActivity implements RefreshData {
 
     @Subscribe
     void finishLoad(ClubLoadEvent clubLoadEvent) {
-        if(this.clubId==clubLoadEvent.getClubMemberClass().getClub().getId()) {
+        if (this.clubId == clubLoadEvent.getClubMemberClass().getClub().getId()) {
             refresh();
         }
     }
 
+
+    @Subscribe
+    void finishLoad(LoginEvent loginEvent) {
+        if (loginEvent.getState() == 0) {
+            if (tabLayout.getSelectedTabPosition() > 0) {
+                viewpager.setCurrentItem(0);
+            }
+        }
+        Long userId = -1L;
+        if (loginService.getMember() != null)
+            userId = loginService.getMember().getId();
+        Call<ClubMemberClass> observer = RetrofitService.getInstance().getRetrofitRequest().selectClub(clubId, userId);
+        observer.enqueue(new Callback<ClubMemberClass>() {
+            @Override
+            public void onResponse(Call<ClubMemberClass> call, Response<ClubMemberClass> response) {
+                if (response.isSuccessful()) {
+                    clubMemberClass = response.body();
+                    BusProvider.getInstance().getBus().post(new ClubLoadEvent(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ClubMemberClass> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     @Override
     public void refresh() {
-        if(clubMemberClass.getMemberClass().equals("O")||clubMemberClass.getMemberClass().equals("N")) {
+        if (loginService.getMember() == null || clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N")) {
             homeAdapter.clearFragment();
-            homeAdapter.addFragment(new GroupHomeFragment(), "HOME",0);
+            homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
             homeAdapter.notifyDataSetChanged();
+            viewpager.setOffscreenPageLimit(1);
         } else {
             homeAdapter.clearFragment();
-            homeAdapter.addFragment(new GroupHomeFragment(), "HOME",0);
-            homeAdapter.addFragment(new GroupBoardFragment(),"게시판", 1);
-            homeAdapter.addFragment(new GroupAlbumFragment(),"앨범", 2);
-            homeAdapter.addFragment(new GroupCalendarFragment(),"일정", 3);
-            homeAdapter.addFragment(new GroupManageFragment(),"설정", 4);
+            homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
+            homeAdapter.addFragment(new GroupBoardFragment(), "게시판", 1);
+            homeAdapter.addFragment(new GroupAlbumFragment(), "앨범", 2);
+            homeAdapter.addFragment(new GroupCalendarFragment(), "일정", 3);
+            homeAdapter.addFragment(new GroupManageFragment(), "설정", 4);
             homeAdapter.notifyDataSetChanged();
+            viewpager.setOffscreenPageLimit(4);
         }
     }
 }
