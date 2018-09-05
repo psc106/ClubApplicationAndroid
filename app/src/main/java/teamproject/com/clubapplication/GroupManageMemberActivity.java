@@ -1,9 +1,10 @@
 package teamproject.com.clubapplication;
 
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -11,31 +12,33 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import teamproject.com.clubapplication.adapter.GroupManageMemberCheckListviewAdapter;
-import teamproject.com.clubapplication.adapter.GroupManageMemberJoinListviewAdapter;
-import teamproject.com.clubapplication.utils.DrawerMenu;
+import butterknife.OnClick;
+import teamproject.com.clubapplication.adapter.WaitingMemberListviewAdapter;
+import teamproject.com.clubapplication.adapter.joinMemberListviewAdapter;
+import teamproject.com.clubapplication.data.Member;
 
 public class GroupManageMemberActivity extends AppCompatActivity {
 
-    @BindView(R.id.group_manage_member_lv_join)
-    ListView groupManageMemberLvJoin;
-    @BindView(R.id.group_manage_member_join_layout)
-    LinearLayout groupManageMemberJoinLayout;
-    @BindView(R.id.group_manage_member_lv_check_member)
-    ListView groupManageMemberLvCheckMember;
-    @BindView(R.id.group_manage_member_check_layout)
-    LinearLayout groupManageMemberCheckLayout;
-    @BindView(R.id.group_manage_member_menu)
-    FrameLayout groupManageMemberMenu;
-    @BindView(R.id.group_manage_member_drawer)
-    DrawerLayout groupManageMemberDrawer;
-    private DrawerMenu drawerMenu;
+    @BindView(R.id.join_toolbar)
+    Toolbar joinToolbar;
+    @BindView(R.id.main_appbarLayout)
+    AppBarLayout mainAppbarLayout;
+    @BindView(R.id.memberManage_listV_Waiting)
+    ListView listViewWaiting;
+    @BindView(R.id.memberManage_layout_Waiting)
+    LinearLayout waitingLayout;
+    @BindView(R.id.memberManage_listV_Join)
+    ListView listViewJoin;
+    @BindView(R.id.memberManage_layout_Join)
+    LinearLayout joinLayout;
 
-    GroupManageMemberCheckListviewAdapter groupManageMemberCheckAdapter;
-    GroupManageMemberJoinListviewAdapter groupManageMemberJoinListviewAdapter;
 
-    ArrayList<?>arrayListjoin;
-    ArrayList<?>arrayListcheck;
+    WaitingMemberListviewAdapter waitAdapter;
+    joinMemberListviewAdapter joinAdapter;
+
+    ArrayList<Member> waitList;
+    ArrayList<Member> joinList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +47,23 @@ public class GroupManageMemberActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        arrayListcheck=new ArrayList<>();
-        groupManageMemberCheckAdapter = new GroupManageMemberCheckListviewAdapter(arrayListcheck);
-        groupManageMemberLvCheckMember.setAdapter(groupManageMemberCheckAdapter);
+        waitList = new ArrayList<>();
+        waitAdapter = new WaitingMemberListviewAdapter(waitList);
+        listViewWaiting.setAdapter(waitAdapter);
 
 
-        arrayListjoin = new ArrayList<>();
-        groupManageMemberJoinListviewAdapter = new GroupManageMemberJoinListviewAdapter(arrayListjoin);
-        groupManageMemberLvJoin.setAdapter(groupManageMemberJoinListviewAdapter);
+        joinList = new ArrayList<>();
+        joinAdapter = new joinMemberListviewAdapter(joinList);
+        listViewJoin.setAdapter(joinAdapter);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (drawerMenu == null) {
-            drawerMenu = DrawerMenu.addMenu(this, R.id.group_manage_member_menu, R.id.group_manage_member_drawer);
-        } else {
-            drawerMenu.restartMenu(this, R.id.group_manage_member_menu, R.id.group_manage_member_drawer);
+    @OnClick({R.id.memberManage_listV_Waiting, R.id.memberManage_listV_Join})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.memberManage_listV_Waiting:
+                break;
+            case R.id.memberManage_listV_Join:
+                break;
         }
     }
 }

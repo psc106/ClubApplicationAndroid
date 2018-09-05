@@ -51,14 +51,21 @@ public class CommonUtils {
     public static String serverURL = "http://192.168.0.70:8090/club_application/";
 
     public static boolean isLoginNeedActivity(Activity activity) {
+        if(activity==null)
+            return true;
         return (activity.getClass()== MyAlarmActivity.class)||(activity.getClass()== MyOptionActivity.class)||(activity.getClass()== MyInfoActivity.class)
                 ||(activity.getClass()== MyGroupActivity.class)||(activity.getClass()== MyContentActivity.class)||(activity.getClass()== MyCalendarActivity.class);
     }
 
     public static boolean isLogoutNeedActivity(Activity activity) {
+        if(activity==null)
+            return true;
         return (activity.getClass()== JoinActivity.class)||(activity.getClass()== FindIdPwActivity.class);
     }
     public static void setListviewHeightBasedOnChildren(ListView listView) {
+        if(listView==null)
+            return;
+
         ListAdapter adapter = listView.getAdapter();
         if (adapter == null) {
             // pre-condition
@@ -81,6 +88,9 @@ public class CommonUtils {
     }
 
     public static int getListviewHeight(ListView listView) {
+        if(listView==null)
+            return 0;
+
         ListAdapter adapter = listView.getAdapter();
         if (adapter == null) {
             // pre-condition
@@ -100,6 +110,9 @@ public class CommonUtils {
     }
 
     public static int getListviewWidth(ListView listView) {
+        if(listView==null)
+            return 0;
+
         ListAdapter adapter = listView.getAdapter();
         if (adapter == null) {
             // pre-condition
@@ -119,6 +132,8 @@ public class CommonUtils {
     }
 
     public static String getStringFromServer(String pUrl) {
+        if(pUrl==null)
+            return null;
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String json = "";
@@ -169,6 +184,8 @@ public class CommonUtils {
     }
 
     public static Bitmap getImageBitmap(String pUrl) {
+        if(pUrl==null)
+            return null;
         HttpURLConnection urlConnection = null;
 
         URL url = null;
@@ -335,6 +352,9 @@ public class CommonUtils {
     }
 
     public static void initSpinner(Context context, View view, String[] datas, String[] firstSelection){
+        if(view==null || context==null || datas==null)
+            return;
+
         if(view instanceof Spinner){
             String[] allData = datas;
             if(firstSelection!=null){

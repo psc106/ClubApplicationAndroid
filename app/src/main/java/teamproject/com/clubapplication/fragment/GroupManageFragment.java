@@ -1,5 +1,6 @@
 package teamproject.com.clubapplication.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +10,9 @@ import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import teamproject.com.clubapplication.GroupManageMemberActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.utils.RefreshData;
 
@@ -27,6 +30,12 @@ public class GroupManageFragment extends Fragment  implements RefreshData {
     @BindView(R.id.group_manage_btn_delete)
     Button groupManageBtnDelete;
     Unbinder unbinder;
+
+    @OnClick(R.id.group_manage_btn_member)
+    void memberManage() {
+        Intent intent = new Intent(getActivity(), GroupManageMemberActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

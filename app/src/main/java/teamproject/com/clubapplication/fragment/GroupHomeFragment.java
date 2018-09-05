@@ -1,5 +1,7 @@
 package teamproject.com.clubapplication.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +32,7 @@ import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.Notice;
 import teamproject.com.clubapplication.utils.CommonUtils;
+import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
@@ -36,7 +40,7 @@ import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 
-public class GroupHomeFragment extends Fragment  implements RefreshData {
+public class GroupHomeFragment extends Fragment implements RefreshData {
 
     @BindView(R.id.group_home_img)
     ImageView groupHomeImg;
@@ -58,12 +62,39 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
     Button groupHomeBtnJoin;
     Unbinder unbinder;
 
+    @OnClick(R.id.group_home_btn_join)
+    void joinClick() {
+        if (loginService.getMember() != null && clubMemberClass != null) {
+            Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().joinClub(clubMemberClass.getClub().getId(), loginService.getMember().getId());
+            observer.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        if (clubMemberClass != null) {
+                            Intent intent = new Intent(getActivity(), GroupActivity.class);
+                            intent.putExtra("clubId", clubMemberClass.getClub().getId());
+                            startActivity(intent);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+
     GroupHomeNoticeListviewAdapter groupHomeNoticeListviewAdapter;
     ArrayList<Notice> arrayList;
     Bus bus;
     ClubMemberClass clubMemberClass;
+    LoginService loginService;
     int page = 1;
     int count = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,11 +103,12 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
         unbinder = ButterKnife.bind(this, view);
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
+        loginService = LoginService.getInstance();
 
-        arrayList= new ArrayList<>();
+        arrayList = new ArrayList<>();
         groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter(arrayList);
         groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
-        clubMemberClass = ((GroupActivity)getActivity()).getClubMemberClass();
+        clubMemberClass = ((GroupActivity) getActivity()).getClubMemberClass();
 
         return view;
     }
@@ -97,12 +129,12 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
     @Override
     public void refresh() {
         page = 1;
-        if(clubMemberClass!=null) {
+        if (clubMemberClass != null) {
             Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
             imgObserver.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    GlideApp.with(getContext()).load(CommonUtils.serverURL+response.body()).centerCrop().into(groupHomeImg);
+                    GlideApp.with(getContext()).load(CommonUtils.serverURL + response.body()).centerCrop().into(groupHomeImg);
                 }
 
                 @Override
@@ -115,11 +147,11 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
 
     public void getData() {
 
-        Call<ArrayList<Notice>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubNotice(clubMemberClass.getClub().getId(), page);
+        Call<ArrayList<Notice>> observer = RetrofitService.getInstance().getRetrofitRequest().selectClubNotice(clubMemberClass.getClub().getId(), page);
         observer.enqueue(new Callback<ArrayList<Notice>>() {
             @Override
             public void onResponse(Call<ArrayList<Notice>> call, Response<ArrayList<Notice>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     if (response.body() != null) {
                         arrayList.addAll(response.body());
                         groupHomeNoticeListviewAdapter.notifyDataSetChanged();
@@ -133,19 +165,20 @@ public class GroupHomeFragment extends Fragment  implements RefreshData {
         });
     }
 
-    public void getCount(){
+    public void getCount() {
         Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getNoticeCount(clubMemberClass.getClub().getId());
         observer.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     count = response.body();
-                    if(count>0) {
+                    if (count > 0) {
                         arrayList.clear();
                         getData();
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
             }

@@ -57,6 +57,10 @@ public interface RetrofitRequest {
     @GET("mobile/getAlbumCount.do")
     Call<Integer> getAlbumCount(@Query("clubId") Long clubId);
 
+
+    @GET("mobile/joinClub.do")
+    Call<Void> joinClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
+
     //로그인
     @GET("mobile/selectLoginUser.do")
     Call<Member> selectLoginUser(@Query("id") String id, @Query("pw") String pw);
