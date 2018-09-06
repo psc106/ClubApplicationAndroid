@@ -59,6 +59,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     @BindView(R.id.group_home_lv_notice)
     ListView groupHomeLvNotice;
     @BindView(R.id.group_home_btn_join)
+
     Button groupHomeBtnJoin;
     Unbinder unbinder;
 
@@ -74,6 +75,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
                             Intent intent = new Intent(getActivity(), GroupActivity.class);
                             intent.putExtra("clubId", clubMemberClass.getClub().getId());
                             startActivity(intent);
+                            getActivity().finish();
                         }
                     }
                 }
@@ -129,6 +131,12 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     @Override
     public void refresh() {
         page = 1;
+        if(clubMemberClass==null||clubMemberClass.getMemberClass().equals("N")||clubMemberClass.getMemberClass().equals("O")){
+            groupHomeBtnJoin.setVisibility(View.VISIBLE);
+        } else {
+            if(groupHomeBtnJoin.getVisibility()==View.VISIBLE)
+                groupHomeBtnJoin.setVisibility(View.GONE);
+        }
         if (clubMemberClass != null) {
             Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
             imgObserver.enqueue(new Callback<String>() {

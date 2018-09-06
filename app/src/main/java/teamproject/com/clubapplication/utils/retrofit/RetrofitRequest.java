@@ -39,6 +39,8 @@ public interface RetrofitRequest {
     //클럽
     @GET("mobile/selectClub.do")
     Call<ClubMemberClass> selectClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
+    @GET("mobile/joinClub.do")
+    Call<Void> joinClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
     @GET("mobile/selectClubProfileImg.do")
     Call<String> selectClubProfileImg(@Query("clubId") Long clubId);
 
@@ -57,9 +59,11 @@ public interface RetrofitRequest {
     @GET("mobile/getAlbumCount.do")
     Call<Integer> getAlbumCount(@Query("clubId") Long clubId);
 
+    @GET("mobile/selectJoinMember.do")
+    Call<ArrayList<MemberView>> selectJoinMember(@Query("clubId") Long clubId);
+    @GET("mobile/selectWaitingMember.do")
+    Call<ArrayList<MemberView>> selectWaitingMember(@Query("clubId") Long clubId);
 
-    @GET("mobile/joinClub.do")
-    Call<Void> joinClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
 
     //로그인
     @GET("mobile/selectLoginUser.do")

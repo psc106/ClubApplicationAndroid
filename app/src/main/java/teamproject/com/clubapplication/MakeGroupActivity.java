@@ -116,6 +116,7 @@ public class MakeGroupActivity extends KeyHideActivity {
 
                 @Override
                 public void onFailure(Call<Long> call, Throwable t) {
+                    t.printStackTrace();
                     Log.d("로그", "onResponse: 3");
 
                 }

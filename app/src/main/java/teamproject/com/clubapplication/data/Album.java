@@ -12,10 +12,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Album {
-    Long id;
-    Long club_id;
-    Long member_id;
-    Long image_id;
-    Long tag_id;
-    String create_date;
+    private Long id;
+    private Long club_id;
+    private Long member_id;
+    private Long image_id;
+    private Long tag_id;
+    private String create_date;
 }

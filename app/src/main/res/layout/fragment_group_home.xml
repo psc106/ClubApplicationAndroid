@@ -167,6 +167,7 @@
         android:layout_alignParentBottom="true"
         android:background="#79e2f7"
         android:text="가입"
+        android:visibility="gone"
         />
 
 

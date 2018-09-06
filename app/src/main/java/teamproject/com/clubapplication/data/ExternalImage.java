@@ -14,6 +14,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExternalImage {
-    Uri fileUri ;
-    String realPath;
+    private Uri fileUri ;
+    private String realPath;
 }

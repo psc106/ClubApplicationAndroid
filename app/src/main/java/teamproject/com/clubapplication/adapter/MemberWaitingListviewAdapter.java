@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.MemberView;
 
-public class WaitingMemberListviewAdapter extends BaseAdapter {
+public class MemberWaitingListviewAdapter extends BaseAdapter {
 
-    ArrayList<?>arrayList;
+    ArrayList<MemberView> arrayList;
 
-    public WaitingMemberListviewAdapter(ArrayList<?> arrayList) {
+    public MemberWaitingListviewAdapter(ArrayList<MemberView> arrayList) {
         this.arrayList = arrayList;
     }
 
