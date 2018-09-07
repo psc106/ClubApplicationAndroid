@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.Notice;
 
-public class GroupHomeNoticeListviewAdapter extends BaseAdapter {
+public class GroupHomeListviewAdapter extends BaseAdapter {
 
-   ArrayList<?>arrayList;
+   ArrayList<Notice>arrayList;
 
-    public GroupHomeNoticeListviewAdapter(ArrayList<?> arrayList) {
+    public GroupHomeListviewAdapter(ArrayList<Notice> arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -52,7 +53,7 @@ public class GroupHomeNoticeListviewAdapter extends BaseAdapter {
 
     }
 
-    static class Holder {
+    class Holder {
         @BindView(R.id.lv_group_home_notice_txt_date)
         TextView lvGroupHomeNoticeTxtDate;
         @BindView(R.id.lv_group_home_notice_txt_notice)

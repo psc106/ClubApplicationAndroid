@@ -67,6 +67,7 @@ public class LoginService {
         if(this.member.getId()==member.getId()) {
             if (member != null) {
                 Log.d("로그", "2 "+member.toString());
+                this.member=member;
                 BusProvider.getInstance().getBus().post(new LoginEvent(1));
                 return;
             }

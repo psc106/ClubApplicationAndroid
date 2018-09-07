@@ -58,7 +58,7 @@ public class MemberWaitingListviewAdapter extends BaseAdapter {
 
     }
 
-    static class Holder {
+    class Holder {
         @BindView(R.id.group_manage_member_check_img)
         ImageView groupManageMemberCheckImg;
         @BindView(R.id.group_manage_member_check_txt_name)

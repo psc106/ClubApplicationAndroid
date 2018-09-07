@@ -55,7 +55,7 @@ public class MainGridviewAdapter extends BaseAdapter {
 
 
 
-    static class Holder {
+    class Holder {
         @BindView(R.id.img_gv)
         XYFitImageView imgGv;
 

@@ -1,35 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.GroupManageFragment"
     android:orientation="vertical"
     android:gravity="center_horizontal">
 
-    <!-- TODO: Update blank fragment layout -->
-   <Button
-       android:id="@+id/group_manage_btn_nickname"
-       android:layout_marginTop="50dp"
-       android:layout_width="300dp"
-       android:layout_height="70dp"
-       android:text="닉네임 설정"/>
-    <Button
-        android:id="@+id/group_manage_btn_club"
-        android:text="동호회 관리"
-        android:layout_marginTop="20dp"
-        android:layout_width="300dp"
-        android:layout_height="70dp" />
-    <Button
-        android:id="@+id/group_manage_btn_member"
-        android:text="맴버관리"
-        android:layout_marginTop="20dp"
-        android:layout_width="300dp"
-        android:layout_height="70dp" />
-    <Button
-        android:id="@+id/group_manage_btn_delete"
-        android:text="동호회 삭제"
-        android:layout_marginTop="20dp"
-        android:layout_width="300dp"
-        android:layout_height="70dp" />
+    <ListView
+        android:id="@+id/groupManage_listV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
 </LinearLayout>

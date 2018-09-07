@@ -53,7 +53,7 @@ public class GroupBoardListviewAdapter extends BaseAdapter {
 
     }
 
-    static class Holder {
+    class Holder {
         @BindView(R.id.group_board_img)
         ImageView groupBoardImg;
         @BindView(R.id.group_board_txt_name)

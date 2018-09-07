@@ -57,7 +57,7 @@ public class MemberJoinListviewAdapter extends BaseAdapter {
 
 
     }
-    static class Holder {
+    class Holder {
         @BindView(R.id.group_manage_member_join_img)
         ImageView groupManageMemberJoinImg;
         @BindView(R.id.group_manage_member_txt_name)

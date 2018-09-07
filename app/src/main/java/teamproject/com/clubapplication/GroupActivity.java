@@ -3,11 +3,9 @@ package teamproject.com.clubapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.squareup.otto.Bus;
@@ -15,12 +13,10 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import teamproject.com.clubapplication.adapter.GroupHomeViewpagerAdapter;
-import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.adapter.GroupViewpagerAdapter;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.fragment.GroupAlbumFragment;
 import teamproject.com.clubapplication.fragment.GroupBoardFragment;
@@ -28,6 +24,7 @@ import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
 import teamproject.com.clubapplication.fragment.GroupHomeFragment;
 import teamproject.com.clubapplication.fragment.GroupManageFragment;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
@@ -47,7 +44,7 @@ public class GroupActivity extends AppCompatActivity implements RefreshData {
     DrawerLayout groupHomeDrawer;
     private DrawerMenu drawerMenu;
 
-    GroupHomeViewpagerAdapter homeAdapter;
+    GroupViewpagerAdapter homeAdapter;
     LoginService loginService;
     private ClubMemberClass clubMemberClass = null;
     Bus bus;
@@ -63,7 +60,7 @@ public class GroupActivity extends AppCompatActivity implements RefreshData {
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
 
-        homeAdapter = new GroupHomeViewpagerAdapter(getSupportFragmentManager());
+        homeAdapter = new GroupViewpagerAdapter(getSupportFragmentManager());
         homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(homeAdapter);
@@ -71,8 +68,11 @@ public class GroupActivity extends AppCompatActivity implements RefreshData {
 
         clubId = intent.getLongExtra("clubId", -1);
         if (clubId == -1) {
+            finish();
             //실패처리
         } else {
+            final LoadingDialog loadingDialog = LoadingDialog.getInstance();
+            loadingDialog.progressON(this, "메세지");
             Long userId = -1L;
             if (loginService.getMember() != null)
                 userId = loginService.getMember().getId();
@@ -83,6 +83,7 @@ public class GroupActivity extends AppCompatActivity implements RefreshData {
                     if (response.isSuccessful()) {
                         clubMemberClass = response.body();
                         BusProvider.getInstance().getBus().post(new ClubLoadEvent(response.body()));
+                        loadingDialog.progressOFF();
                     }
                 }
 

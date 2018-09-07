@@ -1,6 +1,5 @@
 package teamproject.com.clubapplication.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,9 +25,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.GroupActivity;
-import teamproject.com.clubapplication.adapter.GroupHomeNoticeListviewAdapter;
+import teamproject.com.clubapplication.MainActivity;
+import teamproject.com.clubapplication.adapter.GroupHomeListviewAdapter;
 import teamproject.com.clubapplication.R;
-import teamproject.com.clubapplication.data.Club;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.Notice;
 import teamproject.com.clubapplication.utils.CommonUtils;
@@ -59,8 +58,8 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     @BindView(R.id.group_home_lv_notice)
     ListView groupHomeLvNotice;
     @BindView(R.id.group_home_btn_join)
-
     Button groupHomeBtnJoin;
+
     Unbinder unbinder;
 
     @OnClick(R.id.group_home_btn_join)
@@ -74,6 +73,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
                         if (clubMemberClass != null) {
                             Intent intent = new Intent(getActivity(), GroupActivity.class);
                             intent.putExtra("clubId", clubMemberClass.getClub().getId());
+                            clubMemberClass.setMemberClass("O");
                             startActivity(intent);
                             getActivity().finish();
                         }
@@ -89,13 +89,14 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     }
 
 
-    GroupHomeNoticeListviewAdapter groupHomeNoticeListviewAdapter;
+    GroupHomeListviewAdapter groupHomeNoticeListviewAdapter;
     ArrayList<Notice> arrayList;
     Bus bus;
     ClubMemberClass clubMemberClass;
     LoginService loginService;
     int page = 1;
     int count = 0;
+    boolean isLoad = false;
 
 
     @Override
@@ -108,7 +109,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
         loginService = LoginService.getInstance();
 
         arrayList = new ArrayList<>();
-        groupHomeNoticeListviewAdapter = new GroupHomeNoticeListviewAdapter(arrayList);
+        groupHomeNoticeListviewAdapter = new GroupHomeListviewAdapter(arrayList);
         groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
         clubMemberClass = ((GroupActivity) getActivity()).getClubMemberClass();
 
@@ -119,6 +120,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     public void onResume() {
         super.onResume();
         refresh();
+        isLoad = true;
     }
 
     @Override
@@ -131,12 +133,38 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     @Override
     public void refresh() {
         page = 1;
-        if(clubMemberClass==null||clubMemberClass.getMemberClass().equals("N")||clubMemberClass.getMemberClass().equals("O")){
-            groupHomeBtnJoin.setVisibility(View.VISIBLE);
-        } else {
-            if(groupHomeBtnJoin.getVisibility()==View.VISIBLE)
-                groupHomeBtnJoin.setVisibility(View.GONE);
+
+        if(clubMemberClass==null) {
+            if(isLoad)
+                ((MainActivity)(MainActivity.activity)).backHomeActivity(getActivity());
+            return;
+
         }
+
+        if(!clubMemberClass.getMemberClass().equals("O")){
+            Call<String> observer = RetrofitService.getInstance().getRetrofitRequest().refreshMemberClass(clubMemberClass.getClub().getId(), loginService.getMember().getId());
+            observer.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()) {
+                        clubMemberClass.setMemberClass(response.body());
+                    }
+
+                    if(clubMemberClass.getMemberClass().equals("N")){
+                        groupHomeBtnJoin.setVisibility(View.VISIBLE);
+                    } else {
+                        groupHomeBtnJoin.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+        } else {
+            groupHomeBtnJoin.setVisibility(View.GONE);
+        }
+
         if (clubMemberClass != null) {
             Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
             imgObserver.enqueue(new Callback<String>() {

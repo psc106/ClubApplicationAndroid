@@ -53,13 +53,12 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
         setContentView(R.layout.activity_group_manage_member);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        clubId = intent.getLongExtra("clubId", -1);
 
         waitList = new ArrayList<>();
         waitAdapter = new MemberWaitingListviewAdapter(waitList);
         listViewWaiting.setAdapter(waitAdapter);
-        Intent intent = getIntent();
-        clubId = intent.getLongExtra("clubId", -1);
-
 
         joinList = new ArrayList<>();
         joinAdapter = new MemberJoinListviewAdapter(joinList);
@@ -74,7 +73,7 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
 
     @Override
     public void refresh() {
-        Call<ArrayList<MemberView>> joinObserver = RetrofitService.getInstance().getRetrofitRequest().selectJoinMember(clubId);
+        Call<ArrayList<MemberView>> joinObserver = RetrofitService.getInstance().getRetrofitRequest().selectWaitingMember(clubId);
         joinObserver.enqueue(new Callback<ArrayList<MemberView>>() {
             @Override
             public void onResponse(Call<ArrayList<MemberView>> call, Response<ArrayList<MemberView>> response) {
@@ -92,7 +91,7 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
 
             }
         });
-        Call<ArrayList<MemberView>> waitObserver = RetrofitService.getInstance().getRetrofitRequest().selectWaitingMember(clubId);
+        Call<ArrayList<MemberView>> waitObserver = RetrofitService.getInstance().getRetrofitRequest().selectJoinMember(clubId);
         waitObserver.enqueue(new Callback<ArrayList<MemberView>>() {
             @Override
             public void onResponse(Call<ArrayList<MemberView>> call, Response<ArrayList<MemberView>> response) {

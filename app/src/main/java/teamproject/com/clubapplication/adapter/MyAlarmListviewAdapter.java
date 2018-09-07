@@ -60,7 +60,7 @@ public class MyAlarmListviewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class Holder {
+    class Holder {
         @BindView(R.id.lv_my_alarm_img)
         ImageView lvMyAlarmImg;
         @BindView(R.id.lv_my_alarm_date)

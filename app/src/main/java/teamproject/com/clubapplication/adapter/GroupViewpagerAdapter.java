@@ -14,12 +14,12 @@ import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
 import teamproject.com.clubapplication.fragment.GroupHomeFragment;
 import teamproject.com.clubapplication.fragment.GroupManageFragment;
 
-public class GroupHomeViewpagerAdapter extends FragmentStatePagerAdapter {
+public class GroupViewpagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    public GroupHomeViewpagerAdapter(FragmentManager fm) {
+    public GroupViewpagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

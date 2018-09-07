@@ -35,20 +35,20 @@ public class MyClubListviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Horder horder;
+        Holder horder;
         if(convertView==null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_my_group, parent, false);
-            horder = new Horder(convertView);
+            horder = new Holder(convertView);
             convertView.setTag(horder);
         } else {
-            horder=(Horder)convertView.getTag();
+            horder=(Holder)convertView.getTag();
         }
 
         return convertView;
     }
 
-    class Horder {
-        Horder(View view) {
+    class Holder {
+        Holder(View view) {
             ButterKnife.bind(this, view);
         }
     }

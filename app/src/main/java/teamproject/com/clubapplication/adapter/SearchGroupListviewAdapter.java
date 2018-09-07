@@ -16,7 +16,7 @@ import teamproject.com.clubapplication.data.Club;
 
 public class SearchGroupListviewAdapter extends BaseAdapter {
 
-   ArrayList<Club>arrayList;
+    ArrayList<Club> arrayList;
 
     public SearchGroupListviewAdapter(ArrayList<Club> arrayList) {
         this.arrayList = arrayList;
@@ -44,7 +44,7 @@ public class SearchGroupListviewAdapter extends BaseAdapter {
         Holder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_search_group, parent, false);
-            holder= new Holder(convertView);
+            holder = new Holder(convertView);
 
             convertView.setTag(holder);
         } else {
@@ -60,8 +60,7 @@ public class SearchGroupListviewAdapter extends BaseAdapter {
     }
 
 
-
-        static class Holder {
+    class Holder {
         @BindView(R.id.lv_search_group_img)
         ImageView lvSearchGroupImg;
         @BindView(R.id.lv_search_group_title)
@@ -75,7 +74,7 @@ public class SearchGroupListviewAdapter extends BaseAdapter {
         @BindView(R.id.lv_search_group_location)
         TextView lvSearchGroupLocation;
 
-            Holder(View view) {
+        Holder(View view) {
             ButterKnife.bind(this, view);
         }
     }

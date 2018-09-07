@@ -39,6 +39,9 @@ public interface RetrofitRequest {
     //클럽
     @GET("mobile/selectClub.do")
     Call<ClubMemberClass> selectClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
+    @GET("mobile/refreshMemberClass.do")
+    Call<String> refreshMemberClass(@Query("clubId") Long clubId, @Query("userId") Long userId);
+
     @GET("mobile/joinClub.do")
     Call<Void> joinClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
     @GET("mobile/selectClubProfileImg.do")
@@ -66,8 +69,10 @@ public interface RetrofitRequest {
 
 
     //로그인
-    @GET("mobile/selectLoginUser.do")
-    Call<Member> selectLoginUser(@Query("id") String id, @Query("pw") String pw);
+
+    @FormUrlEncoded
+    @POST("mobile/selectLoginUser.do")
+    Call<Member> selectLoginUser(@Field("id") String id, @Field("pw") String pw);
     @GET("mobile/refreshMemberInfo.do")
     Call<Member> refreshLoginUser(@Query("id") Long id);
 

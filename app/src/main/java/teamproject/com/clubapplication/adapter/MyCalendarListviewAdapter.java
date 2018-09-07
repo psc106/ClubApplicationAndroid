@@ -51,7 +51,7 @@ public class MyCalendarListviewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class Holder {
+    class Holder {
         @BindView(R.id.lv_group_calendar_img)
         ImageView lvGroupCalendarImg;
         @BindView(R.id.lv_my_calendar_title)
