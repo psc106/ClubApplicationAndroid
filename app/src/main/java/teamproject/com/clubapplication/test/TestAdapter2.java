@@ -25,11 +25,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.ExternalImage;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.glide.GlideApp;
 
 public class TestAdapter2 extends RecyclerView.Adapter<TestAdapter2.Holder> {
 
-    private String serverURL = "http://192.168.0.70:8090/club_application/";
+    private String serverURL = CommonUtils.serverURL;
     ArrayList<String> filePath;
     Context context;
 

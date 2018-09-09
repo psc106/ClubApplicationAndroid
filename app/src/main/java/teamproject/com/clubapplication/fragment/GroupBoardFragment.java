@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,17 +25,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.GroupActivity;
 import teamproject.com.clubapplication.GroupBoardWriteActivity;
+import teamproject.com.clubapplication.GroupPostDetailActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupBoardListviewAdapter;
 import teamproject.com.clubapplication.data.ClubMemberClass;
-import teamproject.com.clubapplication.data.Notice;
-import teamproject.com.clubapplication.data.Post;
 import teamproject.com.clubapplication.data.PostView;
-import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
-import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 
@@ -68,6 +66,15 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
         groupBoardListviewAdapter=new GroupBoardListviewAdapter(arrayList);
         listViewGroupBoard.setAdapter(groupBoardListviewAdapter);
         clubMemberClass = ((GroupActivity)getActivity()).getClubMemberClass();
+
+        listViewGroupBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), GroupPostDetailActivity.class);
+                intent.putExtra("postData", arrayList.get(position));
+                startActivity(intent);
+            }
+        });
 
         return view;
 
@@ -114,7 +121,7 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
     }
 
     public void getCount(){
-        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getPostCout(clubMemberClass.getClub().getId());
+        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getPostCount(clubMemberClass.getClub().getId());
         observer.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

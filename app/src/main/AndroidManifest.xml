@@ -3,7 +3,6 @@
     package="teamproject.com.clubapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -14,37 +13,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".JoinActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".FindIdPwActivity" />
-        <activity android:name=".test.TestActivity">
-        </activity>
+        <activity android:name=".test.TestActivity"></activity>
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".SearchGroupActivity" />
-        <activity android:name=".ModifyNickNameActivity"></activity>
+        <activity android:name=".ModifyNickNameActivity" />
         <activity android:name=".MyOptionActivity" />
-        <activity android:name=".IntroActivity" android:theme="@style/SplashTheme" >
+        <activity
+            android:name=".IntroActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".GroupManageModifyActivity" />
         <activity android:name=".GroupManageMemberActivity" />
-        <activity android:name=".GroupActivity"></activity>
+        <activity android:name=".GroupActivity" />
         <activity android:name=".GroupBoardWriteActivity" />
         <activity android:name=".GroupAlbumDetailActivity" />
-
         <activity android:name=".MyInfoActivity" />
         <activity android:name=".MyContentActivity" />
         <activity android:name=".MyGroupActivity" />
         <activity android:name=".MyAlarmActivity" />
-        <activity android:name=".MyCalendarActivity"></activity>
-
-
+        <activity android:name=".MyCalendarActivity" />
+        <activity android:name=".GroupPostDetailActivity"></activity>
     </application>
 
 </manifest>

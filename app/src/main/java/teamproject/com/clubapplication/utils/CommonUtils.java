@@ -48,7 +48,8 @@ import teamproject.com.clubapplication.MyOptionActivity;
 
 public class CommonUtils {
     public static String TAG = "로그";
-    public static String serverURL = "http://192.168.0.70:8090/club_application/";
+//    public static String serverURL = "http://192.168.0.70:8090/club_application/";
+    public static String serverURL = "http://192.168.25.11:8090/club_application/";
 
     public static boolean isLoginNeedActivity(Activity activity) {
         if(activity==null)

@@ -4,10 +4,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import teamproject.com.clubapplication.utils.CommonUtils;
 
 public class RetrofitService {
     //자신의 환경에 맞춰서 serverURL 바꿀것
-    private String serverURL = "http://192.168.0.70:8090/club_application/";
+    private String serverURL = CommonUtils.serverURL;
 
     public static RetrofitService curr = null;
     private RetrofitRequest retrofitRequest;

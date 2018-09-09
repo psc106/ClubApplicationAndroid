@@ -54,8 +54,8 @@ public interface RetrofitRequest {
 
     @GET("mobile/selectClubPost.do")
     Call<ArrayList<PostView>> selectClubPost(@Query("clubId") Long clubId, @Query("page") Integer page);
-    @GET("mobile/getPostCout.do")
-    Call<Integer> getPostCout(@Query("clubId") Long clubId);
+    @GET("mobile/getPostCount.do")
+    Call<Integer> getPostCount(@Query("clubId") Long clubId);
 
     @GET("mobile/selectClubAlbum.do")
     Call<ArrayList<AlbumView>> selectClubAlbum(@Query("clubId") Long clubId, @Query("page") Integer page);

@@ -1,6 +1,5 @@
 package teamproject.com.clubapplication.data;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +11,9 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class CommentView {
     private  Long id;
-    private  Long post_id;
-    private  Long member_id;
+    private  String nickname;
     private  String content;
     private  String create_date;
 }

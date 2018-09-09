@@ -47,7 +47,6 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-
 //gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
@@ -69,7 +68,6 @@ dependencies {
 
     //permission ted
     implementation 'gun0912.ted:tedpermission:2.2.0'
-
 
 //calender
 
