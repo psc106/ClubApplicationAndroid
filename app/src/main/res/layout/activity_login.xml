@@ -46,6 +46,7 @@
                             android:layout_width="170dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
+                            android:inputType="textWebEmailAddress"
                             android:hint="id" />
 
                         <EditText
@@ -54,6 +55,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginTop="10dp"
+                            android:inputType="textPassword"
                             android:hint="password" />
 
                     </LinearLayout>
@@ -72,6 +74,20 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자동 로그인"/>
+                    <RadioButton
+                        android:id="@+id/login_radioBtn_IdSave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="280dp"
@@ -117,8 +133,6 @@
                         android:textSize="15dp" />
 
                 </LinearLayout>
-
-
             </LinearLayout>
 
 

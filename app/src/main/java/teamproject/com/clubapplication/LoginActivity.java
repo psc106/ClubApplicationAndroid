@@ -1,10 +1,14 @@
 package teamproject.com.clubapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -30,6 +34,9 @@ public class LoginActivity extends KeyHideActivity {
     @BindView(R.id.login_find_pw) TextView login_find_pw;
     @BindView(R.id.login_new_join) TextView login_new_join;
 
+    @BindView(R.id.login_radioBtn_IdSave)
+    RadioButton radioButton;
+
     LoginService loginService;
 
 
@@ -44,7 +51,7 @@ public class LoginActivity extends KeyHideActivity {
 
     @OnClick(R.id.btn_login)
     public void btnLogin() {
-        String id, pw;
+        final String id, pw;
         if(login_id.getText()!=null && !login_id.getText().toString().equals("")){
             id = login_id.getText().toString();
         } else {
@@ -66,6 +73,15 @@ public class LoginActivity extends KeyHideActivity {
                     Member member = response.body();
                     if(member!=null) {
                         loginService.login(activity, member);
+                        if(radioButton.isSelected()){
+                            Log.d("로그", "onResponse: "+"선택");
+                            SharedPreferences sharedPreferences = getSharedPreferences("login_setting", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("user_pw_save", pw);
+                            editor.putString("user_id_save", id);
+                            editor.commit();
+                        }
+                        Log.d("로그", "onResponse: "+"ㄴ선택?");
                         finish();
 
                     } else {

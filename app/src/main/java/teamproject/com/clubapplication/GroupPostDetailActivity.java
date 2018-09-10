@@ -1,8 +1,11 @@
 package teamproject.com.clubapplication;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,43 +21,30 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.GroupCommentListviewAdapter;
+import teamproject.com.clubapplication.adapter.GroupPostDetailPageAdapter;
 import teamproject.com.clubapplication.data.CommentView;
 import teamproject.com.clubapplication.data.PostView;
+import teamproject.com.clubapplication.fragment.GroupBoardDetailFragment;
+import teamproject.com.clubapplication.fragment.GroupBoardLoadingFragment;
 import teamproject.com.clubapplication.utils.RefreshData;
+import teamproject.com.clubapplication.utils.customView.InfiniteViewPager;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class GroupPostDetailActivity extends AppCompatActivity implements RefreshData {
-    @BindView(R.id.group_board_detail_txt_name)
-    TextView groupBoardDetailTxtName;
-    Unbinder unbinder;
-    @BindView(R.id.group_board_detail_btn_before)
-    ImageView groupBoardDetailBtnBefore;
-    @BindView(R.id.group_board_detail_btn_next)
-    ImageView groupBoardDetailBtnNext;
-    @BindView(R.id.group_board_detail_img)
-    ImageView groupBoardDetailImg;
-    @BindView(R.id.group_board_detail_text)
-    TextView groupBoardDetailText;
-    @BindView(R.id.group_board_detail_txt_tag)
-    TextView groupBoardDetailTxtTag;
-    @BindView(R.id.group_board_detail_txt_date)
-    TextView groupBoardDetailTxtDate;
-    @BindView(R.id.lv_group_board_detail)
-    ListView lvGroupBoardDetail;
-    @BindView(R.id.group_board_detail_edt_re)
-    EditText groupBoardDetailEdtRe;
-    @BindView(R.id.group_board_detail_btn_re)
-    Button groupBoardDetailBtnRe;
-    @BindView(R.id.group_board_detail_btn_delete)
-    Button groupBoardDetailBtnDelete;
-    @BindView(R.id.group_board_detail_btn_write)
-    Button groupBoardDetailBtnWrite;
+public class GroupPostDetailActivity extends AppCompatActivity {
+    @BindView(R.id.postDetail_viewPager)
+    InfiniteViewPager viewPager;
 
-    PostView postData;
-    ArrayList<String> imgUrl;
-    ArrayList<CommentView> commentList;
-    GroupCommentListviewAdapter adapter;
-    int page = 1;
+    GroupPostDetailPageAdapter pageAdapter;
+    private PostView currPost;
+
+    public PostView getCurrPost() {
+        return currPost;
+    }
+    public void setCurrPost(PostView currPost) {
+        this.currPost = currPost;
+    }
+
+    public static int prePosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +52,47 @@ public class GroupPostDetailActivity extends AppCompatActivity implements Refres
         setContentView(R.layout.activity_group_post_detail);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        postData = intent.getParcelableExtra("postData");
-        if(postData==null) {
-            //실패처리
-        } else {
-            imgUrl = new ArrayList<>();
-            commentList = new ArrayList<>();
 
-            adapter = new GroupCommentListviewAdapter(commentList);
-            refresh();
-        }
+        Intent intent = getIntent();
+        currPost=intent.getParcelableExtra("postData");
+
+        pageAdapter = new GroupPostDetailPageAdapter(getSupportFragmentManager(), currPost);
+        viewPager.setAdapter(pageAdapter);
+        viewPager.setPagingEnabled(true);
+
+        checkPosition(currPost.canMovePosition());
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d("로그", "onPageScrolled: ");
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("로그", "onPageSelected: ");
+                if(position-prePosition<0){
+                    //왼쪽이동
+                    Fragment fragment = pageAdapter.getItem(position);
+                    if(fragment instanceof GroupBoardLoadingFragment){
+                        viewPager.setPagingEnabled(false);
+                        ((GroupBoardLoadingFragment)fragment).refresh(currPost.getNextId());
+                    }
+                } else if(position-prePosition>0){
+                    //오른쪽이동
+                    Fragment fragment = pageAdapter.getItem(position);
+                    if(fragment instanceof GroupBoardLoadingFragment){
+                        viewPager.setPagingEnabled(false);
+                        ((GroupBoardLoadingFragment)fragment).refresh(currPost.getPreviousId());
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.d("로그", "onPageScrollStateChanged: ");
+            }
+        });
     }
 
     @Override
@@ -80,62 +100,25 @@ public class GroupPostDetailActivity extends AppCompatActivity implements Refres
         super.onResume();
     }
 
-    @Override
-    public void refresh() {
-        page=1;
-        getImgs();
-        getCommentCount();
+    public void checkPosition(Integer position) {
+        if(position==null)
+            return;
+
+        viewPager.setPagingEnabled(true);
+        if(position==-1) {
+            viewPager.setCurrentItem(0, false);
+            prePosition=0;
+        } else if(position==0) {
+            viewPager.setCurrentItem(2, false);
+            prePosition=2;
+        } else if(position==1) {
+            viewPager.setCurrentItem(4, false);
+            prePosition=4;
+        } else if(position==Integer.MIN_VALUE){
+            viewPager.setCurrentItem(2, false);
+            prePosition=2;
+            viewPager.setPagingEnabled(false);
+        }
     }
 
-    void getCommentCount(){
-        Call<Integer> countObserver = RetrofitService.getInstance().getRetrofitRequest().selectPostCommentsCount(postData.getId());
-        countObserver.enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
-                    if(response.body()>0){
-                        getComment();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-
-            }
-        });
-    }
-    void getComment(){
-        Call<ArrayList<CommentView>> commentObserver = RetrofitService.getInstance().getRetrofitRequest().selectPostComments(postData.getId(), page);
-        commentObserver.enqueue(new Callback<ArrayList<CommentView>>() {
-            @Override
-            public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
-                if(response.isSuccessful()){
-                    commentList=response.body();
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<CommentView>> call, Throwable t) {
-
-            }
-        });
-    }
-    void getImgs(){
-        Call<ArrayList<String>> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectPostImgs(postData.getId());
-        imgObserver.enqueue(new Callback<ArrayList<String>>() {
-            @Override
-            public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                if(response.isSuccessful()){
-                    imgUrl = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<String>> call, Throwable t) {
-
-            }
-        });
-    }
 }

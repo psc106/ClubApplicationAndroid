@@ -30,9 +30,10 @@ import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
 import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
+import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class GroupActivity extends AppCompatActivity implements RefreshData {
+public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     @BindView(R.id.groupHome_viewpager)
     ViewPager viewpager;

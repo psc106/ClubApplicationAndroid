@@ -1,7 +1,9 @@
 package teamproject.com.clubapplication.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -80,6 +82,10 @@ public class MenuFragment extends Fragment {
             }
         } else {
             loginService.logout(getActivity());
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("login_setting", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
         }
     }
 

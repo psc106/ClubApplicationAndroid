@@ -13,7 +13,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class AlbumView {
     private Long id;
-    private Long tag_id;
     private String url;
     private String nickname;
     private String realName;

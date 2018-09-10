@@ -63,6 +63,14 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
         arrayList= new ArrayList<>();
+
+
+//        PostView test = new PostView();
+//        test.setId(10l);
+//        test.setNextId(11l);
+//        test.setPreviousId(9l);
+//        arrayList.add(test);
+
         groupBoardListviewAdapter=new GroupBoardListviewAdapter(arrayList);
         listViewGroupBoard.setAdapter(groupBoardListviewAdapter);
         clubMemberClass = ((GroupActivity)getActivity()).getClubMemberClass();

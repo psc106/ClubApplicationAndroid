@@ -3,11 +3,14 @@ package teamproject.com.clubapplication;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -111,6 +114,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
+
 
         items_location = dbManager.getDoSi();
         items_category = dbManager.getCategory();

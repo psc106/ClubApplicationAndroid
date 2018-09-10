@@ -21,6 +21,8 @@ public class PostView implements Parcelable {
     private String nickname;
     private String content;
     private String create_date;
+    private Long nextId;
+    private Long previousId;
 
     protected PostView(Parcel in) {
         if (in.readByte() == 0) {
@@ -36,6 +38,33 @@ public class PostView implements Parcelable {
         nickname = in.readString();
         content = in.readString();
         create_date = in.readString();
+        if (in.readByte() == 0) {
+            nextId = null;
+        } else {
+            nextId = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            previousId = null;
+        } else {
+            previousId = in.readLong();
+        }
+    }
+
+    public Integer canMovePosition(){
+        if(nextId!=previousId){
+            if(nextId!=-1){
+                return 1;
+            }else if(nextId==-1){
+                return -1;
+            }
+        } else {
+            if(nextId!=-1){
+                return 0;
+            }else if(nextId==-1){
+                return Integer.MIN_VALUE;
+            }
+        }
+        return null;
     }
 
     public static final Creator<PostView> CREATOR = new Creator<PostView>() {
@@ -72,5 +101,17 @@ public class PostView implements Parcelable {
         dest.writeString(nickname);
         dest.writeString(content);
         dest.writeString(create_date);
+        if (nextId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(nextId);
+        }
+        if (previousId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(previousId);
+        }
     }
 }

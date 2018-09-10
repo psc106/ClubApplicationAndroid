@@ -44,7 +44,6 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
     @BindView(R.id.spinner_location_in_search_group)
     Spinner spinnerLocationInSearchGroup;
 
-
     @BindView(R.id.spinner_category_in_search_group)
     Spinner spinnerCategoryInSearchGroup;
 
