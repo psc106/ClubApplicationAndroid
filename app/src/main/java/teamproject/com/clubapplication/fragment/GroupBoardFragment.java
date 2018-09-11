@@ -24,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.GroupActivity;
-import teamproject.com.clubapplication.GroupBoardWriteActivity;
+import teamproject.com.clubapplication.GroupWriteActivity;
 import teamproject.com.clubapplication.GroupPostDetailActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupBoardListviewAdapter;
@@ -90,7 +90,7 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
 
     @OnClick(R.id.group_board_btn_write)
     void write(){
-        Intent intent = new Intent(getActivity(), GroupBoardWriteActivity.class);
+        Intent intent = new Intent(getActivity(), GroupWriteActivity.class);
         startActivity(intent);
     }
 

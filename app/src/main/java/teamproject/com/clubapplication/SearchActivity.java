@@ -29,7 +29,7 @@ import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class SearchGroupActivity extends KeyHideActivity implements RefreshData {
+public class SearchActivity extends KeyHideActivity implements RefreshData {
     private DrawerMenu drawerMenu;
 
     @BindView(R.id.text_search_in_search_group)
@@ -62,7 +62,7 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
         String tmpMain = null;
         Long tmpCategory = -1L;
 
-        Intent intent = new Intent(this, SearchGroupActivity.class);
+        Intent intent = new Intent(this, SearchActivity.class);
         if (advancedLayout.getVisibility() != View.GONE) {
             Log.d("로그", "1");
             if (spinnerLocationInSearchGroup.getSelectedItemId() != 0) {
@@ -104,7 +104,7 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
 
     @OnClick(R.id.btn_make_group_in_search_group)
     public  void makeGroup(){
-        Intent intent = new Intent(SearchGroupActivity.this,MakeGroupActivity.class);
+        Intent intent = new Intent(SearchActivity.this,GroupMakeActivity.class);
         startActivity(intent);
     }
 
@@ -126,7 +126,7 @@ public class SearchGroupActivity extends KeyHideActivity implements RefreshData 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_group);
+        setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
         loginService = LoginService.getInstance();

@@ -1,9 +1,13 @@
 package teamproject.com.clubapplication.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +22,11 @@ public class GroupViewpagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
+    private Context context;
 
-    public GroupViewpagerAdapter(FragmentManager fm) {
+    public GroupViewpagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        this.context = context;
     }
 
     @Override
@@ -52,7 +58,19 @@ public class GroupViewpagerAdapter extends FragmentStatePagerAdapter {
         mFragmentList.clear();
         mFragmentTitleList.clear();
     }
-
+    
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        super.setPrimaryItem(container, position, object);
+        if (position != mCurrentPosition) {
+            Fragment fragment = (Fragment) object;
+            CustomPager pager = (CustomPager) container;
+            if (fragment != null && fragment.getView() != null) {
+                mCurrentPosition = position;
+                pager.measureCurrentView(fragment.getView());
+            }
+        }
+    }
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);

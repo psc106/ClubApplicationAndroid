@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -130,6 +131,11 @@ public class CommonUtils {
         }
 
         return  totalWidth + (listView.getDividerHeight() * (adapter.getCount() - 1));
+    }
+
+    public static int convertPixelsToDp(float px, Context context) {
+        int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, context.getResources().getDisplayMetrics());
+        return value;
     }
 
     public static String getStringFromServer(String pUrl) {

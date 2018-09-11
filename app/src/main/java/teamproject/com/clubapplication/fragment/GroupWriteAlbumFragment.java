@@ -17,33 +17,11 @@ import teamproject.com.clubapplication.R;
 
 public class GroupWriteAlbumFragment extends Fragment {
 
-    private static GroupWriteAlbumFragment curr = null;
-    @BindView(R.id.group_board_write_album_img1)
-    ImageView groupBoardWriteAlbumImg1;
-    @BindView(R.id.group_board_write_check)
-    CheckBox groupBoardWriteCheck;
-    @BindView(R.id.group_board_write_album_edt)
-    EditText groupBoardWriteAlbumEdt;
-    @BindView(R.id.group_board_write_album_img2)
-    ImageView groupBoardWriteAlbumImg2;
-    @BindView(R.id.group_board_write_album_img3)
-    ImageView groupBoardWriteAlbumImg3;
-    @BindView(R.id.group_board_write_album_img4)
-    ImageView groupBoardWriteAlbumImg4;
     Unbinder unbinder;
-
-    public static GroupWriteAlbumFragment getinstance() {
-        if (curr == null) {
-            curr = new GroupWriteAlbumFragment();
-        }
-
-        return curr;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_group_write_album, container, false);
+        View view = inflater.inflate(R.layout.fragment_write_album, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }

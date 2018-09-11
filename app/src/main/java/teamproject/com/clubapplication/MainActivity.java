@@ -1,16 +1,12 @@
 package teamproject.com.clubapplication;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -75,7 +71,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     //검색
     @OnClick(R.id.main_btn_search)
     public void search(View view) {
-        Intent intent = new Intent(this, SearchGroupActivity.class);
+        Intent intent = new Intent(this, SearchActivity.class);
         if (mainLayoutAdvancedSearch.getVisibility() != View.GONE) {
             if (mainSpinnerLocation.getSelectedItemId() != 0)
                 intent.putExtra("local", mainSpinnerLocation.getSelectedItemId());
@@ -91,7 +87,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     //그룹생성
     @OnClick(R.id.main_btn_MakeGroup)
     public void makeGroup(View view) {
-        Intent intent = new Intent(MainActivity.this, MakeGroupActivity.class);
+        Intent intent = new Intent(MainActivity.this, GroupMakeActivity.class);
         startActivity(intent);
 
     }

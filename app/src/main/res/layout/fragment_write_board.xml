@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.groupWriteBoardFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내용"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/writeBoard_frg_edt_Main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:background="@drawable/back"
+            android:textAlignment="textStart" />
+        <!--사진 첨부 -->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/writeBoard_frg_recycleV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"></android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="앨범에 등록" />
+            <CheckBox
+                android:id="@+id/writeBoard_frg_checkBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/writeBoard_frg_edt_Tag"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:background="@drawable/back"
+            android:hint="ex)a, b, c"/>
+
+    </LinearLayout>
+
+</FrameLayout>

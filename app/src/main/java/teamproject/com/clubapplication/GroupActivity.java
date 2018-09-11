@@ -1,18 +1,35 @@
 package teamproject.com.clubapplication;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +40,7 @@ import teamproject.com.clubapplication.fragment.GroupBoardFragment;
 import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
 import teamproject.com.clubapplication.fragment.GroupHomeFragment;
 import teamproject.com.clubapplication.fragment.GroupManageFragment;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.LoginService;
@@ -31,18 +49,34 @@ import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
 import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
 import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
+import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class GroupActivity extends KeyHideActivity implements RefreshData {
 
-    @BindView(R.id.groupHome_viewpager)
+    @BindView(R.id.group_viewpager)
     ViewPager viewpager;
-    @BindView(R.id.groupHome_tabLayout)
+    @BindView(R.id.group_tabLayout)
     TabLayout tabLayout;
-    @BindView(R.id.group_home_menu)
+    @BindView(R.id.group_menu)
     FrameLayout groupHomeMenu;
-    @BindView(R.id.group_home_drawer)
+    @BindView(R.id.group_drawer)
     DrawerLayout groupHomeDrawer;
+    @BindView(R.id.group_btn_Write)
+    FloatingActionButton writeBtn;
+    @BindView(R.id.group_imageV)
+    ImageView imageView;
+    @BindView(R.id.group_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.group_collapsToolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.group_appbar)
+    AppBarLayout appBarLayout;
+//    @BindView(R.id.group_scrollV)
+//    NestedScrollView scrollView;
+    @BindView(R.id.group_coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+
     private DrawerMenu drawerMenu;
 
     GroupViewpagerAdapter homeAdapter;
@@ -51,17 +85,42 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     Bus bus;
     Long clubId;
 
+    //0 : 전체보임, 1 : 툴바까지, 2 : 탭레이아웃까지 3 :
+    int state = 0;
+
+    @OnClick(R.id.group_btn_Write)
+    void moveWriteForm() {
+        if (clubMemberClass == null) {
+            return;
+        } else {
+            Intent intent = new Intent(this, GroupWriteActivity.class);
+            int category = 1;
+            //관리자
+            if (tabLayout.getSelectedTabPosition() == 0 && clubMemberClass.getMemberClass().equals("A")) {
+                category = 0;
+            } else if (tabLayout.getSelectedTabPosition() == 2) {
+                category = 2;
+            } else if (tabLayout.getSelectedTabPosition() == 3) {
+                category = 3;
+            } else {
+                category = 1;
+            }
+            intent.putExtra("category", category);
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_home);
+        setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
         Intent intent = getIntent();
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
 
-        homeAdapter = new GroupViewpagerAdapter(getSupportFragmentManager());
+        homeAdapter = new GroupViewpagerAdapter(getSupportFragmentManager(), this);
         homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(homeAdapter);
@@ -95,14 +154,51 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             });
         }
 
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position>0){
+                    hideView(collapsingToolbarLayout);
+                } else {
+                    showView(collapsingToolbarLayout);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            AppBarLayout.LayoutParams lp2 = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+                if(tabLayout.getSelectedTabPosition()!=0)
+                    return;
+
+                if (state!=0 && Math.abs(verticalOffset) <= lp2.height-20) {
+                    state=0;
+                } else if(state!=1 && Math.abs(verticalOffset) > lp2.height-20 && Math.abs(verticalOffset) <= lp2.height+20) {
+                    state=1;
+                } else if(state!=2 && Math.abs(verticalOffset)>lp2.height+20){
+                    state=2;
+                }
+//                Log.d("로그", ""+state+"/"+verticalOffset+"/"+scrollView.getScrollY());
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         if (drawerMenu == null) {
-            drawerMenu = DrawerMenu.addMenu(this, R.id.group_home_menu, R.id.group_home_drawer);
+            drawerMenu = DrawerMenu.addMenu(this, R.id.group_menu, R.id.group_drawer);
         } else {
-            drawerMenu.restartMenu(this, R.id.group_home_menu, R.id.group_home_drawer);
+            drawerMenu.restartMenu(this, R.id.group_menu, R.id.group_drawer);
         }
         super.onResume();
 
@@ -157,11 +253,25 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     @Override
     public void refresh() {
-        if (loginService.getMember() == null || clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N")) {
+        Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
+        imgObserver.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    GlideApp.with(GroupActivity.this).load(CommonUtils.serverURL + response.body()).centerCrop().into(imageView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+            }
+        });
+        if (loginService.getMember() == null || clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")) {
             homeAdapter.clearFragment();
             homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
             homeAdapter.notifyDataSetChanged();
             viewpager.setOffscreenPageLimit(1);
+            writeBtn.setVisibility(View.GONE);
         } else {
             homeAdapter.clearFragment();
             homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
@@ -171,6 +281,131 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             homeAdapter.addFragment(new GroupManageFragment(), "설정", 4);
             homeAdapter.notifyDataSetChanged();
             viewpager.setOffscreenPageLimit(4);
+            writeBtn.setVisibility(View.VISIBLE);
         }
     }
+
+
+
+    boolean mIsShowing = false;
+    boolean mIsHiding = false;
+    Interpolator interpolator = new FastOutSlowInInterpolator();
+    /**
+     * View를 숨긴다
+     * <p/>
+     * 아래로 슬라이딩하는 애니메이션.
+     * 애니메이션 종료후 View를 없앤다.
+     *
+     * @param view The quick return view
+     */
+    private void hideView(final View view) {
+
+        mIsHiding = true;
+        ViewPropertyAnimator animator = view.animate()
+                .translationY(-view.getHeight())
+                .setInterpolator(interpolator)
+                .setDuration(100);
+
+        animator.setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mIsHiding = false;
+                lockAppBarClosed();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                // 취소되면 다시 보여줌
+                mIsHiding = false;
+                if (!mIsShowing) {
+                    showView(view);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
+        animator.start();
+    }
+
+    /**
+     * View를 보여준다.
+     * <p/>
+     * 아래서 위로 슬라이딩 애니메이션.
+     * 애니메이션을 시작하기전 View를 보여준다.
+     *
+     * @param view The quick return view
+     */
+    private void showView(final View view) {
+
+        mIsShowing = true;
+        ViewPropertyAnimator animator = view.animate()
+                .translationY(0)
+                .setInterpolator(interpolator)
+                .setDuration(100);
+
+        animator.setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                unlockAppBarOpen();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mIsShowing = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                // 취소되면 다시 숨김
+                mIsShowing = false;
+                if (!mIsHiding) {
+                    hideView(view);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
+        animator.start();
+    }
+    public void lockAppBarClosed() {
+
+        collapsingToolbarLayout.setVisibility(View.GONE);
+
+        int height = appBarLayout.getLayoutParams().height;
+        appBarLayout.getLayoutParams().height = height-CommonUtils.convertPixelsToDp(300, this);
+        appBarLayout.requestLayout();
+
+        appBarLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        viewpager.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        Log.d("로그", "lockAppBarClosed: "+appBarLayout.getMeasuredHeight());
+        Log.d("로그", "lockAppBarClosed: "+viewpager.getMeasuredHeight());
+
+
+    }
+    public void unlockAppBarOpen() {
+
+        int height = appBarLayout.getLayoutParams().height;
+        appBarLayout.getLayoutParams().height = height+CommonUtils.convertPixelsToDp(300, this);
+        appBarLayout.requestLayout();
+
+        collapsingToolbarLayout.setVisibility(View.VISIBLE);
+
+        appBarLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        viewpager.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        Log.d("로그", "lockAppBarClosed: "+appBarLayout.getMeasuredHeight());
+        Log.d("로그", "lockAppBarClosed: "+viewpager.getMeasuredHeight());
+    }
+//
+
 }
+

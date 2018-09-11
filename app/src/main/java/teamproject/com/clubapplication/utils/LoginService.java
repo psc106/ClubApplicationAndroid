@@ -7,7 +7,7 @@ import teamproject.com.clubapplication.FindIdPwActivity;
 import teamproject.com.clubapplication.JoinActivity;
 import teamproject.com.clubapplication.LoginActivity;
 import teamproject.com.clubapplication.MainActivity;
-import teamproject.com.clubapplication.MakeGroupActivity;
+import teamproject.com.clubapplication.GroupMakeActivity;
 import teamproject.com.clubapplication.MyAlarmActivity;
 import teamproject.com.clubapplication.MyCalendarActivity;
 import teamproject.com.clubapplication.MyContentActivity;
@@ -97,6 +97,9 @@ public class LoginService {
 
         BusProvider.getInstance().getBus().post(new LoginEvent(1));
 
+        if(currentActivity==null)
+            return;
+
         if(CommonUtils.isLogoutNeedActivity(currentActivity)) {
             ((MainActivity) MainActivity.activity).backHomeActivity(currentActivity);
         }
@@ -127,9 +130,9 @@ public class LoginService {
         }else if(MyOptionActivity.activity!=null) {
             MyOptionActivity.activity.finish();
             MyOptionActivity.activity=null;
-        }else if(MakeGroupActivity.activity!=null) {
-            MakeGroupActivity.activity.finish();
-            MakeGroupActivity.activity=null;
+        }else if(GroupMakeActivity.activity!=null) {
+            GroupMakeActivity.activity.finish();
+            GroupMakeActivity.activity=null;
         }
 
         BusProvider.getInstance().getBus().post(new LoginEvent(0));

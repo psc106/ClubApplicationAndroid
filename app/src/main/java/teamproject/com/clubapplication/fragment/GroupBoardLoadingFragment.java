@@ -1,38 +1,18 @@
 package teamproject.com.clubapplication.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import teamproject.com.clubapplication.GroupActivity;
-import teamproject.com.clubapplication.GroupBoardWriteActivity;
 import teamproject.com.clubapplication.GroupPostDetailActivity;
 import teamproject.com.clubapplication.R;
-import teamproject.com.clubapplication.adapter.GroupBoardListviewAdapter;
-import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.PostView;
 import teamproject.com.clubapplication.utils.LoadingDialog;
-import teamproject.com.clubapplication.utils.bus.BusProvider;
-import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class GroupBoardLoadingFragment extends Fragment {

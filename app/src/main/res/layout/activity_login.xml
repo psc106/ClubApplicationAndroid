@@ -83,8 +83,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="자동 로그인"/>
-                    <RadioButton
-                        android:id="@+id/login_radioBtn_IdSave"
+
+                    <CheckBox
+                        android:id="@+id/login_checkBtn_IdSave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>

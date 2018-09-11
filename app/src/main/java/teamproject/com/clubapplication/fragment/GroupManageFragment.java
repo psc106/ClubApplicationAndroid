@@ -81,6 +81,8 @@ public class GroupManageFragment extends Fragment implements RefreshData{
 
     @Override
     public void refresh() {
+        if(clubMemberClass==null)
+            return;
         if(clubMemberClass.getMemberClass().equals("W")){
             list.clear();
             list.addAll(wait);

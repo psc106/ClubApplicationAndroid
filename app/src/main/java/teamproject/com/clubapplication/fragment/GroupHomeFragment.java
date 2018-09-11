@@ -41,10 +41,6 @@ import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class GroupHomeFragment extends Fragment implements RefreshData {
 
-    @BindView(R.id.group_home_img)
-    ImageView groupHomeImg;
-    @BindView(R.id.group_home_txt_group_name)
-    LinearLayout groupHomeTxtGroupName;
     @BindView(R.id.group_home_txt_group_count)
     TextView groupHomeTxtGroupCount;
     @BindView(R.id.group_home_txt_master)
@@ -88,7 +84,6 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
         }
     }
 
-
     GroupHomeListviewAdapter groupHomeNoticeListviewAdapter;
     ArrayList<Notice> arrayList;
     Bus bus;
@@ -97,6 +92,16 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     int page = 1;
     int count = 0;
     boolean isLoad = false;
+
+    public static GroupHomeFragment newInstance(Long clubId) {
+
+        Bundle args = new Bundle();
+        args.putLong("clubId", clubId);
+
+        GroupHomeFragment fragment = new GroupHomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 
     @Override
@@ -119,8 +124,15 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     @Override
     public void onResume() {
         super.onResume();
+
         refresh();
         isLoad = true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isLoad=false;
     }
 
     @Override
@@ -138,7 +150,6 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
             if(isLoad)
                 ((MainActivity)(MainActivity.activity)).backHomeActivity(getActivity());
             return;
-
         }
 
         if(!clubMemberClass.getMemberClass().equals("O")){
@@ -166,17 +177,6 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
         }
 
         if (clubMemberClass != null) {
-            Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
-            imgObserver.enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    GlideApp.with(getContext()).load(CommonUtils.serverURL + response.body()).centerCrop().into(groupHomeImg);
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                }
-            });
             getCount();
         }
     }

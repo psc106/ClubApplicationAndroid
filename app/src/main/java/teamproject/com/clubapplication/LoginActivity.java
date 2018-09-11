@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -34,8 +35,8 @@ public class LoginActivity extends KeyHideActivity {
     @BindView(R.id.login_find_pw) TextView login_find_pw;
     @BindView(R.id.login_new_join) TextView login_new_join;
 
-    @BindView(R.id.login_radioBtn_IdSave)
-    RadioButton radioButton;
+    @BindView(R.id.login_checkBtn_IdSave)
+    CheckBox check;
 
     LoginService loginService;
 
@@ -73,7 +74,7 @@ public class LoginActivity extends KeyHideActivity {
                     Member member = response.body();
                     if(member!=null) {
                         loginService.login(activity, member);
-                        if(radioButton.isSelected()){
+                        if(check.isChecked()){
                             Log.d("로그", "onResponse: "+"선택");
                             SharedPreferences sharedPreferences = getSharedPreferences("login_setting", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();

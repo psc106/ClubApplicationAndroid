@@ -36,7 +36,7 @@ import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class MakeGroupActivity extends KeyHideActivity {
+public class GroupMakeActivity extends KeyHideActivity {
     public static Activity activity;
     final int REQUEST_TAKE_ALBUM = 1;
 
@@ -129,7 +129,7 @@ public class MakeGroupActivity extends KeyHideActivity {
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_group);
+        setContentView(R.layout.activity_group_make);
         ButterKnife.bind(this);
 
         loginService = LoginService.getInstance();

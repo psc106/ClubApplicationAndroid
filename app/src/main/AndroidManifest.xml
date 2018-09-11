@@ -18,8 +18,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".FindIdPwActivity" />
         <activity android:name=".test.TestActivity"></activity>
-        <activity android:name=".MakeGroupActivity" />
-        <activity android:name=".SearchGroupActivity" />
+        <activity android:name=".GroupMakeActivity" />
+        <activity android:name=".SearchActivity" />
         <activity android:name=".ModifyNickNameActivity" />
         <activity android:name=".MyOptionActivity" />
         <activity
@@ -34,7 +34,7 @@
         <activity android:name=".GroupManageModifyActivity" />
         <activity android:name=".GroupManageMemberActivity" />
         <activity android:name=".GroupActivity" />
-        <activity android:name=".GroupBoardWriteActivity" />
+        <activity android:name=".GroupWriteActivity" />
         <activity android:name=".GroupAlbumDetailActivity" />
         <activity android:name=".MyInfoActivity" />
         <activity android:name=".MyContentActivity" />
