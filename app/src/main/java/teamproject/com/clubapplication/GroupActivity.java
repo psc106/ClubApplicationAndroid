@@ -300,9 +300,11 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
      */
     private void hideView(final View view) {
 
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
         mIsHiding = true;
         ViewPropertyAnimator animator = view.animate()
-                .translationY(-view.getHeight())
+                .translationY(-view.getMeasuredHeight())
                 .setInterpolator(interpolator)
                 .setDuration(100);
 
@@ -384,6 +386,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         int height = appBarLayout.getLayoutParams().height;
         appBarLayout.getLayoutParams().height = height-CommonUtils.convertPixelsToDp(300, this);
         appBarLayout.requestLayout();
+        appBarLayout.setScrollY(0);
 
         appBarLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         viewpager.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -393,17 +396,14 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     }
     public void unlockAppBarOpen() {
+        url bu
 
         int height = appBarLayout.getLayoutParams().height;
         appBarLayout.getLayoutParams().height = height+CommonUtils.convertPixelsToDp(300, this);
         appBarLayout.requestLayout();
+        appBarLayout.setScrollY(0);
 
         collapsingToolbarLayout.setVisibility(View.VISIBLE);
-
-        appBarLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        viewpager.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        Log.d("로그", "lockAppBarClosed: "+appBarLayout.getMeasuredHeight());
-        Log.d("로그", "lockAppBarClosed: "+viewpager.getMeasuredHeight());
     }
 //
 

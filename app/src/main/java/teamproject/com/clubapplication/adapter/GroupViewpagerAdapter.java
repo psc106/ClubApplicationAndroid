@@ -17,8 +17,11 @@ import teamproject.com.clubapplication.fragment.GroupBoardFragment;
 import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
 import teamproject.com.clubapplication.fragment.GroupHomeFragment;
 import teamproject.com.clubapplication.fragment.GroupManageFragment;
+import teamproject.com.clubapplication.utils.customView.DynamicViewpager;
 
 public class GroupViewpagerAdapter extends FragmentStatePagerAdapter {
+
+    private int mCurrentPosition = -1;
 
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -54,23 +57,27 @@ public class GroupViewpagerAdapter extends FragmentStatePagerAdapter {
         mFragmentList.remove(position);
         mFragmentTitleList.remove(position);
     }
+
     public void clearFragment() {
         mFragmentList.clear();
         mFragmentTitleList.clear();
     }
-    
+
     @Override
+
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
         if (position != mCurrentPosition) {
             Fragment fragment = (Fragment) object;
-            CustomPager pager = (CustomPager) container;
+            DynamicViewpager pager = (DynamicViewpager) container;
             if (fragment != null && fragment.getView() != null) {
                 mCurrentPosition = position;
                 pager.measureCurrentView(fragment.getView());
             }
         }
     }
+
+
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);

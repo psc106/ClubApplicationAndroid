@@ -60,7 +60,6 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
 
     @OnClick(R.id.main_btn_AdvancedSearch)
     public void searchDetail(View view) {
-        Log.d("asd", "commit");
         if (mainLayoutAdvancedSearch.getVisibility() == View.GONE) {
             mainLayoutAdvancedSearch.setVisibility(View.VISIBLE);
         } else {
@@ -89,7 +88,6 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     public void makeGroup(View view) {
         Intent intent = new Intent(MainActivity.this, GroupMakeActivity.class);
         startActivity(intent);
-
     }
 
     MainGridviewAdapter mainGridviewAdapter;

@@ -53,10 +53,10 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.view.ViewPager
+        <teamproject.com.clubapplication.utils.customView.DynamicViewpager
             android:id="@+id/group_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
