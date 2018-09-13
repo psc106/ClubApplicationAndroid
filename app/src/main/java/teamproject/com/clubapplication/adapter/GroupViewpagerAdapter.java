@@ -21,7 +21,7 @@ import teamproject.com.clubapplication.utils.customView.DynamicViewpager;
 
 public class GroupViewpagerAdapter extends FragmentStatePagerAdapter {
 
-    private int mCurrentPosition = -1;
+//    private int mCurrentPosition = -1;
 
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -62,20 +62,19 @@ public class GroupViewpagerAdapter extends FragmentStatePagerAdapter {
         mFragmentList.clear();
         mFragmentTitleList.clear();
     }
-
-    @Override
-
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        super.setPrimaryItem(container, position, object);
-        if (position != mCurrentPosition) {
-            Fragment fragment = (Fragment) object;
-            DynamicViewpager pager = (DynamicViewpager) container;
-            if (fragment != null && fragment.getView() != null) {
-                mCurrentPosition = position;
-                pager.measureCurrentView(fragment.getView());
-            }
-        }
-    }
+//
+//    @Override
+//    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+//        super.setPrimaryItem(container, position, object);
+//        if (position != mCurrentPosition) {
+//            Fragment fragment = (Fragment) object;
+//            DynamicViewpager pager = (DynamicViewpager) container;
+//            if (fragment != null && fragment.getView() != null) {
+//                mCurrentPosition = position;
+//                pager.measureCurrentView(fragment.getView());
+//            }
+//        }
+//    }
 
 
     @Override

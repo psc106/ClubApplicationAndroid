@@ -3,6 +3,7 @@ package teamproject.com.clubapplication;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -72,10 +73,12 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.group_appbar)
     AppBarLayout appBarLayout;
-//    @BindView(R.id.group_scrollV)
+    //    @BindView(R.id.group_scrollV)
 //    NestedScrollView scrollView;
     @BindView(R.id.group_coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.group_layout)
+    LinearLayout layout;
 
     private DrawerMenu drawerMenu;
 
@@ -87,6 +90,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     //0 : 전체보임, 1 : 툴바까지, 2 : 탭레이아웃까지 3 :
     int state = 0;
+    int offset = 0;
 
     @OnClick(R.id.group_btn_Write)
     void moveWriteForm() {
@@ -157,15 +161,19 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-                if(position>0){
-                    hideView(collapsingToolbarLayout);
+                if (position > 0) {
+                    if (!ishideState) {
+                        hideView(appBarLayout);
+                    }
                 } else {
-                    showView(collapsingToolbarLayout);
+                    if (ishideState) {
+                        showView(appBarLayout);
+//                        viewpager.scrollTo(0, offset);
+                    }
                 }
             }
 
@@ -173,24 +181,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            AppBarLayout.LayoutParams lp2 = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-                if(tabLayout.getSelectedTabPosition()!=0)
-                    return;
-
-                if (state!=0 && Math.abs(verticalOffset) <= lp2.height-20) {
-                    state=0;
-                } else if(state!=1 && Math.abs(verticalOffset) > lp2.height-20 && Math.abs(verticalOffset) <= lp2.height+20) {
-                    state=1;
-                } else if(state!=2 && Math.abs(verticalOffset)>lp2.height+20){
-                    state=2;
-                }
-//                Log.d("로그", ""+state+"/"+verticalOffset+"/"+scrollView.getScrollY());
-            }
-        });
     }
 
     @Override
@@ -286,10 +277,11 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     }
 
 
-
+    boolean ishideState = false;
     boolean mIsShowing = false;
     boolean mIsHiding = false;
     Interpolator interpolator = new FastOutSlowInInterpolator();
+
     /**
      * View를 숨긴다
      * <p/>
@@ -304,19 +296,23 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
         mIsHiding = true;
         ViewPropertyAnimator animator = view.animate()
-                .translationY(-view.getMeasuredHeight())
                 .setInterpolator(interpolator)
-                .setDuration(100);
+                .setDuration(300);
 
         animator.setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
+                appBarLayout.setExpanded(false, true);
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
                 mIsHiding = false;
-                lockAppBarClosed();
+
+                appBarLayout.setActivated(false);
+                appBarLayout.setVisibility(View.GONE);
+
+                ishideState = true;
             }
 
             @Override
@@ -348,19 +344,22 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
         mIsShowing = true;
         ViewPropertyAnimator animator = view.animate()
-                .translationY(0)
                 .setInterpolator(interpolator)
-                .setDuration(100);
+                .setDuration(300);
 
         animator.setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                unlockAppBarOpen();
+                appBarLayout.setVisibility(View.VISIBLE);
+//                appBarLayout.setExpanded(true, true);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewpager.getLayoutParams();
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
                 mIsShowing = false;
+                ishideState = false;
+                appBarLayout.setActivated(true);
             }
 
             @Override
@@ -379,33 +378,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
         animator.start();
     }
-    public void lockAppBarClosed() {
-
-        collapsingToolbarLayout.setVisibility(View.GONE);
-
-        int height = appBarLayout.getLayoutParams().height;
-        appBarLayout.getLayoutParams().height = height-CommonUtils.convertPixelsToDp(300, this);
-        appBarLayout.requestLayout();
-        appBarLayout.setScrollY(0);
-
-        appBarLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        viewpager.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        Log.d("로그", "lockAppBarClosed: "+appBarLayout.getMeasuredHeight());
-        Log.d("로그", "lockAppBarClosed: "+viewpager.getMeasuredHeight());
-
-
-    }
-    public void unlockAppBarOpen() {
-        url bu
-
-        int height = appBarLayout.getLayoutParams().height;
-        appBarLayout.getLayoutParams().height = height+CommonUtils.convertPixelsToDp(300, this);
-        appBarLayout.requestLayout();
-        appBarLayout.setScrollY(0);
-
-        collapsingToolbarLayout.setVisibility(View.VISIBLE);
-    }
-//
 
 }
 
