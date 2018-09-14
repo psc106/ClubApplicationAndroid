@@ -73,12 +73,18 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.group_appbar)
     AppBarLayout appBarLayout;
-    //    @BindView(R.id.group_scrollV)
-//    NestedScrollView scrollView;
+//    @BindView(R.id.group_toolbar2)
+//    Toolbar toolbar2;
+//    @BindView(R.id.group_collapsToolbar2)
+//    CollapsingToolbarLayout collapsingToolbarLayout2;
+//    @BindView(R.id.group_appbar2)
+//    AppBarLayout appBarLayout2;
     @BindView(R.id.group_coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.group_layout)
     LinearLayout layout;
+    @BindView(R.id.group_frame_Write)
+    FrameLayout writeBtnFrame;
 
     private DrawerMenu drawerMenu;
 
@@ -110,6 +116,8 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
                 category = 1;
             }
             intent.putExtra("category", category);
+            intent.putExtra("class", clubMemberClass.getMemberClass());
+            startActivity(intent);
 
         }
     }
@@ -262,7 +270,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
             homeAdapter.notifyDataSetChanged();
             viewpager.setOffscreenPageLimit(1);
-            writeBtn.setVisibility(View.GONE);
+            writeBtnFrame.setVisibility(View.GONE);
         } else {
             homeAdapter.clearFragment();
             homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
@@ -272,7 +280,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             homeAdapter.addFragment(new GroupManageFragment(), "설정", 4);
             homeAdapter.notifyDataSetChanged();
             viewpager.setOffscreenPageLimit(4);
-            writeBtn.setVisibility(View.VISIBLE);
+            writeBtnFrame.setVisibility(View.VISIBLE);
         }
     }
 

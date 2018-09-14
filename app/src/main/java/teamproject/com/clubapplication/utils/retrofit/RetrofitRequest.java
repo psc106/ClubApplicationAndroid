@@ -115,7 +115,7 @@ public interface RetrofitRequest {
 
     //클럽 검색
     @GET("mobile/selectClubInPage.do")
-    Call<ArrayList<Club>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Long category, @Query("page") Integer page);
+    Call<ArrayList<ClubView>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Long category, @Query("page") Integer page);
     @GET("mobile/getResultCount.do")
     Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
 //

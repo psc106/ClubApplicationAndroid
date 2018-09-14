@@ -21,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.SearchGroupListviewAdapter;
 import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.ClubView;
 import teamproject.com.clubapplication.db.DBManager;
 import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.DrawerMenu;
@@ -114,7 +115,7 @@ public class SearchActivity extends KeyHideActivity implements RefreshData {
     int page;
     int resultCount;
 
-    ArrayList<Club> arrayList;
+    ArrayList<ClubView> arrayList;
     DBManager dbManager;
     LoginService loginService;
 
@@ -182,10 +183,10 @@ public class SearchActivity extends KeyHideActivity implements RefreshData {
     }
 
     public void getData() {
-        Call<ArrayList<Club>> observer = RetrofitService.getInstance().getRetrofitRequest().selectClubInPage(main, local, category, page);
-        observer.enqueue(new Callback<ArrayList<Club>>() {
+        Call<ArrayList<ClubView>> observer = RetrofitService.getInstance().getRetrofitRequest().selectClubInPage(main, local, category, page);
+        observer.enqueue(new Callback<ArrayList<ClubView>>() {
             @Override
-            public void onResponse(Call<ArrayList<Club>> call, Response<ArrayList<Club>> response) {
+            public void onResponse(Call<ArrayList<ClubView>> call, Response<ArrayList<ClubView>> response) {
                 if(response.isSuccessful()){
                     arrayList.addAll(response.body());
                     CommonUtils.setListviewHeightBasedOnChildren(listViewSearchGroup);
@@ -195,7 +196,7 @@ public class SearchActivity extends KeyHideActivity implements RefreshData {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Club>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<ClubView>> call, Throwable t) {
             }
         });
     }

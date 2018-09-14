@@ -15,11 +15,11 @@ import butterknife.Unbinder;
 import teamproject.com.clubapplication.R;
 
 
-public class GroupWriteAlbumFragment extends Fragment {
-    private static GroupWriteAlbumFragment curr = null;
-    public static GroupWriteAlbumFragment getInstance() {
+public class GroupWriteBoardFragment extends Fragment {
+    private static GroupWriteBoardFragment curr = null;
+    public static GroupWriteBoardFragment getInstance() {
         if (curr == null) {
-            curr = new GroupWriteAlbumFragment();
+            curr = new GroupWriteBoardFragment();
         }
 
         return curr;
@@ -27,12 +27,15 @@ public class GroupWriteAlbumFragment extends Fragment {
 
     Unbinder unbinder;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_write_album, container, false);
+        View view = inflater.inflate(R.layout.fragment_write_board, container, false);
+
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
+
 
     @Override
     public void onDestroyView() {

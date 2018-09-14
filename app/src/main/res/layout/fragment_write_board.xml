@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.groupWriteBoardFragment">
+    tools:context=".fragment.GroupWriteBoardFragment">
 
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:textSize="20dp" />
 
         <EditText
-            android:id="@+id/writeBoard_frg_edt_Main"
+            android:id="@+id/writeBoard_edt_Main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6"
@@ -28,35 +28,52 @@
             android:textAlignment="textStart" />
         <!--사진 첨부 -->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/writeBoard_frg_recycleV"
+        <Button
+            android:id="@+id/writeBoard_btn_Add"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"></android.support.v7.widget.RecyclerView>
+            android:layout_weight="3"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/writeBoard_recycleV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:visibility="gone"></android.support.v7.widget.RecyclerView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="right">
+            android:gravity="right"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="앨범에 등록" />
+
             <CheckBox
-                android:id="@+id/writeBoard_frg_checkBtn"
+                android:id="@+id/writeBoard_checkBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <EditText
-            android:id="@+id/writeBoard_frg_edt_Tag"
+            android:id="@+id/writeBoard_edt_Tag"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:inputType="text"
             android:background="@drawable/back"
-            android:hint="ex)a, b, c"/>
+            android:hint="ex)a, b, c"
+            android:inputType="text" />
 
+        <Button
+            android:id="@+id/writeBoard_btn_Ok"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorTmp"
+            android:text="작성" />
     </LinearLayout>
 
 </FrameLayout>

@@ -3,44 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragment.GroupWriteAlbumFragment">
+    tools:context=".fragment.GroupWriteNoticeFragment">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/writeAlbum_btn_Add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <GridView
-            android:id="@+id/writeAlbum_grid"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/writeAlbum_btn_Ok"
-            android:layout_below="@id/writeAlbum_btn_Add"
-            android:layout_weight="1"
-            android:numColumns="4"
-            android:visibility="invisible"></GridView>
+            android:text="내용"
+            android:textSize="20dp" />
 
         <EditText
-            android:id="@+id/writeAlbum_edt_Tag"
+            android:id="@+id/writeNotice_edt_Main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="6"
             android:background="@drawable/back"
-            android:hint="ex)a, b, c"
-            android:inputType="text" />
+            android:textAlignment="textStart" />
 
         <Button
-            android:id="@+id/writeAlbum_btn_Ok"
+            android:id="@+id/writeNotice_btn_Ok"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
             android:background="@color/colorTmp"
             android:text="작성" />
     </LinearLayout>
+
 </RelativeLayout>

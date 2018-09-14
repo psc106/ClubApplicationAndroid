@@ -42,7 +42,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/groupWrite_toolbar"
-            android:layout_above="@+id/groupWrite_btn_Ok"
             android:orientation="vertical">
 
             <!--내용 부분 (fragment)-->
@@ -53,13 +52,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/groupWrite_btn_Ok"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorTmp"
-            android:text="작성" />
     </RelativeLayout>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

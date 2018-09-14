@@ -80,7 +80,6 @@ public class FindIdFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_find_id, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        idTxt.setText("zzzzzzzㅁㄴㅇㄹ");
         return view;
     }
 

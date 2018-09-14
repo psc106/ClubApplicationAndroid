@@ -13,12 +13,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.ClubView;
 
 public class SearchGroupListviewAdapter extends BaseAdapter {
 
-    ArrayList<Club> arrayList;
+    ArrayList<ClubView> arrayList;
 
-    public SearchGroupListviewAdapter(ArrayList<Club> arrayList) {
+    public SearchGroupListviewAdapter(ArrayList<ClubView> arrayList) {
         this.arrayList = arrayList;
     }
 
