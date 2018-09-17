@@ -111,13 +111,13 @@ public interface RetrofitRequest {
     @GET("mobile/selectMyCalendar.do")
     Call<ArrayList<CalendarSchedule>> selectMyCalendar(@Query("userId") Long userId, @Query("year") int year, @Query("month") int month);
     @GET("mobile/selectMyGroup.do")
-    Call<ArrayList<Club>> selectMyClub(@Query("userId") Long userId);
+    Call<ArrayList<ClubView>> selectMyClub(@Query("userId") Long userId);
 
     //클럽 검색
     @GET("mobile/selectClubInPage.do")
-    Call<ArrayList<ClubView>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Long category, @Query("page") Integer page);
+    Call<ArrayList<ClubView>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Integer category, @Query("page") Integer page);
     @GET("mobile/getResultCount.do")
-    Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
+    Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Integer category);
 //
 //    @GET
 //    Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);

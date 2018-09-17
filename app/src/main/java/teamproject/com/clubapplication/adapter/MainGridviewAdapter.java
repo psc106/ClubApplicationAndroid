@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.utils.customView.XYFitImageView;
+import teamproject.com.clubapplication.utils.customView.XYFitTextView;
 import teamproject.com.clubapplication.utils.glide.GlideApp;
 
 public class MainGridviewAdapter extends BaseAdapter {
@@ -48,7 +49,8 @@ public class MainGridviewAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
 
-        GlideApp.with(convertView).load("http://placehold.it/100").into(holder.imgGv);
+//        GlideApp.with(convertView).load("http://placehold.it/100").into(holder.imgGv);
+        holder.textView.setText((String)getItem(position));
         return convertView;
 
     }
@@ -56,8 +58,10 @@ public class MainGridviewAdapter extends BaseAdapter {
 
 
     class Holder {
-        @BindView(R.id.img_gv)
-        XYFitImageView imgGv;
+//        @BindView(R.id.img_gv)
+//        XYFitImageView imgGv;
+        @BindView(R.id.main_GridV_ctext_Text)
+        XYFitTextView textView;
 
         Holder(View view) {
             ButterKnife.bind(this, view);

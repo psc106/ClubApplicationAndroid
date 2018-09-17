@@ -7,18 +7,18 @@
 
     <TextView
         android:id="@+id/lv_group_home_notice_txt_date"
-        android:padding="10dp"
-        android:text="날짜"
+        android:text="2011/01/01"
         android:textSize="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="3"/>
 
     <TextView
         android:id="@+id/lv_group_home_notice_txt_notice"
-        android:padding="10dp"
         android:text="제목"
         android:textSize="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="6"/>
 
 </LinearLayout>

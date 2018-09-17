@@ -91,6 +91,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     GroupViewpagerAdapter homeAdapter;
     LoginService loginService;
     private ClubMemberClass clubMemberClass = null;
+    LoadingDialog loadingDialog;
     Bus bus;
     Long clubId;
 
@@ -128,6 +129,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
+        loadingDialog = LoadingDialog.getInstance();
         Intent intent = getIntent();
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
@@ -143,7 +145,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             finish();
             //실패처리
         } else {
-            final LoadingDialog loadingDialog = LoadingDialog.getInstance();
+            Log.d("로그", "onCreate: "+loadingDialog);
             loadingDialog.progressON(this, "메세지");
             Long userId = -1L;
             if (loginService.getMember() != null)
@@ -216,7 +218,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     @Subscribe
     void finishLoad(ClubLoadEvent clubLoadEvent) {
-        if (this.clubId == clubLoadEvent.getClubMemberClass().getClub().getId()) {
+        if (this.clubId == clubLoadEvent.getClubMemberClass().getClubView().getId()) {
             refresh();
         }
     }
@@ -252,7 +254,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     @Override
     public void refresh() {
-        Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
+        Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClubView().getId());
         imgObserver.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -300,7 +302,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
      */
     private void hideView(final View view) {
 
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
         mIsHiding = true;
         ViewPropertyAnimator animator = view.animate()
@@ -318,7 +319,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
                 mIsHiding = false;
 
                 appBarLayout.setActivated(false);
-                appBarLayout.setVisibility(View.GONE);
 
                 ishideState = true;
             }
@@ -358,9 +358,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         animator.setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                appBarLayout.setVisibility(View.VISIBLE);
-//                appBarLayout.setExpanded(true, true);
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewpager.getLayoutParams();
             }
 
             @Override
@@ -387,5 +384,10 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         animator.start();
     }
 
+    @Override
+    public void onBackPressed() {
+        loadingDialog.progressOFF();
+        super.onBackPressed();
+    }
 }
 

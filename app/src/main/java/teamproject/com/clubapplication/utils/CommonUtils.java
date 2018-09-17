@@ -50,6 +50,7 @@ import teamproject.com.clubapplication.MyOptionActivity;
 public class CommonUtils {
     public static String TAG = "로그";
     public static String serverURL = "http://192.168.0.70:8090/club_application/";
+    public static String attachPath = "resources/upload/";
 //    public static String serverURL = "http://192.168.25.11:8090/club_application/";
 
     public static boolean isLoginNeedActivity(Activity activity) {
@@ -73,6 +74,8 @@ public class CommonUtils {
             // pre-condition
             return ;
         }
+        listView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
 
         int totalHeight = 0;
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);

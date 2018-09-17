@@ -45,8 +45,6 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
     EditText groupBoardTxtSearch;
     @BindView(R.id.group_board_btn_search)
     Button groupBoardBtnSearch;
-    @BindView(R.id.group_board_btn_write)
-    Button groupBoardBtnWrite;
     Unbinder unbinder;
 
     ArrayList<PostView> arrayList;
@@ -88,12 +86,6 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
 
     }
 
-    @OnClick(R.id.group_board_btn_write)
-    void write(){
-        Intent intent = new Intent(getActivity(), GroupWriteActivity.class);
-        startActivity(intent);
-    }
-
 
     @Override
     public void onDestroyView() {
@@ -112,7 +104,7 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
 
 
     public void getData() {
-        Call<ArrayList<PostView>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubPost(clubMemberClass.getClub().getId(), page);
+        Call<ArrayList<PostView>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubPost(clubMemberClass.getClubView().getId(), page);
         observer.enqueue(new Callback<ArrayList<PostView>>() {
             @Override
             public void onResponse(Call<ArrayList<PostView>> call, Response<ArrayList<PostView>> response) {
@@ -129,7 +121,7 @@ public class GroupBoardFragment extends Fragment  implements RefreshData {
     }
 
     public void getCount(){
-        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getPostCount(clubMemberClass.getClub().getId());
+        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getPostCount(clubMemberClass.getClubView().getId());
         observer.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

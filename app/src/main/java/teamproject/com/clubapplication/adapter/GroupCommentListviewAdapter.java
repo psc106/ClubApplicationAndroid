@@ -45,7 +45,7 @@ public class GroupCommentListviewAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
         //날짜 , 공지
-
+//        setCompoundDrawablesWithIntrinsicBounds
         return convertView;
 
     }

@@ -5,12 +5,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <teamproject.com.clubapplication.utils.customView.XYFitImageView
-        android:id="@+id/img_gv"
+    <!--<teamproject.com.clubapplication.utils.customView.XYFitImageView-->
+        <!--android:id="@+id/img_gv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:scaleType="fitXY"/>-->
+
+    <teamproject.com.clubapplication.utils.customView.XYFitTextView
+        android:id="@+id/main_GridV_ctext_Text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:scaleType="fitXY"/>
-
+        android:textSize="20dp"
+        android:text="empty"/>
 </LinearLayout>

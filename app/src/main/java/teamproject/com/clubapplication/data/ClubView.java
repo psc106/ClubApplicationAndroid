@@ -15,6 +15,7 @@ public class ClubView {
 
     private long id;
     private long category_id;
+    private long member_id;
     private String nickname;
     private String imgUrl;
     private String name;

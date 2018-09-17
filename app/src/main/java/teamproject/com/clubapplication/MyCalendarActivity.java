@@ -45,6 +45,7 @@ import teamproject.com.clubapplication.data.Schedule;
 
 import teamproject.com.clubapplication.utils.DrawerMenu;
 
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.LoginService;
 
 import teamproject.com.clubapplication.utils.RefreshData;
@@ -170,5 +171,11 @@ public class MyCalendarActivity extends AppCompatActivity implements RefreshData
         });
 
         Log.d("로그", "refresh: "+year+month+loginService.getMember().getId());
+    }
+
+    @Override
+    public void onBackPressed() {
+        LoadingDialog.getInstance().progressOFF();
+        super.onBackPressed();
     }
 }

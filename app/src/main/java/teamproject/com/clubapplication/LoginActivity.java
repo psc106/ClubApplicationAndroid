@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,7 +20,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.data.Member;
+import teamproject.com.clubapplication.utils.Configs;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
@@ -48,6 +51,13 @@ public class LoginActivity extends KeyHideActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("login_setting", Context.MODE_PRIVATE);
+        String pw = sharedPreferences.getString("user_pw_save", "");
+        String id = sharedPreferences.getString("user_id_save", "");
+
+        login_id.setText(id);
+        login_pw.setText(pw);
     }
 
     @OnClick(R.id.btn_login)
@@ -137,5 +147,11 @@ public class LoginActivity extends KeyHideActivity {
     protected void onDestroy() {
         super.onDestroy();
         activity = null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        LoadingDialog.getInstance().progressOFF();
+        super.onBackPressed();
     }
 }

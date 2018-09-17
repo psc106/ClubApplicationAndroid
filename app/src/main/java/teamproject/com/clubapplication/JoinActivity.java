@@ -149,7 +149,6 @@ public class JoinActivity extends KeyHideActivity {
         if (!TextUtils.isEmpty(edtPhone.getText())) {
             phone = edtPhone.getText().toString();
         }
-        final LoadingDialog loadingDialog = LoadingDialog.getInstance();
         loadingDialog.progressON(this, "메일 발송중");
 
         Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().insertMember(loginId, loginPw, name, birthday, gender, local, phone);
@@ -188,13 +187,14 @@ public class JoinActivity extends KeyHideActivity {
     String regexTel = "^\\d{2,3}-?\\d{3,4}-?\\d{4}$";
     Calendar birthCalendar;
 
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         ButterKnife.bind(this);
-
+        loadingDialog = LoadingDialog.getInstance();
         birthCalendar = Calendar.getInstance();
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
 
@@ -396,5 +396,11 @@ public class JoinActivity extends KeyHideActivity {
     protected void onDestroy() {
         super.onDestroy();
         activity = null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        loadingDialog.progressOFF();
+        super.onBackPressed();
     }
 }

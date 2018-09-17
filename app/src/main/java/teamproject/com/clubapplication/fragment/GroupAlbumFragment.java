@@ -80,7 +80,7 @@ public class GroupAlbumFragment extends Fragment implements RefreshData {
 
 
     public void getData() {
-        Call<ArrayList<AlbumView>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubAlbum(clubMemberClass.getClub().getId(), page);
+        Call<ArrayList<AlbumView>> observer  = RetrofitService.getInstance().getRetrofitRequest().selectClubAlbum(clubMemberClass.getClubView().getId(), page);
         observer.enqueue(new Callback<ArrayList<AlbumView>>() {
             @Override
             public void onResponse(Call<ArrayList<AlbumView>> call, Response<ArrayList<AlbumView>> response) {
@@ -97,7 +97,7 @@ public class GroupAlbumFragment extends Fragment implements RefreshData {
     }
 
     public void getCount(){
-        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getAlbumCount(clubMemberClass.getClub().getId());
+        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getAlbumCount(clubMemberClass.getClubView().getId());
         observer.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

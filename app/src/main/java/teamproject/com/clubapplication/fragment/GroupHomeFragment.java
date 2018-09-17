@@ -3,6 +3,8 @@ package teamproject.com.clubapplication.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -30,7 +33,9 @@ import teamproject.com.clubapplication.adapter.GroupHomeListviewAdapter;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.Notice;
+import teamproject.com.clubapplication.db.DBManager;
 import teamproject.com.clubapplication.utils.CommonUtils;
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
@@ -55,20 +60,24 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     ListView groupHomeLvNotice;
     @BindView(R.id.group_home_btn_join)
     Button groupHomeBtnJoin;
+    @BindView(R.id.groupHome_txt_Title)
+    TextView title;
+    @BindView(R.id.groupHome_scrollV)
+    NestedScrollView scrollView;
 
     Unbinder unbinder;
 
     @OnClick(R.id.group_home_btn_join)
     void joinClick() {
         if (loginService.getMember() != null && clubMemberClass != null) {
-            Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().joinClub(clubMemberClass.getClub().getId(), loginService.getMember().getId());
+            Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().joinClub(clubMemberClass.getClubView().getId(), loginService.getMember().getId());
             observer.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         if (clubMemberClass != null) {
                             Intent intent = new Intent(getActivity(), GroupActivity.class);
-                            intent.putExtra("clubId", clubMemberClass.getClub().getId());
+                            intent.putExtra("clubId", clubMemberClass.getClubView().getId());
                             clubMemberClass.setMemberClass("O");
                             startActivity(intent);
                             getActivity().finish();
@@ -88,6 +97,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     ArrayList<Notice> arrayList;
     Bus bus;
     ClubMemberClass clubMemberClass;
+    DBManager dbManager;
     LoginService loginService;
     int page = 1;
     int count = 0;
@@ -117,6 +127,43 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
         groupHomeNoticeListviewAdapter = new GroupHomeListviewAdapter(arrayList);
         groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
         clubMemberClass = ((GroupActivity) getActivity()).getClubMemberClass();
+        dbManager = new DBManager(getContext(), DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
+
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollView.getChildAt(0).getBottom()
+                        <= (scrollView.getHeight() + scrollView.getScrollY())) {
+//                    if(page*10<count) {
+//                        page++;
+//                        getData();
+////                    }
+
+                    page++;
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        arrayList.add(new Notice());
+                        groupHomeNoticeListviewAdapter.notifyDataSetChanged();
+                        CommonUtils.setListviewHeightBasedOnChildren(groupHomeLvNotice);
+                    Toast.makeText(getContext(), page+"", Toast.LENGTH_SHORT).show();
+
+                    scrollView.fling(0);
+                    scrollView.scrollBy(0,0);
+                    //scroll view is at bottom
+                }
+            }
+        });
+
+
 
         return view;
     }
@@ -132,7 +179,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     @Override
     public void onPause() {
         super.onPause();
-        isLoad=false;
+        isLoad = false;
     }
 
     @Override
@@ -146,22 +193,45 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     public void refresh() {
         page = 1;
 
-        if(clubMemberClass==null) {
-            if(isLoad)
-                ((MainActivity)(MainActivity.activity)).backHomeActivity(getActivity());
+        if (clubMemberClass == null) {
+            if (isLoad)
+                ((MainActivity) (MainActivity.activity)).backHomeActivity(getActivity());
             return;
         }
 
-        if(!clubMemberClass.getMemberClass().equals("O")){
-            Call<String> observer = RetrofitService.getInstance().getRetrofitRequest().refreshMemberClass(clubMemberClass.getClub().getId(), loginService.getMember().getId());
+        groupHomeTxtCategory.setText(dbManager.getCategoryFromId(clubMemberClass.getClubView().getCategory_id()));
+        groupHomeTxtGroupCount.setText(clubMemberClass.getClubView().getCur_people() + "/" + clubMemberClass.getClubView().getMax_people());
+        groupHomeTxtInfo.setText(clubMemberClass.getClubView().getIntro());
+        groupHomeTxtLocation.setText(clubMemberClass.getClubView().getLocal());
+        groupHomeTxtMaster.setText(clubMemberClass.getClubView().getNickname());
+        title.setText(clubMemberClass.getClubView().getName());
+
+
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        arrayList.add(new Notice());
+        groupHomeNoticeListviewAdapter.notifyDataSetChanged();
+        CommonUtils.setListviewHeightBasedOnChildren(groupHomeLvNotice);
+
+
+        if (!clubMemberClass.getMemberClass().equals("O")) {
+            Call<String> observer = RetrofitService.getInstance().getRetrofitRequest().refreshMemberClass(clubMemberClass.getClubView().getId(), loginService.getMember().getId());
             observer.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    if(response.isSuccessful()) {
+                    if (response.isSuccessful()) {
                         clubMemberClass.setMemberClass(response.body());
                     }
 
-                    if(clubMemberClass.getMemberClass().equals("N")){
+                    if (clubMemberClass.getMemberClass().equals("N")) {
                         groupHomeBtnJoin.setVisibility(View.VISIBLE);
                     } else {
                         groupHomeBtnJoin.setVisibility(View.GONE);
@@ -183,7 +253,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
 
     public void getData() {
 
-        Call<ArrayList<Notice>> observer = RetrofitService.getInstance().getRetrofitRequest().selectClubNotice(clubMemberClass.getClub().getId(), page);
+        Call<ArrayList<Notice>> observer = RetrofitService.getInstance().getRetrofitRequest().selectClubNotice(clubMemberClass.getClubView().getId(), page);
         observer.enqueue(new Callback<ArrayList<Notice>>() {
             @Override
             public void onResponse(Call<ArrayList<Notice>> call, Response<ArrayList<Notice>> response) {
@@ -202,7 +272,7 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
     }
 
     public void getCount() {
-        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getNoticeCount(clubMemberClass.getClub().getId());
+        Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getNoticeCount(clubMemberClass.getClubView().getId());
         observer.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

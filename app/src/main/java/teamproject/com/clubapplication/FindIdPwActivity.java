@@ -14,11 +14,13 @@ import butterknife.OnClick;
 import teamproject.com.clubapplication.fragment.FindIdFragment;
 import teamproject.com.clubapplication.fragment.FindPwFragment;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 
 public class FindIdPwActivity extends KeyHideActivity {
     public static Activity activity;
     Fragment fragment;
+    LoadingDialog loadingDialog;
 
     @BindView(R.id.btn_find_id) Button btn_find_id;
     @BindView(R.id.btn_find_pw) Button btn_find_pw;
@@ -42,6 +44,8 @@ public class FindIdPwActivity extends KeyHideActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_id_pw);
         ButterKnife.bind(this);
+        loadingDialog = LoadingDialog.getInstance();
+
 
         Intent intent = getIntent();
         Integer findIdentifier = intent.getIntExtra("findValue", 1);
@@ -80,4 +84,9 @@ public class FindIdPwActivity extends KeyHideActivity {
         activity = null;
     }
 
+    @Override
+    public void onBackPressed() {
+        loadingDialog.progressOFF();
+        super.onBackPressed();
+    }
 }

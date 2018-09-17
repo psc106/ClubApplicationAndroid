@@ -17,6 +17,7 @@ import teamproject.com.clubapplication.adapter.MyAlarmListviewAdapter;
 import teamproject.com.clubapplication.data.Alarm;
 import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
@@ -104,5 +105,11 @@ public class MyAlarmActivity extends AppCompatActivity implements RefreshData {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        LoadingDialog.getInstance().progressOFF();
+        super.onBackPressed();
     }
 }

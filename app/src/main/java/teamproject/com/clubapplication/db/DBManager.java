@@ -181,6 +181,22 @@ public class DBManager extends SQLiteOpenHelper {
         }
         return arrayList.toArray(new String[0]);
     }
+
+
+    public String getCategoryFromId(Long id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String result = null;
+
+        query = String.format("SELECT %s ", CATEGORY_NAME) +
+                String.format(" FROM %s ", CATEGORY_TABLE) +
+                String.format(" WHERE %s = %d ", CATEGORY_CODE, id);
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            result = cursor.getString(0);
+        }
+        return result;
+    }
 //        Log.d(TAG, "dbsc3: "+arrayList);
 //        Log.d(TAG, "getCurrentEventCountOnTime: "+query);
 }

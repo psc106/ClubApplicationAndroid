@@ -61,7 +61,7 @@ public class LoadingDialog {
             progressSET(message);
         } else {
             progressDialog = new AppCompatDialog(activity);
-            progressDialog.setCancelable(false);
+            progressDialog.setCancelable(true);
             progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             progressDialog.setContentView(R.layout.dialog_loading); progressDialog.show();
         }
@@ -93,4 +93,5 @@ public class LoadingDialog {
             progressDialog.dismiss();
         }
     }
+
 }
