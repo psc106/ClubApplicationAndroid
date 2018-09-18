@@ -77,7 +77,7 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
         unbinder = ButterKnife.bind(this, view);
         postId = getArguments().getLong("postId");
         commentList = new ArrayList<>();
-        adapter = new GroupCommentListviewAdapter(commentList);
+        adapter = new GroupCommentListviewAdapter(getContext(), commentList);
         listView.setAdapter(adapter);
 
         return view;

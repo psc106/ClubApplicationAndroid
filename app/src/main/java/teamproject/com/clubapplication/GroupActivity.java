@@ -3,6 +3,7 @@ package teamproject.com.clubapplication;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
@@ -118,6 +120,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             }
             intent.putExtra("category", category);
             intent.putExtra("class", clubMemberClass.getMemberClass());
+            intent.putExtra("clubId", clubMemberClass.getClubView().getId());
             startActivity(intent);
 
         }
@@ -175,6 +178,9 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
             @Override
             public void onPageSelected(int position) {
+                RefreshData refreshData = (RefreshData)(homeAdapter.getItem(position));
+                refreshData.refresh();
+
                 if (position > 0) {
                     if (!ishideState) {
                         hideView(appBarLayout);
@@ -189,6 +195,29 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        coordinatorLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                Rect r = new Rect();
+                coordinatorLayout.getWindowVisibleDisplayFrame(r);
+                int screenHeight = coordinatorLayout.getRootView().getHeight();
+
+                // r.bottom is the position above soft keypad or device button.
+                // if keypad is shown, the r.bottom is smaller than that before.
+                int keypadHeight = screenHeight - r.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                    // keyboard is opened
+                    writeBtnFrame.setVisibility(View.GONE);
+                }
+                else {
+                    writeBtnFrame.setVisibility(View.VISIBLE);
+                    // keyboard is closed
+                }
             }
         });
 
@@ -259,7 +288,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    GlideApp.with(GroupActivity.this).load(CommonUtils.serverURL + response.body()).centerCrop().into(imageView);
+                    GlideApp.with(GroupActivity.this).load(CommonUtils.serverURL + CommonUtils.attachPath+ response.body()).skipMemoryCache(true).centerCrop().into(imageView);
                 }
             }
 
@@ -389,5 +418,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         loadingDialog.progressOFF();
         super.onBackPressed();
     }
+
+
 }
 

@@ -64,7 +64,7 @@ public class MyClubListviewAdapter extends BaseAdapter {
         holder.lvMyGroupLocation.setText(clubView.getLocal());
         holder.lvMyGroupMaker.setText(clubView.getNickname());
         holder.lvMyGroupTitle.setText(clubView.getName());
-        GlideApp.with(context).load(CommonUtils.serverURL+CommonUtils.attachPath+clubView.getImgUrl()).centerCrop().into(holder.lvMyGroupImg);
+        GlideApp.with(context).load(CommonUtils.serverURL+CommonUtils.attachPath+clubView.getImgUrl()).centerCrop().skipMemoryCache(true).into(holder.lvMyGroupImg);
 
 
         return convertView;

@@ -23,8 +23,8 @@ public class XYFitImageView extends ImageView {
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
     {
-        final int width = getDefaultSize(getSuggestedMinimumWidth(),widthMeasureSpec);
-        setMeasuredDimension(width, width);
+        final int height = getDefaultSize(getSuggestedMinimumHeight(),heightMeasureSpec);
+        setMeasuredDimension(height, height);
     }
 
     @Override

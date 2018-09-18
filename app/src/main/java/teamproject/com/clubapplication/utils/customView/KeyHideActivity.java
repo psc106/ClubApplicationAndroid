@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -21,9 +22,7 @@ public class KeyHideActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
-
     }
-
 
     @Override
     protected void onResume() {
@@ -83,4 +82,7 @@ public class KeyHideActivity extends AppCompatActivity {
 
         return super.dispatchTouchEvent(ev);
     }
+
+
+
 }

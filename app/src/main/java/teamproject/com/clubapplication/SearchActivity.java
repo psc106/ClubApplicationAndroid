@@ -264,7 +264,6 @@ public class SearchActivity extends KeyHideActivity implements RefreshData {
             public void onResponse(Call<ArrayList<ClubView>> call, Response<ArrayList<ClubView>> response) {
                 if (response.isSuccessful()) {
                     arrayList.addAll(response.body());
-                    CommonUtils.setListviewHeightBasedOnChildren(listViewSearchGroup);
                     searchGroupListviewAdapter.notifyDataSetChanged();
                     CommonUtils.setListviewHeightBasedOnChildren(listViewSearchGroup);
                 }

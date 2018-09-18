@@ -67,7 +67,7 @@ public class SearchGroupListviewAdapter extends BaseAdapter {
         holder.lvSearchGroupLocation.setText(clubView.getLocal());
         holder.lvSearchGroupMaker.setText(clubView.getNickname());
         holder.lvSearchGroupTitle.setText(clubView.getName());
-        GlideApp.with(context).load(CommonUtils.serverURL+CommonUtils.attachPath+clubView.getImgUrl()).centerCrop().into(holder.lvSearchGroupImg);
+        GlideApp.with(context).load(CommonUtils.serverURL+CommonUtils.attachPath+clubView.getImgUrl()).placeholder(R.drawable.club_default).error(R.drawable.club_default).skipMemoryCache(true).centerCrop().into(holder.lvSearchGroupImg);
 
         return convertView;
     }
