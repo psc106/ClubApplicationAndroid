@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,7 +35,7 @@ import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class GroupBoardListviewAdapter extends BaseAdapter {
+public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
 
     ArrayList<PostFrame> arrayList;
     Context context;
@@ -45,94 +47,74 @@ public class GroupBoardListviewAdapter extends BaseAdapter {
         loginService = LoginService.getInstance();
     }
 
+
     @Override
-    public int getCount() {
+    public int getGroupCount() {
         return arrayList.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return arrayList.get(position);
+    public int getChildrenCount(int groupPosition) {
+        return arrayList.get(groupPosition).getCommentView().size();
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public Object getGroup(int groupPosition) {
+        return arrayList.get(groupPosition).getPostView();
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final Holder holder;
+    public Object getChild(int groupPosition, int childPosition) {
+        return arrayList.get(groupPosition).getCommentView().get(childPosition);
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        final PostHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_gorup_board, parent, false);
 
-            holder = new Holder(convertView);
+            holder = new PostHolder(convertView);
             convertView.setTag(holder);
         } else {
-            holder = (Holder) convertView.getTag();
+            holder = (PostHolder) convertView.getTag();
         }
-        final PostFrame currPostFrame = (PostFrame) getItem(position);
-        final PostView currPostView = currPostFrame.getPostView();
+
+        final PostView currPostView = (PostView) getGroup(groupPosition);
 
         holder.groupBoardLvTxtContent.setText(currPostView.getContent());
         holder.groupBoardLvTxtDate.setText(currPostView.getCreate_date());
         holder.groupBoardLvTxtProfileName.setText(currPostView.getNickname());
         GlideApp.with(context).load(currPostView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupBoardLvImgProfileImg);
 
-        holder.listviewAdapter.notifyDataSetChanged();
 
-        if(currPostFrame.getCommentView()!=null && currPostFrame.getCommentView().size()>0) {
-            Log.d("로그", "onResponse: "+1);
-            holder.commentList.clear();
-            holder.commentList.addAll(currPostFrame.getCommentView());
-            holder.listviewAdapter.notifyDataSetChanged();
-        }
 
         holder.groupBoardLvBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(loginService.getMember()==null){
+                if (loginService.getMember() == null) {
                     Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
                 }
 
-                if(!TextUtils.isEmpty(holder.groupBoardLvEdtComment.getText())){
+                if (!TextUtils.isEmpty(holder.groupBoardLvEdtComment.getText())) {
                     String comment = holder.groupBoardLvEdtComment.getText().toString();
-                    Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().insertComment(currPostView.getId(), loginService.getMember().getId(), comment);
-                    observer.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if(response.isSuccessful()){
-
-                                if(arrayList.get(position).getCommentView().size()<=5){
-
-                                    Call<ArrayList<CommentView>> observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(currPostView.getId());
-                                    observer.enqueue(new Callback<ArrayList<CommentView>>() {
-                                        @Override
-                                        public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
-                                            if(response.isSuccessful()){
-
-                                                currPostFrame.getCommentView().clear();
-                                                currPostFrame.setCommentView(response.body());
-                                                holder.listviewAdapter.notifyDataSetChanged();
-                                                CommonUtils.setListviewHeightBasedOnChildren(holder.groupBoardLvListVComment);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<ArrayList<CommentView>> call, Throwable t) {
-
-                                        }
-                                    });
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-
-                        }
-                    });
+                    writeComment(currPostView, comment);
                 }
             }
         });
@@ -141,7 +123,54 @@ public class GroupBoardListviewAdapter extends BaseAdapter {
 
     }
 
-    class Holder {
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        CommentHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_comment, parent, false);
+
+            holder = new CommentHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (CommentHolder) convertView.getTag();
+        }
+
+        CommentView currCommentView = (CommentView)getChild(groupPosition, childPosition);
+
+        holder.groupCommentEdtContent.setText(currCommentView.getContent());
+        holder.groupCommentTxtDate.setText(currCommentView.getCreate_date());
+        holder.groupCommentTxtNickname.setText(currCommentView.getNickname());
+        GlideApp.with(context).load(currCommentView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupCommentImgProfile);
+
+        return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+
+
+
+    void writeComment(final PostView post, String commentContents) {
+        Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().insertComment(post.getId(), loginService.getMember().getId(), commentContents);
+        observer.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    class PostHolder {
         @BindView(R.id.groupBoard_lv_img_profileImg)
         ImageView groupBoardLvImgProfileImg;
         @BindView(R.id.groupBoard_lv_txt_profileName)
@@ -150,8 +179,6 @@ public class GroupBoardListviewAdapter extends BaseAdapter {
         TextView groupBoardLvTxtDate;
         @BindView(R.id.groupBoard_lv_txt_content)
         TextView groupBoardLvTxtContent;
-        @BindView(R.id.groupBoard_lv_listV_comment)
-        ListView groupBoardLvListVComment;
 
         @BindView(R.id.groupBoard_lv_edt_comment)
         EditText groupBoardLvEdtComment;
@@ -163,15 +190,36 @@ public class GroupBoardListviewAdapter extends BaseAdapter {
         @BindView(R.id.groupBoard_lv_img_count)
         ImageView groupBoardLvImgCount;
 
-        GroupCommentListviewAdapter listviewAdapter;
-        ArrayList<CommentView> commentList;
-
-        public Holder(View view) {
+        public PostHolder(View view) {
             ButterKnife.bind(this, view);
-            commentList = new ArrayList<>();
-            listviewAdapter = new GroupCommentListviewAdapter(context, commentList);
-            groupBoardLvListVComment.setAdapter(listviewAdapter);
+            groupBoardLvEdtComment.setFocusable(false);
+            groupBoardLvEdtComment.setFocusableInTouchMode(false);
+            groupBoardLvBtnComment.setFocusable(false);
+            groupBoardLvBtnComment.setFocusableInTouchMode(false);
         }
     }
 
+
+    class CommentHolder {
+        @BindView(R.id.groupComment_img_profile)
+        ImageView groupCommentImgProfile;
+        @BindView(R.id.groupComment_txt_nickname)
+        TextView groupCommentTxtNickname;
+        @BindView(R.id.groupComment_txt_date)
+        TextView groupCommentTxtDate;
+        @BindView(R.id.groupComment_imgBtn_del)
+        Button groupCommentImgBtnDel;
+        @BindView(R.id.groupComment_imgBtn_modify)
+        Button groupCommentImgBtnModify;
+        @BindView(R.id.groupComment_edt_content)
+        EditText groupCommentEdtContent;
+
+        CommentHolder(View view) {
+            ButterKnife.bind(this, view);
+            groupCommentImgBtnDel.setFocusable(false);
+            groupCommentImgBtnDel.setFocusableInTouchMode(false);
+            groupCommentImgBtnModify.setFocusable(false);
+            groupCommentImgBtnModify.setFocusableInTouchMode(false);
+        }
+    }
 }

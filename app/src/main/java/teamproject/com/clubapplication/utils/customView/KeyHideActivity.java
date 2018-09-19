@@ -6,17 +6,20 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class KeyHideActivity extends AppCompatActivity {
 
     float firstX;
     float firstY;
+    public boolean isKeyboard = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +34,9 @@ public class KeyHideActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(!isKeyboard)
+            return super.dispatchTouchEvent(ev);
+
         if(ev.getAction()==MotionEvent.ACTION_DOWN){
             firstY = ev.getY();
             firstX = ev.getX();

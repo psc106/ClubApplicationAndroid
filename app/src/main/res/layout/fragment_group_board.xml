@@ -24,6 +24,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <View
+                    android:id="@+id/hiddenFocus"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <EditText
                     android:id="@+id/group_board_txt_search"
@@ -40,11 +46,11 @@
                     android:background="@drawable/search" />
             </LinearLayout>
 
-            <ListView
+            <ExpandableListView
                 android:id="@+id/groupBoard_listV"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:groupIndicator="@null" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

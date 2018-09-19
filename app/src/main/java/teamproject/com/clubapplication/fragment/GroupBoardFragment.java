@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,9 +48,11 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     @BindView(R.id.group_board_btn_search)
     Button groupBoardBtnSearch;
     @BindView(R.id.groupBoard_listV)
-    ListView groupBoardListV;
+    ExpandableListView groupBoardListV;
     @BindView(R.id.groupBoard_scroll)
     NestedScrollView scrollView;
+    @BindView(R.id.hiddenFocus)
+    View view;
 
 
     Unbinder unbinder;
@@ -74,12 +78,35 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
         groupBoardListV.setAdapter(groupBoardListviewAdapter);
         clubMemberClass = ((GroupActivity) getActivity()).getClubMemberClass();
 
-        groupBoardListV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        groupBoardListV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), GroupPostDetailActivity.class);
-                intent.putExtra("postData", arrayList.get(position).getPostView().getId());
-                startActivity(intent);
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                Log.d("로그", "g click = " + groupPosition);
+                return false;
+            }
+        });
+
+
+        groupBoardListV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                Log.d("로그", "c click = " + childPosition);
+                return false;
+            }
+        });
+
+        groupBoardListV.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Log.d("로그", "g Collapse = " + groupPosition);
+            }
+        });
+
+        groupBoardListV.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Log.d("로그", "g Expand = " + groupPosition);
             }
         });
 
@@ -89,24 +116,22 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollView.getChildAt(0).getBottom()
                         <= (scrollView.getHeight() + scrollView.getScrollY())) {
-                    if(page*4<count) {
+                    if (page * 4 < count) {
                         page++;
                         getData();
 
-                        page++;
                         groupBoardListviewAdapter.notifyDataSetChanged();
-                        CommonUtils.setListviewHeightBasedOnChildren(groupBoardListV);
-                        Toast.makeText(getContext(), page+"", Toast.LENGTH_SHORT).show();
+                        CommonUtils.setListViewHeight(groupBoardListV);
+                        Toast.makeText(getContext(), page + "", Toast.LENGTH_SHORT).show();
 
                         scrollView.fling(0);
-                        scrollView.scrollBy(0,0);
+                        scrollView.scrollBy(0, 0);
                     }
 
                     //scroll view is at bottom
                 }
             }
         });
-
 
         return view;
 
@@ -131,6 +156,7 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     @Override
     public void onResume() {
         super.onResume();
+        view.requestFocus();
         refresh();
     }
 
@@ -142,7 +168,14 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
                 if (response.isSuccessful()) {
                     arrayList.addAll(response.body());
                     groupBoardListviewAdapter.notifyDataSetChanged();
-                    CommonUtils.setListviewHeightBasedOnChildren(groupBoardListV);
+                    CommonUtils.setListViewHeight(groupBoardListV);
+
+
+                    Log.d("로그", "asd");
+                    for(int i = (page-1)*10; i < arrayList.size(); ++i) {
+                        groupBoardListV.expandGroup(i);
+                        Log.d("로그", "asd"+i);
+                    }
                 }
             }
 

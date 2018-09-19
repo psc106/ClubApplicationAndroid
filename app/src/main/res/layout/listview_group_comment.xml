@@ -37,17 +37,19 @@
                 android:layout_weight="1"
                 android:text="2011년 09월 11일" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/groupComment_imgBtn_del"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="#ff00ff" />
+                android:background="#ff00ff"
+                android:focusable="false" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/groupComment_imgBtn_modify"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="#0f0f0f" />
+                android:background="#0f0f0f"
+                android:focusable="false" />
 
         </LinearLayout>
 
@@ -57,9 +59,9 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="left|top"
-            android:text="asdfsadfsadfsadfsafasfd" />
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="left|top" />
 
     </LinearLayout>
 

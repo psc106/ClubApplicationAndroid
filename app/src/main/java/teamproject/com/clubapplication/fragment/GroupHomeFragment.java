@@ -123,6 +123,9 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
         bus.register(this);
         loginService = LoginService.getInstance();
 
+        groupHomeBtnJoin.setFocusable(false);
+        groupHomeBtnJoin.setFocusableInTouchMode(false);
+
         arrayList = new ArrayList<>();
         groupHomeNoticeListviewAdapter = new GroupHomeListviewAdapter(arrayList);
         groupHomeLvNotice.setAdapter(groupHomeNoticeListviewAdapter);
@@ -135,34 +138,20 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollView.getChildAt(0).getBottom()
                         <= (scrollView.getHeight() + scrollView.getScrollY())) {
-//                    if(page*10<count) {
-//                        page++;
-//                        getData();
-////                    }
+                    if (page * 10 < count) {
+                        page++;
+                        getData();
 
-                    page++;
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        arrayList.add(new Notice());
-                        groupHomeNoticeListviewAdapter.notifyDataSetChanged();
-                        CommonUtils.setListviewHeightBasedOnChildren(groupHomeLvNotice);
-                    Toast.makeText(getContext(), page+"", Toast.LENGTH_SHORT).show();
-
-                    scrollView.fling(0);
-                    scrollView.scrollBy(0,0);
-                    //scroll view is at bottom
+                        Log.d("로그", ""+page);
+                        if(page>2) {
+                            scrollView.fling(0);
+                            scrollView.scrollBy(0, 0);
+                            //scroll view is at bottom
+                        }
+                    }
                 }
             }
         });
-
 
 
         return view;
@@ -206,22 +195,6 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
         groupHomeTxtMaster.setText(clubMemberClass.getClubView().getNickname());
         title.setText(clubMemberClass.getClubView().getName());
 
-
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        arrayList.add(new Notice());
-        groupHomeNoticeListviewAdapter.notifyDataSetChanged();
-        CommonUtils.setListviewHeightBasedOnChildren(groupHomeLvNotice);
-
-
         if (!clubMemberClass.getMemberClass().equals("O")) {
             Call<String> observer = RetrofitService.getInstance().getRetrofitRequest().refreshMemberClass(clubMemberClass.getClubView().getId(), loginService.getMember().getId());
             observer.enqueue(new Callback<String>() {
@@ -261,6 +234,9 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
                     if (response.body() != null) {
                         arrayList.addAll(response.body());
                         groupHomeNoticeListviewAdapter.notifyDataSetChanged();
+                        CommonUtils.setListviewHeightBasedOnChildren(groupHomeLvNotice);
+
+
                     }
                 }
             }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,7 +47,7 @@ public class GroupCommentListviewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_comment, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_comment_extend, parent, false);
 
             holder = new Holder(convertView);
             convertView.setTag(holder);
@@ -73,9 +74,9 @@ public class GroupCommentListviewAdapter extends BaseAdapter {
         @BindView(R.id.groupComment_txt_date)
         TextView groupCommentTxtDate;
         @BindView(R.id.groupComment_imgBtn_del)
-        ImageButton groupCommentImgBtnDel;
+        Button groupCommentImgBtnDel;
         @BindView(R.id.groupComment_imgBtn_modify)
-        ImageButton groupCommentImgBtnModify;
+        Button groupCommentImgBtnModify;
         @BindView(R.id.groupComment_edt_content)
         EditText groupCommentEdtContent;
 

@@ -188,7 +188,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
                 } else {
                     if (ishideState) {
                         showView(appBarLayout);
-//                        viewpager.scrollTo(0, offset);
                     }
                 }
             }
@@ -212,10 +211,17 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
                 if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
                     // keyboard is opened
-                    writeBtnFrame.setVisibility(View.GONE);
+                    if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
+                        writeBtnFrame.setVisibility(View.GONE);
+                    }
+                    isKeyboard = true;
+
                 }
                 else {
-                    writeBtnFrame.setVisibility(View.VISIBLE);
+                    if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
+                        writeBtnFrame.setVisibility(View.VISIBLE);
+                    }
+                    isKeyboard = false;
                     // keyboard is closed
                 }
             }
