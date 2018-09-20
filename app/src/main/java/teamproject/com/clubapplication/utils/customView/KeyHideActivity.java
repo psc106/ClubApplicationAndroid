@@ -19,7 +19,7 @@ public class KeyHideActivity extends AppCompatActivity {
 
     float firstX;
     float firstY;
-    public boolean isKeyboard = false;
+    public boolean isKeyboard = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,10 +32,16 @@ public class KeyHideActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    public void setPan() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN+WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(!isKeyboard)
+        if(!isKeyboard) {
+            Log.d("로그0", String.valueOf(super.dispatchTouchEvent(ev)));
             return super.dispatchTouchEvent(ev);
+        }
 
         if(ev.getAction()==MotionEvent.ACTION_DOWN){
             firstY = ev.getY();
@@ -45,16 +51,22 @@ public class KeyHideActivity extends AppCompatActivity {
             float lastY = ev.getY();
             float lastX = ev.getX();
             if(Math.abs(firstY-lastY)>70 && Math.abs(firstY-lastY)>Math.abs(firstX-lastX)+10){
+                Log.d("로그1", String.valueOf(super.dispatchTouchEvent(ev)));
                 return super.dispatchTouchEvent(ev);
             } else {
                 final View view = getCurrentFocus();
 
                 if (view != null) {
+                    Log.d("로그2", view.getClass().toString());
+
                     final boolean consumed = super.dispatchTouchEvent(ev);
+                    Log.d("로그3", String.valueOf(consumed));
 
                     final View viewTmp = getCurrentFocus();
                     final View viewNew = viewTmp != null ? viewTmp : view;
 
+                    Log.d("로그4", viewTmp.getClass().toString());
+                    Log.d("로그5", viewNew.getClass().toString());
                     if (viewNew.equals(view)) {
                         final Rect rect = new Rect();
                         final int[] coordinates = new int[2];
@@ -67,9 +79,11 @@ public class KeyHideActivity extends AppCompatActivity {
                         final int y = (int) ev.getY();
 
                         if (rect.contains(x, y)) {
+                            Log.d("로그6", x+"/"+y);
                             return consumed;
                         }
                     } else if (viewNew instanceof EditText) {
+                        Log.d("로그7", " a");
                         return consumed;
                     }
 
@@ -78,8 +92,10 @@ public class KeyHideActivity extends AppCompatActivity {
                     inputMethodManager.hideSoftInputFromWindow(viewNew.getWindowToken(), 0);
 
                     viewNew.clearFocus();
-                    viewNew.requestFocus();
+                    view.clearFocus();
+                    viewTmp.clearFocus();
 
+                    Log.d("로그8", " a");
                     return consumed;
                 }
             }

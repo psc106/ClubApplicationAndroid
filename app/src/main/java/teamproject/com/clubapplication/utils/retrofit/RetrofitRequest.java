@@ -80,6 +80,14 @@ public interface RetrofitRequest {
     @POST("mobile/insertComment.do")
     Call<Void> insertComment( @Field("postId")Long postId,  @Field("memberId")Long memberId,  @Field("content")String content);
 
+    @FormUrlEncoded
+    @POST("mobile/updateComment.do")
+    Call<Boolean> updateComment( @Field("commentId")Long commentId,  @Field("memberId")Long memberId,  @Field("content")String content);
+
+    @FormUrlEncoded
+    @POST("mobile/deleteComment.do")
+    Call<Boolean> deleteComment( @Field("commentId")Long commentId,  @Field("memberId")Long memberId);
+
     @Multipart
     @POST("mobile/insertPost.do")
     Call<ResponseBody> insertPost(@Part("content") RequestBody contentBody, @Part("tag") RequestBody tagBody, @Part("clubId") RequestBody clubIdBody, @Part("memberId") RequestBody memberIdBody,
@@ -129,6 +137,7 @@ public interface RetrofitRequest {
     Call<ArrayList<ClubView>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Integer category, @Query("page") Integer page);
     @GET("mobile/getResultCount.do")
     Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Integer category);
+
 //
 //    @GET
 //    Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);

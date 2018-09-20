@@ -156,6 +156,7 @@
                         android:layout_height="120dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/back"
+                        android:gravity="left|top"
                         android:text="test" />
 
 

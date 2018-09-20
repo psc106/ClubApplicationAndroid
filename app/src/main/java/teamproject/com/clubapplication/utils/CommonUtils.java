@@ -97,9 +97,10 @@ public class CommonUtils {
 
     public static void setListViewHeight(ExpandableListView listView) {
         ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+
         int totalHeight = 0;
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
-                View.MeasureSpec.EXACTLY);
+                View.MeasureSpec.AT_MOST);
         for (int i = 0; i < listAdapter.getGroupCount(); i++) {
             View groupItem = listAdapter.getGroupView(i, false, null, listView);
             groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
@@ -122,8 +123,8 @@ public class CommonUtils {
         int height = totalHeight
                 + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
         if (height < 10)
-            height = 200;
-        params.height = height;
+            height = 1000;
+        params.height = height+1000;
         listView.setLayoutParams(params);
         listView.requestLayout();
 

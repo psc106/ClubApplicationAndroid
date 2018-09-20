@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
     android:gravity="center|left"
     android:orientation="horizontal">
 
@@ -39,30 +39,34 @@
 
             <Button
                 android:id="@+id/groupComment_imgBtn_del"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="#ff00ff"
-                android:focusable="false" />
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:text="삭제"/>
 
             <Button
                 android:id="@+id/groupComment_imgBtn_modify"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="#0f0f0f"
-                android:focusable="false" />
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:text="수정"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/groupComment_txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:maxLines="3"
+            android:gravity="left|top" />
 
         <EditText
             android:id="@+id/groupComment_edt_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:focusable="false"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="left|top" />
-
+            android:gravity="left|top"
+            android:maxLines="3"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </LinearLayout>

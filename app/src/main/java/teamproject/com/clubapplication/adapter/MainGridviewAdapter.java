@@ -20,7 +20,7 @@ public class MainGridviewAdapter extends BaseAdapter {
 
     public MainGridviewAdapter(ArrayList<String> arrayList) {
         this.arrayList = arrayList;
-        Log.d("ASD", "constructor: "+arrayList.size());
+        Log.d("로그", "constructor: "+arrayList.size());
     }
 
     @Override

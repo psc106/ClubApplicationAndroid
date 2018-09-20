@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -129,6 +130,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setPan();
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
@@ -214,14 +216,14 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
                     if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
                         writeBtnFrame.setVisibility(View.GONE);
                     }
-                    isKeyboard = true;
+//                    isKeyboard = true;
 
                 }
                 else {
                     if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
                         writeBtnFrame.setVisibility(View.VISIBLE);
                     }
-                    isKeyboard = false;
+//                    isKeyboard = false;
                     // keyboard is closed
                 }
             }

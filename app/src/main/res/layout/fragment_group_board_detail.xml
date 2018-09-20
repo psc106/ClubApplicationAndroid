@@ -70,7 +70,8 @@
                         android:background="@drawable/back"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:gravity="left|top"/>
                     <Button
                         android:id="@+id/group_board_detail_btn_re"
                         android:layout_width="80dp"

@@ -144,7 +144,7 @@ public class TestActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            Log.d("테스트", "onResponse: " + "success");
+                            Log.d("로그", "onResponse: " + "success");
                             imageList.clear();
                             adapter.notifyDataSetChanged();
                             refresh();

@@ -1,13 +1,16 @@
 package teamproject.com.clubapplication.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +34,7 @@ import teamproject.com.clubapplication.GroupPostDetailActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupBoardListviewAdapter;
 import teamproject.com.clubapplication.data.ClubMemberClass;
+import teamproject.com.clubapplication.data.CommentView;
 import teamproject.com.clubapplication.data.Notice;
 import teamproject.com.clubapplication.data.PostFrame;
 import teamproject.com.clubapplication.data.PostView;
@@ -38,6 +42,7 @@ import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.bus.BusProvider;
 import teamproject.com.clubapplication.utils.bus.event.ClubLoadEvent;
+import teamproject.com.clubapplication.utils.bus.event.CommentEvent;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 
@@ -51,8 +56,6 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     ExpandableListView groupBoardListV;
     @BindView(R.id.groupBoard_scroll)
     NestedScrollView scrollView;
-    @BindView(R.id.hiddenFocus)
-    View view;
 
 
     Unbinder unbinder;
@@ -61,9 +64,10 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     GroupBoardListviewAdapter groupBoardListviewAdapter;
     Bus bus;
     ClubMemberClass clubMemberClass;
-    int page = 1;
+    int page = 0;
     int count = 0;
-
+    private boolean lastItemVisibleFlag = false;    // 리스트 스크롤이 마지막 셀(맨 바닥)로 이동했는지 체크할 변수
+    private boolean mLockListView = false;          // 데이터 불러올때 중복안되게 하기위한 변수
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,41 +79,18 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
 
         arrayList = new ArrayList<>();
         groupBoardListviewAdapter = new GroupBoardListviewAdapter(getContext(), arrayList);
+        groupBoardListV.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+        groupBoardListV.setItemsCanFocus(true);
         groupBoardListV.setAdapter(groupBoardListviewAdapter);
         clubMemberClass = ((GroupActivity) getActivity()).getClubMemberClass();
-
-        groupBoardListV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Log.d("로그", "g click = " + groupPosition);
-                return false;
-            }
-        });
-
-
-        groupBoardListV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Log.d("로그", "c click = " + childPosition);
-                return false;
-            }
-        });
 
         groupBoardListV.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Log.d("로그", "g Collapse = " + groupPosition);
+                Log.d("로그", "collapse");
+                CommonUtils.setListViewHeight(groupBoardListV);
             }
         });
-
-        groupBoardListV.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Log.d("로그", "g Expand = " + groupPosition);
-            }
-        });
-
 
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -120,8 +101,6 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
                         page++;
                         getData();
 
-                        groupBoardListviewAdapter.notifyDataSetChanged();
-                        CommonUtils.setListViewHeight(groupBoardListV);
                         Toast.makeText(getContext(), page + "", Toast.LENGTH_SHORT).show();
 
                         scrollView.fling(0);
@@ -136,7 +115,6 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
         return view;
 
     }
-
 
     @Override
     public void onDestroyView() {
@@ -156,7 +134,6 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     @Override
     public void onResume() {
         super.onResume();
-        view.requestFocus();
         refresh();
     }
 
@@ -168,14 +145,21 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
                 if (response.isSuccessful()) {
                     arrayList.addAll(response.body());
                     groupBoardListviewAdapter.notifyDataSetChanged();
+
+                    Log.d("로그", "page " + page);
+                    for (int i = 0; i < response.body().size(); ++i) {
+                        for (int j = 0; j < response.body().get(i).getCommentView().size(); ++j) {
+                            Log.d("로그", "덧글 내용 " + response.body().get(i).getCommentView().get(j).getContent());
+                            Log.d("로그", "덧글 아이디 " + response.body().get(i).getCommentView().get(j).getId());
+                        }
+                    }
+                    for (int i = (page - 1) * 4; i < arrayList.size(); ++i) {
+                        Log.d("로그", "열리는 페이지 " + i);
+                        groupBoardListV.expandGroup(i);
+                    }
+
                     CommonUtils.setListViewHeight(groupBoardListV);
 
-
-                    Log.d("로그", "asd");
-                    for(int i = (page-1)*10; i < arrayList.size(); ++i) {
-                        groupBoardListV.expandGroup(i);
-                        Log.d("로그", "asd"+i);
-                    }
                 }
             }
 
@@ -209,5 +193,71 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     void finishLoad(ClubLoadEvent clubLoadEvent) {
         this.clubMemberClass = clubLoadEvent.getClubMemberClass();
         refresh();
+    }
+
+
+    @Subscribe
+    void finishLoad(final CommentEvent commentEvent) {
+
+        Call<ArrayList<CommentView>> observer;
+        switch (commentEvent.getType()) {
+            case 0:
+                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId());
+                observer.enqueue(new Callback<ArrayList<CommentView>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
+                        if (response.isSuccessful()) {
+                            arrayList.get(commentEvent.getPosition()).getCommentView().clear();
+                            arrayList.get(commentEvent.getPosition()).getCommentView().addAll(response.body());
+                            groupBoardListviewAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<CommentView>> call, Throwable t) {
+
+                    }
+                });
+                break;
+
+            case 1:
+                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId());
+                observer.enqueue(new Callback<ArrayList<CommentView>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
+                        if (response.isSuccessful()) {
+                            arrayList.get(commentEvent.getPosition()).getCommentView().clear();
+                            arrayList.get(commentEvent.getPosition()).getCommentView().addAll(response.body());
+                            groupBoardListviewAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<CommentView>> call, Throwable t) {
+
+                    }
+                });
+                break;
+
+            case 2:
+                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId());
+                observer.enqueue(new Callback<ArrayList<CommentView>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
+                        if (response.isSuccessful()) {
+                            arrayList.get(commentEvent.getPosition()).getCommentView().clear();
+                            arrayList.get(commentEvent.getPosition()).getCommentView().addAll(response.body());
+                            groupBoardListviewAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<CommentView>> call, Throwable t) {
+
+                    }
+                });
+                break;
+        }
+
     }
 }
