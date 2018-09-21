@@ -133,6 +133,7 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 PostHolder holder = (PostHolder) v.getTag();
                 Intent intent = new Intent(context, GroupPostDetailActivity.class);
+                Log.d("로그", arrayList.get(groupPosition).toString());
                 intent.putExtra("postData", arrayList.get(groupPosition).getPostView());
                 context.startActivity(intent);
             }

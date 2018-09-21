@@ -13,11 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".FindIdPwActivity" />
-        <activity android:name=".test.TestActivity"></activity>
+        <activity android:name=".test.TestActivity" />
         <activity android:name=".GroupMakeActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".ModifyNickNameActivity" />
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GroupManageModifyActivity" />
+        <activity android:name=".GroupManageHomeActivity" />
         <activity android:name=".GroupManageMemberActivity" />
         <activity android:name=".GroupActivity" />
         <activity android:name=".GroupWriteActivity" />
@@ -41,7 +41,8 @@
         <activity android:name=".MyGroupActivity" />
         <activity android:name=".MyAlarmActivity" />
         <activity android:name=".MyCalendarActivity" />
-        <activity android:name=".GroupPostDetailActivity"></activity>
+        <activity android:name=".GroupPostDetailActivity" />
+        <activity android:name=".GroupManageProfileActivity"></activity>
     </application>
 
 </manifest>

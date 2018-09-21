@@ -65,32 +65,37 @@ public class GroupPostDetailActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d("로그", "onPageScrolled: ");
+//                Log.d("로그", "onPageScrolled: ");
             }
 
             @Override
             public void onPageSelected(int position) {
-                Log.d("로그", "onPageSelected: ");
+
+                Log.d("로그", "onPageSelected: "+currPost.toString());
+                Log.d("로그", "onPageSelected: "+prePosition);
+                Log.d("로그", "onPageSelected: "+position);
                 if(position-prePosition<0){
                     //왼쪽이동
                     Fragment fragment = pageAdapter.getItem(position);
                     if(fragment instanceof GroupBoardLoadingFragment){
                         viewPager.setPagingEnabled(false);
-                        ((GroupBoardLoadingFragment)fragment).refresh(currPost.getNextId());
+                        ((GroupBoardLoadingFragment)fragment).refresh(GroupPostDetailActivity.this, currPost.getNextId());
                     }
                 } else if(position-prePosition>0){
                     //오른쪽이동
                     Fragment fragment = pageAdapter.getItem(position);
+                    Log.d("로그", "right: "+fragment.getClass().toString());
                     if(fragment instanceof GroupBoardLoadingFragment){
+                        Log.d("로그", "loading: "+fragment.getClass().toString());
                         viewPager.setPagingEnabled(false);
-                        ((GroupBoardLoadingFragment)fragment).refresh(currPost.getPreviousId());
+                        ((GroupBoardLoadingFragment)fragment).refresh(GroupPostDetailActivity.this, currPost.getPreviousId());
                     }
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Log.d("로그", "onPageScrollStateChanged: ");
+//                Log.d("로그", "onPageScrollStateChanged: ");
             }
         });
     }
@@ -103,6 +108,7 @@ public class GroupPostDetailActivity extends AppCompatActivity {
     public void checkPosition(Integer position) {
         if(position==null)
             return;
+        Log.d("로그", "checkPosition: "+position);
 
         viewPager.setPagingEnabled(true);
         if(position==-1) {

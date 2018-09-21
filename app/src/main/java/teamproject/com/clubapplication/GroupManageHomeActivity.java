@@ -13,7 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 
-public class GroupManageModifyActivity extends AppCompatActivity {
+public class GroupManageHomeActivity extends AppCompatActivity {
 
     @BindView(R.id.group_manage_modify_img)
     ImageView groupManageModifyImg;
