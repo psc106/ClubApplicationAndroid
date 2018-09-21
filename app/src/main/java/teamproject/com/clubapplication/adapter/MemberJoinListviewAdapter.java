@@ -59,7 +59,7 @@ public class MemberJoinListviewAdapter extends BaseAdapter {
         holder.groupManageMemberCheckTxtAge.setText(currMember.getBirthday());
         holder.groupManageMemberCheckTxtGender.setText(currMember.getGender() == 1 ? "남자" : "여자");
         holder.groupManageMemberCheckTxtLocation.setText(currMember.getLocal());
-        GlideApp.with(parent.getContext()).load(CommonUtils.serverURL + CommonUtils.attachPath + currMember.getImgUrl()).circleCrop().into(holder.groupManageMemberCheckImg);
+        GlideApp.with(parent.getContext()).load(CommonUtils.serverURL + CommonUtils.attachPath + currMember.getImgUrl()).placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).circleCrop().into(holder.groupManageMemberCheckImg);
 
 
 
@@ -87,8 +87,13 @@ public class MemberJoinListviewAdapter extends BaseAdapter {
         @BindView(R.id.group_manage_member_btn_check_nominate)
         Button groupManageMemberBtnCheckNominate;
 
+
         Holder(View view) {
             ButterKnife.bind(this, view);
+            groupManageMemberBtnCheckBan.setFocusableInTouchMode(false);
+            groupManageMemberBtnCheckBan.setFocusable(false);
+            groupManageMemberBtnCheckNominate.setFocusableInTouchMode(false);
+            groupManageMemberBtnCheckNominate.setFocusable(false);
         }
     }
 

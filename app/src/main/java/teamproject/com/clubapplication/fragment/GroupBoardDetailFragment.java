@@ -3,6 +3,7 @@ package teamproject.com.clubapplication.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,7 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
             fragment.postView = postView;
         }
         args.putLong("postId", postView.getId());
+        Log.d("로그", postView.toString());
 
         fragment.setArguments(args);
         return fragment;
@@ -100,11 +102,6 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
     public void onResume() {
         super.onResume();
         refresh();
-
-        GlideApp.with(this).load(CommonUtils.serverURL+CommonUtils.attachPath+postView.getImgUrl());
-        groupBoardDetailTxtName.setText(postView.getNickname());
-        groupBoardDetailTxtDate.setText(postView.getCreate_date());
-        groupBoardDetailText.setText(postView.getContent());
     }
 
     @Override
@@ -118,6 +115,11 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
         page = 1;
         commentList.clear();
         getCommentCount();
+
+        GlideApp.with(this).load(CommonUtils.serverURL+CommonUtils.attachPath+postView.getImgUrl());
+        groupBoardDetailTxtName.setText(postView.getNickname());
+        groupBoardDetailTxtDate.setText(postView.getCreate_date());
+        groupBoardDetailText.setText(postView.getContent());
     }
 
     void getCommentCount() {

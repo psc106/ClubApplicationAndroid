@@ -18,7 +18,11 @@ import teamproject.com.clubapplication.fragment.GroupBoardDetailFragment;
 import teamproject.com.clubapplication.fragment.GroupBoardLoadingFragment;
 
 public class GroupPostDetailPageAdapter extends FragmentStatePagerAdapter {
-    PostView postView;
+    private PostView postView;
+
+    public void setPostView(PostView postView) {
+        this.postView = postView;
+    }
 
     public GroupPostDetailPageAdapter(FragmentManager fm, PostView postView) {
         super(fm);
@@ -44,6 +48,10 @@ public class GroupPostDetailPageAdapter extends FragmentStatePagerAdapter {
 
     }
 
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
 
     @Override
     public int getCount() {

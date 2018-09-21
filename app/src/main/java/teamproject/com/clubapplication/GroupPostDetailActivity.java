@@ -28,20 +28,19 @@ import teamproject.com.clubapplication.fragment.GroupBoardDetailFragment;
 import teamproject.com.clubapplication.fragment.GroupBoardLoadingFragment;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.customView.InfiniteViewPager;
+import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class GroupPostDetailActivity extends AppCompatActivity {
+public class GroupPostDetailActivity extends KeyHideActivity {
     @BindView(R.id.postDetail_viewPager)
     InfiniteViewPager viewPager;
 
     GroupPostDetailPageAdapter pageAdapter;
     private PostView currPost;
 
-    public PostView getCurrPost() {
-        return currPost;
-    }
     public void setCurrPost(PostView currPost) {
         this.currPost = currPost;
+        pageAdapter.setPostView(currPost);
     }
 
     public static int prePosition;
@@ -52,6 +51,7 @@ public class GroupPostDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_post_detail);
         ButterKnife.bind(this);
 
+        viewPager.setOffscreenPageLimit(1);
 
         Intent intent = getIntent();
         currPost=intent.getParcelableExtra("postData");
@@ -59,6 +59,8 @@ public class GroupPostDetailActivity extends AppCompatActivity {
         pageAdapter = new GroupPostDetailPageAdapter(getSupportFragmentManager(), currPost);
         viewPager.setAdapter(pageAdapter);
         viewPager.setPagingEnabled(true);
+
+
 
         checkPosition(currPost.canMovePosition());
 
@@ -111,20 +113,25 @@ public class GroupPostDetailActivity extends AppCompatActivity {
         Log.d("로그", "checkPosition: "+position);
 
         viewPager.setPagingEnabled(true);
+        //next 없음
         if(position==-1) {
             viewPager.setCurrentItem(0, false);
             prePosition=0;
+            //양쪽 가능
         } else if(position==0) {
             viewPager.setCurrentItem(2, false);
             prePosition=2;
+            //pre없음
         } else if(position==1) {
             viewPager.setCurrentItem(4, false);
             prePosition=4;
+            //양쪽불가능
         } else if(position==Integer.MIN_VALUE){
             viewPager.setCurrentItem(2, false);
             prePosition=2;
             viewPager.setPagingEnabled(false);
         }
+        pageAdapter.notifyDataSetChanged();
     }
 
 }

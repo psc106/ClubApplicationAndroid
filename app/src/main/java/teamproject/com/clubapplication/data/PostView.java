@@ -104,10 +104,12 @@ public class PostView implements Parcelable {
 
     public Integer canMovePosition(){
         if(nextId!=previousId){
-            if(nextId!=-1){
+            if(previousId==-1){
                 return 1;
             }else if(nextId==-1){
                 return -1;
+            } else {
+                return 0;
             }
         } else {
             if(nextId!=-1){

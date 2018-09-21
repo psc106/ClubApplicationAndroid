@@ -41,7 +41,9 @@
         <activity android:name=".MyGroupActivity" />
         <activity android:name=".MyAlarmActivity" />
         <activity android:name=".MyCalendarActivity" />
-        <activity android:name=".GroupPostDetailActivity" />
+        <activity android:name=".GroupPostDetailActivity"
+            />
+        <!--android:theme="@style/Theme.CustomDialog"-->
         <activity android:name=".GroupManageProfileActivity"></activity>
     </application>
 

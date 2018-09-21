@@ -57,6 +57,7 @@ public class GroupBoardLoadingFragment extends Fragment {
                         Log.d("로그", "start: "+activity.getClass().toString());
                         ((GroupPostDetailActivity) activity).setCurrPost(response.body());
                         ((GroupPostDetailActivity) activity).checkPosition(response.body().canMovePosition());
+
                     }
                 }
                 LoadingDialog.getInstance().progressOFF();

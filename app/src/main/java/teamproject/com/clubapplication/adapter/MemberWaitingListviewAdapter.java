@@ -57,7 +57,7 @@ public class MemberWaitingListviewAdapter extends BaseAdapter {
         holder.groupManageMemberTxtAge.setText(currMember.getBirthday());
         holder.groupManageMemberTxtGender.setText(currMember.getGender() == 0 ? "남자" : "여자");
         holder.groupManageMemberTxtLocation.setText(currMember.getLocal());
-        GlideApp.with(parent.getContext()).load(CommonUtils.serverURL + CommonUtils.attachPath + currMember.getImgUrl()).circleCrop().into(holder.groupManageMemberJoinImg);
+        GlideApp.with(parent.getContext()).load(CommonUtils.serverURL + CommonUtils.attachPath + currMember.getImgUrl()).placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).circleCrop().into(holder.groupManageMemberJoinImg);
 
 
         return convertView;
