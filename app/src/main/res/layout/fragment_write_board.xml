@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.GroupWriteBoardFragment">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
+        android:paddingBottom="50dp"
         android:orientation="vertical">
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_height="0dp"
             android:layout_weight="6"
             android:background="@drawable/back"
-            android:textAlignment="textStart" />
+            android:gravity="left|top"/>
         <!--사진 첨부 -->
 
         <LinearLayout
@@ -34,17 +34,19 @@
             android:layout_weight="3"
             android:orientation="horizontal">
 
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/writeBoard_recycleV"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="10"
-                android:visibility="gone"/>
+                android:layout_weight="8"></android.support.v7.widget.RecyclerView>
+
             <Button
                 android:id="@+id/writeBoard_btn_Add"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"/>
+                android:layout_weight="3"
+                android:text="사진 추가"/>
         </LinearLayout>
 
         <LinearLayout
@@ -56,14 +58,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="앨범에 등록"
-                android:textSize="20dp"/>
+                android:text="앨범에 등록" />
 
             <CheckBox
                 android:id="@+id/writeBoard_checkBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <EditText
@@ -75,13 +75,14 @@
             android:hint="ex)a, b, c"
             android:inputType="text" />
 
-        <Button
-            android:id="@+id/writeBoard_btn_Ok"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorTmp"
-            android:text="작성" />
     </LinearLayout>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/writeBoard_btn_Ok"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorTmp"
+        android:text="작성" />
+
+</RelativeLayout>

@@ -53,7 +53,7 @@ public interface RetrofitRequest {
     Call<Integer> getNoticeCount(@Query("clubId") Long clubId);
 
     @GET("mobile/selectClubPost.do")
-    Call<ArrayList<PostView>> selectClubPost(@Query("clubId") Long clubId, @Query("page") Integer page);
+    Call<ArrayList<PostFrame>> selectClubPost(@Query("clubId") Long clubId, @Query("page") Integer page);
     @GET("mobile/getPostCount.do")
     Call<Integer> getPostCount(@Query("clubId") Long clubId);
 
@@ -76,6 +76,25 @@ public interface RetrofitRequest {
     @GET("mobile/selectWaitingMember.do")
     Call<ArrayList<MemberView>> selectWaitingMember(@Query("clubId") Long clubId);
 
+    @FormUrlEncoded
+    @POST("mobile/insertComment.do")
+    Call<Void> insertComment( @Field("postId")Long postId,  @Field("memberId")Long memberId,  @Field("content")String content);
+
+    @FormUrlEncoded
+    @POST("mobile/updateComment.do")
+    Call<Boolean> updateComment( @Field("commentId")Long commentId,  @Field("memberId")Long memberId,  @Field("content")String content);
+
+    @FormUrlEncoded
+    @POST("mobile/deleteComment.do")
+    Call<Boolean> deleteComment( @Field("commentId")Long commentId,  @Field("memberId")Long memberId);
+
+    @Multipart
+    @POST("mobile/insertPost.do")
+    Call<ResponseBody> insertPost(@Part("content") RequestBody contentBody, @Part("tag") RequestBody tagBody, @Part("clubId") RequestBody clubIdBody, @Part("memberId") RequestBody memberIdBody,
+                                 @Part ArrayList<MultipartBody.Part> parts, @Part("check") RequestBody checkBody);
+
+    @GET("mobile/refreshPostComment.do")
+    Call<ArrayList<CommentView>> refreshPostComment(@Query("postId") Long postId);
 
     //로그인
 
@@ -111,13 +130,14 @@ public interface RetrofitRequest {
     @GET("mobile/selectMyCalendar.do")
     Call<ArrayList<CalendarSchedule>> selectMyCalendar(@Query("userId") Long userId, @Query("year") int year, @Query("month") int month);
     @GET("mobile/selectMyGroup.do")
-    Call<ArrayList<Club>> selectMyClub(@Query("userId") Long userId);
+    Call<ArrayList<ClubView>> selectMyClub(@Query("userId") Long userId);
 
     //클럽 검색
     @GET("mobile/selectClubInPage.do")
-    Call<ArrayList<ClubView>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Long category, @Query("page") Integer page);
+    Call<ArrayList<ClubView>> selectClubInPage(@Query("main") String main, @Query("local") String local, @Query("category") Integer category, @Query("page") Integer page);
     @GET("mobile/getResultCount.do")
-    Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Long category);
+    Call<Integer> getResultCount(@Query("main") String main, @Query("local") String local, @Query("category") Integer category);
+
 //
 //    @GET
 //    Call<ArrayList<URL>> selectImage(@Query("userId") Long userId);

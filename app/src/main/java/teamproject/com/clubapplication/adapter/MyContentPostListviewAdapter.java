@@ -68,7 +68,7 @@ public class MyContentPostListviewAdapter extends BaseAdapter implements StickyL
     //최근일수록 높은 값을 갖는다.
     @Override
     public long getHeaderId(int position) {
-        return 30000000-Long.parseLong(((Post)getItem(position)).getCreate_date().substring(0, 8));
+        return position;
     }
 
     class Horder {

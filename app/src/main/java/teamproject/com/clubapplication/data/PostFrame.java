@@ -1,5 +1,8 @@
 package teamproject.com.clubapplication.data;
 
+
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +14,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentView {
-    private  Long id;
-    private Long member_id;
-    private  String nickname;
-    private  String content;
-    private  String create_date;
-    private String imgUrl;
+public class PostFrame {
+    private int commentPage;
+    private PostView postView;
+    private ArrayList<CommentView> commentView;
 }

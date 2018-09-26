@@ -101,7 +101,7 @@ public class TestActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<String>>() {
             @Override
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     urlList.clear();
                     urlList.addAll(response.body());
                     adapter2.notifyDataSetChanged();
@@ -114,7 +114,7 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        final Context context =this;
+        final Context context = this;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +122,7 @@ public class TestActivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                startActivityForResult(Intent.createChooser(intent,"다중 선택은 '포토'를 선택하세요."), 1);
+                startActivityForResult(Intent.createChooser(intent, "다중 선택은 '포토'를 선택하세요."), 1);
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +131,7 @@ public class TestActivity extends AppCompatActivity {
 
                 ArrayList<MultipartBody.Part> parts = new ArrayList<>();
 
-                for (int i = 0 ; i < imageList.size(); ++i) {
+                for (int i = 0; i < imageList.size(); ++i) {
                     String name = imageList.get(i).getRealPath();
                     Uri uri = imageList.get(i).getFileUri();
                     parts.add(prepareFilePart(name, uri));
@@ -143,8 +143,8 @@ public class TestActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if(response.isSuccessful()) {
-                            Log.d("테스트", "onResponse: "+"success");
+                        if (response.isSuccessful()) {
+                            Log.d("로그", "onResponse: " + "success");
                             imageList.clear();
                             adapter.notifyDataSetChanged();
                             refresh();
@@ -166,7 +166,7 @@ public class TestActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<String>>() {
             @Override
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     urlList.clear();
                     urlList.addAll(response.body());
                     adapter2.notifyDataSetChanged();
@@ -189,34 +189,35 @@ public class TestActivity extends AppCompatActivity {
 
                     // 멀티 선택을 지원하지 않는 기기에서는 getClipdata()가 없음 > getData()로 접근해야 함
                     if (data.getClipData() == null) {
-                        Log.d(TAG, 1+""+ CommonUtils.getPath(this, data.getData()));
+                        Log.d(TAG, 1 + "" + CommonUtils.getPath(this, data.getData()));
                         ExternalImage externalImage = new ExternalImage(data.getData(), CommonUtils.getPath(this, data.getData()));
                         imageList.add(externalImage);
                     } else {
                         ClipData clipData = data.getClipData();
-                        if (clipData.getItemCount() > 10){
+                        if (clipData.getItemCount() > 10) {
                             Toast.makeText(this, "사진은 10개까지 선택가능 합니다.", Toast.LENGTH_SHORT).show();
                             return;
                         } else if (clipData.getItemCount() >= 1 && clipData.getItemCount() < 10) {
                             for (int i = 0; i < clipData.getItemCount(); i++) {
                                 Uri dataStr = clipData.getItemAt(i).getUri();
-                                Log.d(TAG, i+""+ CommonUtils.getPath(this, dataStr));
+                                Log.d(TAG, i + "" + CommonUtils.getPath(this, dataStr));
                                 ExternalImage externalImage = new ExternalImage(dataStr, CommonUtils.getPath(this, dataStr));
                                 imageList.add(externalImage);
-                                if(imageList.size()>0)
-                                    Log.d(TAG, ""+imageList.get(0).getRealPath().equals(externalImage.getRealPath()));
+                                if (imageList.size() > 0)
+                                    Log.d(TAG, "" + imageList.get(0).getRealPath().equals(externalImage.getRealPath()));
                             }
                         }
                     }
                 } else {
                     Toast.makeText(this, "사진 선택을 취소하였습니다.", Toast.LENGTH_SHORT).show();
                 }
-            break;
+                break;
         }
         adapter.notifyDataSetChanged();
     }
 
     DrawerMenu drawerMenu;
+
     @Override
     protected void onResume() {
         super.onResume();

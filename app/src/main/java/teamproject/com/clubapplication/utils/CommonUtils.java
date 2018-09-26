@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -49,8 +51,9 @@ import teamproject.com.clubapplication.MyOptionActivity;
 
 public class CommonUtils {
     public static String TAG = "로그";
-//    public static String serverURL = "http://192.168.0.70:8090/club_application/";
-    public static String serverURL = "http://192.168.25.11:8090/club_application/";
+    public static String serverURL = "http://192.168.0.70:8090/club_application/";
+    public static String attachPath = "resources/upload/";
+//    public static String serverURL = "http://192.168.25.11:8090/club_application/";
 
     public static boolean isLoginNeedActivity(Activity activity) {
         if(activity==null)
@@ -73,6 +76,8 @@ public class CommonUtils {
             // pre-condition
             return ;
         }
+        listView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
 
         int totalHeight = 0;
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
@@ -89,50 +94,41 @@ public class CommonUtils {
         listView.requestLayout();
     }
 
-    public static int getListviewHeight(ListView listView) {
-        if(listView==null)
-            return 0;
 
-        ListAdapter adapter = listView.getAdapter();
-        if (adapter == null) {
-            // pre-condition
-            return 0;
-        }
+    public static void setListViewHeight(ExpandableListView listView) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
 
         int totalHeight = 0;
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
 
-        for (int i = 0; i < adapter.getCount(); i++) {
-            View listItem = adapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (listView.isGroupExpanded(i)) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
         }
 
-        return  totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 1000;
+        params.height = height+1000;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
     }
-
-    public static int getListviewWidth(ListView listView) {
-        if(listView==null)
-            return 0;
-
-        ListAdapter adapter = listView.getAdapter();
-        if (adapter == null) {
-            // pre-condition
-            return 0;
-        }
-
-        int totalWidth = 0;
-        int desiredHeight = View.MeasureSpec.makeMeasureSpec(listView.getHeight(), View.MeasureSpec.AT_MOST);
-
-        for (int i = 0; i < adapter.getCount(); i++) {
-            View listItem = adapter.getView(i, null, listView);
-            listItem.measure(View.MeasureSpec.UNSPECIFIED, desiredHeight);
-            totalWidth += listItem.getMeasuredWidth();
-        }
-
-        return  totalWidth + (listView.getDividerHeight() * (adapter.getCount() - 1));
-    }
-
     public static int convertPixelsToDp(float px, Context context) {
         int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, context.getResources().getDisplayMetrics());
         return value;

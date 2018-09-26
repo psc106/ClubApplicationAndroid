@@ -1,7 +1,11 @@
 package teamproject.com.clubapplication.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +42,8 @@ public class GroupBoardLoadingFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void refresh(Long postId) {
+    public void refresh(final Activity activity, Long postId) {
+        Log.d("로그", "refresh: "+postId);
         LoadingDialog.getInstance().progressON(getActivity(),"로딩중");
         Call<PostView> observer = RetrofitService.getInstance().getRetrofitRequest().selectCurrPost(postId);
         observer.enqueue(new Callback<PostView>() {
@@ -46,10 +51,13 @@ public class GroupBoardLoadingFragment extends Fragment {
             public void onResponse(Call<PostView> call, Response<PostView> response) {
                 if(response.isSuccessful()) {
                     if (response.body() == null) {
+                        Log.d("로그", "fail: ");
 
                     } else {
-                        ((GroupPostDetailActivity) getActivity()).setCurrPost(response.body());
-                        ((GroupPostDetailActivity) getActivity()).checkPosition(response.body().canMovePosition());
+                        Log.d("로그", "start: "+activity.getClass().toString());
+                        ((GroupPostDetailActivity) activity).setCurrPost(response.body());
+                        ((GroupPostDetailActivity) activity).checkPosition(response.body().canMovePosition());
+
                     }
                 }
                 LoadingDialog.getInstance().progressOFF();

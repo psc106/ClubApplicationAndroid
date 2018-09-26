@@ -19,7 +19,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.MyClubListviewAdapter;
 import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.ClubView;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
@@ -31,7 +33,7 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
     ListView listView;
 
     MyClubListviewAdapter listviewAdapter;
-    ArrayList<Club> arrayList;
+    ArrayList<ClubView> arrayList;
 
     LoginService loginService;
 
@@ -45,7 +47,7 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
 
         arrayList = new ArrayList<>();
 
-        listviewAdapter = new MyClubListviewAdapter(arrayList);
+        listviewAdapter = new MyClubListviewAdapter(this, arrayList);
         listView.setAdapter(listviewAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,10 +83,10 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
 
         Toast.makeText(this, "나와라", Toast.LENGTH_SHORT).show();
 
-        Call<ArrayList<Club>> observer = RetrofitService.getInstance().getRetrofitRequest().selectMyClub(loginService.getMember().getId());
-        observer.enqueue(new Callback<ArrayList<Club>>() {
+        Call<ArrayList<ClubView>> observer = RetrofitService.getInstance().getRetrofitRequest().selectMyClub(loginService.getMember().getId());
+        observer.enqueue(new Callback<ArrayList<ClubView>>() {
             @Override
-            public void onResponse(Call<ArrayList<Club>> call, Response<ArrayList<Club>> response) {
+            public void onResponse(Call<ArrayList<ClubView>> call, Response<ArrayList<ClubView>> response) {
                 if (response.isSuccessful()) {
                     arrayList.clear();
                     arrayList.addAll(response.body());
@@ -94,11 +96,17 @@ public class MyGroupActivity extends AppCompatActivity implements RefreshData {
                 }
             }
             @Override
-            public void onFailure(Call<ArrayList<Club>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<ClubView>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        LoadingDialog.getInstance().progressOFF();
+        super.onBackPressed();
     }
 }

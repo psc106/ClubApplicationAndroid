@@ -150,6 +150,7 @@
                                 android:background="@null"
                                 android:ems="6"
                                 android:inputType="textPassword"
+                                android:gravity="left"
                                 android:textSize="18dp" />
                         </LinearLayout>
                         <LinearLayout
@@ -176,6 +177,7 @@
                                 android:background="@null"
                                 android:ems="6"
                                 android:inputType="textPassword"
+                                android:gravity="left"
                                 android:textSize="18dp" />
                         </LinearLayout>
 
@@ -201,6 +203,7 @@
                                 android:background="@null"
                                 android:ems="10"
                                 android:inputType="text"
+                                android:gravity="left"
                                 android:text="test12345 tteettsdfga"
                                 android:textSize="18dp" />
                         </LinearLayout>
@@ -227,6 +230,7 @@
                                 android:background="@null"
                                 android:ems="10"
                                 android:inputType="text"
+                                android:gravity="left"
                                 android:text="000-0000-0000"
                                 android:textSize="18dp" />
                         </LinearLayout>

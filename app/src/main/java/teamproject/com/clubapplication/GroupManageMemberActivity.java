@@ -60,6 +60,8 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
         waitAdapter = new MemberWaitingListviewAdapter(waitList);
         listViewWaiting.setAdapter(waitAdapter);
 
+
+
         joinList = new ArrayList<>();
         joinAdapter = new MemberJoinListviewAdapter(joinList);
         listViewJoin.setAdapter(joinAdapter);
@@ -73,8 +75,8 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
 
     @Override
     public void refresh() {
-        Call<ArrayList<MemberView>> joinObserver = RetrofitService.getInstance().getRetrofitRequest().selectWaitingMember(clubId);
-        joinObserver.enqueue(new Callback<ArrayList<MemberView>>() {
+        Call<ArrayList<MemberView>> waitObserver = RetrofitService.getInstance().getRetrofitRequest().selectWaitingMember(clubId);
+        waitObserver.enqueue(new Callback<ArrayList<MemberView>>() {
             @Override
             public void onResponse(Call<ArrayList<MemberView>> call, Response<ArrayList<MemberView>> response) {
                 if(response.isSuccessful()){
@@ -91,8 +93,9 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
 
             }
         });
-        Call<ArrayList<MemberView>> waitObserver = RetrofitService.getInstance().getRetrofitRequest().selectJoinMember(clubId);
-        waitObserver.enqueue(new Callback<ArrayList<MemberView>>() {
+
+        Call<ArrayList<MemberView>> joinObserver = RetrofitService.getInstance().getRetrofitRequest().selectJoinMember(clubId);
+        joinObserver.enqueue(new Callback<ArrayList<MemberView>>() {
             @Override
             public void onResponse(Call<ArrayList<MemberView>> call, Response<ArrayList<MemberView>> response) {
                 if(response.isSuccessful()){

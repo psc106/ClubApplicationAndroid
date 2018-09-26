@@ -12,6 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ClubMemberClass {
-    Club club;
+    ClubView clubView;
     String memberClass; //'O', 'N', 'Y', 'A'
 }

@@ -46,16 +46,18 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     Button mainBtnSearch;
     @BindView(R.id.main_btn_AdvancedSearch)
     Button mainBtnAdvancedSearch;
-    @BindView(R.id.main_spinner_location)
-    Spinner mainSpinnerLocation;
     @BindView(R.id.main_spinner_category)
     Spinner mainSpinnerCategory;
+    @BindView(R.id.main_spinner_locationDoSi)
+    Spinner mainSpinnerLocationDoSi;
+    @BindView(R.id.main_spinner_locationSiGunGu)
+    Spinner mainSpinnerLocationSiGunGu;
     @BindView(R.id.main_layout_AdvancedSearch)
     LinearLayout mainLayoutAdvancedSearch;
     @BindView(R.id.main_gridV_category)
     ScrollGridview mainGridVCategory;
-//    @BindView(R.id.main_gridV_local)
-//    ScrollGridview mainGridVLocal;
+    @BindView(R.id.main_gridV_local)
+    ScrollGridview mainGridVLocal;
     //    GridView mainGridVCategory;
     @BindView(R.id.main_btn_MakeGroup)
     Button mainBtnMakeGroup;
@@ -75,10 +77,12 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     public void search(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
         if (mainLayoutAdvancedSearch.getVisibility() != View.GONE) {
-            if (mainSpinnerLocation.getSelectedItemId() != 0)
-                intent.putExtra("local", mainSpinnerLocation.getSelectedItemId());
-            if (mainSpinnerCategory.getSelectedItemId() != 0)
-                intent.putExtra("category", mainSpinnerCategory.getSelectedItemId());
+            if (mainSpinnerLocationDoSi.getSelectedItemPosition() >0)
+                intent.putExtra("localDoSi", mainSpinnerLocationDoSi.getSelectedItemPosition());
+            if (mainSpinnerLocationSiGunGu.getSelectedItemPosition() > 0)
+                intent.putExtra("localSiGunGu", mainSpinnerLocationSiGunGu.getSelectedItemPosition());
+            if (mainSpinnerCategory.getSelectedItemId() > 0)
+                intent.putExtra("category", mainSpinnerCategory.getSelectedItemPosition());
         }
         if (mainEditSearch.getText() != null && !mainEditSearch.getText().toString().equals("")) {
             intent.putExtra("main", mainEditSearch.getText().toString());
@@ -93,15 +97,20 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         startActivity(intent);
     }
 
-    MainGridviewAdapter mainGridviewAdapter;
+    MainGridviewAdapter mainGridviewCategoryAdapter;
+    MainGridviewAdapter mainGridviewLocalAdapter;
     LoginService loginService;
     DBManager dbManager;
 
-    ArrayList<String> arrayList;
+    ArrayList<String> arrayListLocal;
+    ArrayList<String> arrayListCategory;
 
     String[] noneSelect = {"선택"};
     String[] items_category;
-    String[] items_location;
+    String[] items_locationDoSi;
+    String[] items_locationSiGunGu;
+    int selectDoSiPosition;
+    boolean isSiGunGu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,14 +122,20 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         dbManager = new DBManager(this, DBManager.DB_NAME, null, DBManager.CURRENT_VERSION);
 
 
-        items_location = dbManager.getDoSi();
+        items_locationDoSi = dbManager.getDoSi();
         items_category = dbManager.getCategory();
 
-        arrayList = new ArrayList<>(new ArrayList<>(Arrays.asList(items_category)));
-        mainGridviewAdapter = new MainGridviewAdapter(arrayList);
-        mainGridVCategory.setAdapter(mainGridviewAdapter);
+        arrayListCategory = new ArrayList<>(new ArrayList<>(Arrays.asList(items_category)));
+        mainGridviewCategoryAdapter = new MainGridviewAdapter(arrayListCategory);
+        mainGridVCategory.setAdapter(mainGridviewCategoryAdapter);
 
-        CommonUtils.initSpinner(this, mainSpinnerLocation, items_location, noneSelect);
+        arrayListLocal = new ArrayList<>();
+        arrayListLocal.addAll(new ArrayList<>(Arrays.asList(items_locationDoSi)));
+        mainGridviewLocalAdapter = new MainGridviewAdapter(arrayListLocal);
+        mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size()))+1);
+        mainGridVLocal.setAdapter(mainGridviewLocalAdapter);
+
+        CommonUtils.initSpinner(this, mainSpinnerLocationDoSi, items_locationDoSi, noneSelect);
         CommonUtils.initSpinner(this, mainSpinnerCategory, items_category, noneSelect);
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
@@ -129,11 +144,80 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         mainGridVCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 intent.putExtra("category", position+1);
                 startActivity(intent);
+
             }
         });
+
+        mainGridVLocal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!isSiGunGu) {
+                    selectDoSiPosition = position+1;
+                    String selectDoSi = arrayListLocal.get(position);
+                    String[] tmpItem = dbManager.getSiGunGuFromDoSi(selectDoSi);
+                    ArrayList<String> tmpArrayList = new ArrayList<>();
+                    tmpArrayList.add("뒤로");
+                    tmpArrayList.add("검색");
+                    tmpArrayList.addAll(new ArrayList<>(Arrays.asList(tmpItem)));
+                    arrayListLocal.clear();
+                    arrayListLocal.addAll(tmpArrayList);
+                    mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size())) + 1);
+                    mainGridviewLocalAdapter.notifyDataSetChanged();
+                    isSiGunGu=true;
+                } else {
+                    if(position==0) {
+                        selectDoSiPosition = 0;
+                        arrayListLocal.clear();
+                        arrayListLocal.addAll(new ArrayList<>(Arrays.asList(items_locationDoSi)));
+                        double count = Math.sqrt(arrayListLocal.size());
+                        if(count-(int)count==0){
+                            mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size())));
+                        } else {
+                            mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size())) + 1);
+                        }
+                        mainGridviewLocalAdapter.notifyDataSetChanged();
+                        isSiGunGu = false;
+                    } else if(position==1) {
+                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                        intent.putExtra("localDoSi", selectDoSiPosition);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                        intent.putExtra("localDoSi", selectDoSiPosition);
+                        intent.putExtra("localSiGunGu", position-1);
+                        startActivity(intent);
+                    }
+
+                }
+            }
+        });
+
+        mainSpinnerLocationDoSi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0) {
+                    String selectDoSi = (String) mainSpinnerLocationDoSi.getSelectedItem();
+                    if(dbManager!=null) {
+                        mainSpinnerLocationSiGunGu.setVisibility(View.VISIBLE);
+                        items_locationSiGunGu = dbManager.getSiGunGuFromDoSi(selectDoSi);
+                        Log.d("로그", "onItemSelected: "+items_locationSiGunGu.toString());
+                        CommonUtils.initSpinner(activity, mainSpinnerLocationSiGunGu, items_locationSiGunGu, noneSelect);
+                    }
+                } else {
+                    mainSpinnerLocationSiGunGu.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     @Override

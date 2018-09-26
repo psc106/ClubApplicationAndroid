@@ -16,6 +16,7 @@ import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.MyContentPageAdapter;
 import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.DrawerMenu;
+import teamproject.com.clubapplication.utils.LoadingDialog;
 import teamproject.com.clubapplication.utils.LoginService;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
@@ -78,5 +79,12 @@ public class MyContentActivity extends AppCompatActivity implements RefreshData 
 
         RefreshData refreshData = (RefreshData)(pageAdapter.getItem(viewPager.getCurrentItem()));
         refreshData.refresh();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        LoadingDialog.getInstance().progressOFF();
+        super.onBackPressed();
     }
 }

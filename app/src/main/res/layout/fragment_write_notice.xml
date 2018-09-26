@@ -25,7 +25,7 @@
             android:layout_height="0dp"
             android:layout_weight="6"
             android:background="@drawable/back"
-            android:textAlignment="textStart" />
+            android:gravity="left|top" />
 
         <Button
             android:id="@+id/writeNotice_btn_Ok"

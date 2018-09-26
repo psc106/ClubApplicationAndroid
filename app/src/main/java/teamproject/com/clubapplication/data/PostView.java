@@ -21,8 +21,10 @@ public class PostView implements Parcelable {
     private String nickname;
     private String content;
     private String create_date;
+    private String imgUrl;
     private Long nextId;
     private Long previousId;
+
 
     protected PostView(Parcel in) {
         if (in.readByte() == 0) {
@@ -38,6 +40,7 @@ public class PostView implements Parcelable {
         nickname = in.readString();
         content = in.readString();
         create_date = in.readString();
+        imgUrl = in.readString();
         if (in.readByte() == 0) {
             nextId = null;
         } else {
@@ -48,23 +51,6 @@ public class PostView implements Parcelable {
         } else {
             previousId = in.readLong();
         }
-    }
-
-    public Integer canMovePosition(){
-        if(nextId!=previousId){
-            if(nextId!=-1){
-                return 1;
-            }else if(nextId==-1){
-                return -1;
-            }
-        } else {
-            if(nextId!=-1){
-                return 0;
-            }else if(nextId==-1){
-                return Integer.MIN_VALUE;
-            }
-        }
-        return null;
     }
 
     public static final Creator<PostView> CREATOR = new Creator<PostView>() {
@@ -101,6 +87,7 @@ public class PostView implements Parcelable {
         dest.writeString(nickname);
         dest.writeString(content);
         dest.writeString(create_date);
+        dest.writeString(imgUrl);
         if (nextId == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -114,4 +101,24 @@ public class PostView implements Parcelable {
             dest.writeLong(previousId);
         }
     }
+
+    public Integer canMovePosition(){
+        if(nextId!=previousId){
+            if(previousId==-1){
+                return 1;
+            }else if(nextId==-1){
+                return -1;
+            } else {
+                return 0;
+            }
+        } else {
+            if(nextId!=-1){
+                return 0;
+            }else if(nextId==-1){
+                return Integer.MIN_VALUE;
+            }
+        }
+        return null;
+    }
+
 }

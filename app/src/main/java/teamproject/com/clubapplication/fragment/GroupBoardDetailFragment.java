@@ -2,6 +2,8 @@ package teamproject.com.clubapplication.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,35 +22,46 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import teamproject.com.clubapplication.GroupPostDetailActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.adapter.GroupCommentListviewAdapter;
 import teamproject.com.clubapplication.data.CommentView;
 import teamproject.com.clubapplication.data.PostView;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.RefreshData;
+import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 
 public class GroupBoardDetailFragment extends Fragment implements RefreshData {
 
+    @BindView(R.id.postDetail_frg_recycleV_img)
+    RecyclerView postDetailFrgRecycleVImg;
+
+    @BindView(R.id.postDetail_frg_img_Profile)
+    ImageView postDetailFrgImgProfile;
     @BindView(R.id.group_board_detail_txt_name)
     TextView groupBoardDetailTxtName;
+    @BindView(R.id.group_board_detail_txt_date)
+    TextView groupBoardDetailTxtDate;
     @BindView(R.id.group_board_detail_text)
     TextView groupBoardDetailText;
     @BindView(R.id.group_board_detail_txt_tag)
     TextView groupBoardDetailTxtTag;
-    @BindView(R.id.group_board_detail_txt_date)
-    TextView groupBoardDetailTxtDate;
-    @BindView(R.id.group_board_detail_edt_re)
-    EditText groupBoardDetailEdtRe;
-    @BindView(R.id.group_board_detail_btn_re)
-    Button groupBoardDetailBtnRe;
-    @BindView(R.id.group_board_detail_btn_delete)
-    Button groupBoardDetailBtnDelete;
-    @BindView(R.id.group_board_detail_btn_write)
-    Button groupBoardDetailBtnWrite;
+
+    @BindView(R.id.group_board_detail_edt_comment)
+    EditText groupBoardDetailEdtComment;
+    @BindView(R.id.group_board_detail_btn_comment)
+    Button groupBoardDetailBtnComment;
+
     @BindView(R.id.postDetail_frg_listV_Comment)
     ListView listView;
+
+    @BindView(R.id.group_board_detail_btn_write)
+    Button groupBoardDetailBtnWrite;
+    @BindView(R.id.group_board_detail_btn_delete)
+    Button groupBoardDetailBtnDelete;
+    @BindView(R.id.group_board_detail_btn_modify)
+    Button groupBoardDetailBtnModify;
 
     Unbinder unbinder;
 
@@ -62,10 +76,11 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
         GroupBoardDetailFragment fragment = new GroupBoardDetailFragment();
 
         Bundle args = new Bundle();
-        if(fragment.postView==null){
-            fragment.postView=postView;
+        if (fragment.postView == null) {
+            fragment.postView = postView;
         }
         args.putLong("postId", postView.getId());
+        Log.d("로그", postView.toString());
 
         fragment.setArguments(args);
         return fragment;
@@ -77,7 +92,7 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
         unbinder = ButterKnife.bind(this, view);
         postId = getArguments().getLong("postId");
         commentList = new ArrayList<>();
-        adapter = new GroupCommentListviewAdapter(commentList);
+        adapter = new GroupCommentListviewAdapter(getContext(), commentList);
         listView.setAdapter(adapter);
 
         return view;
@@ -97,18 +112,23 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
 
     @Override
     public void refresh() {
-        page=1;
+        page = 1;
         commentList.clear();
         getCommentCount();
+
+        GlideApp.with(this).load(CommonUtils.serverURL+CommonUtils.attachPath+postView.getImgUrl());
+        groupBoardDetailTxtName.setText(postView.getNickname());
+        groupBoardDetailTxtDate.setText(postView.getCreate_date());
+        groupBoardDetailText.setText(postView.getContent());
     }
 
-    void getCommentCount(){
+    void getCommentCount() {
         Call<Integer> observer = RetrofitService.getInstance().getRetrofitRequest().getCommentCount(postId);
         observer.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
-                    if(response.body()>0){
+                if (response.isSuccessful()) {
+                    if (response.body() > 0) {
                         getCommentData();
                     }
                 }
@@ -121,12 +141,13 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
             }
         });
     }
-    void getCommentData(){
+
+    void getCommentData() {
         Call<ArrayList<CommentView>> commentObserver = RetrofitService.getInstance().getRetrofitRequest().selectPostComment(postId, page);
         commentObserver.enqueue(new Callback<ArrayList<CommentView>>() {
             @Override
             public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     commentList.addAll(response.body());
                     adapter.notifyDataSetChanged();
                 }
@@ -138,12 +159,13 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
             }
         });
     }
-    void getImgData(){
+
+    void getImgData() {
         Call<ArrayList<String>> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectPostImg(postId);
         imgObserver.enqueue(new Callback<ArrayList<String>>() {
             @Override
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     imgList.clear();
                     imgList.addAll(response.body());
                 }

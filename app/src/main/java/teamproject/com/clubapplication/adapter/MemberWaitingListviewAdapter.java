@@ -14,6 +14,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.MemberView;
+import teamproject.com.clubapplication.utils.CommonUtils;
+import teamproject.com.clubapplication.utils.glide.GlideApp;
 
 public class MemberWaitingListviewAdapter extends BaseAdapter {
 
@@ -42,15 +44,20 @@ public class MemberWaitingListviewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_manage_member_check, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_group_manage_member_wait, parent, false);
 
-            holder= new Holder(convertView);
+            holder = new Holder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
 
-        //이미지 , 이름 , 나이 , 성별 , 지역
+        MemberView currMember = (MemberView) getItem(position);
+        holder.groupManageMemberTxtName.setText(currMember.getName());
+        holder.groupManageMemberTxtAge.setText(currMember.getBirthday());
+        holder.groupManageMemberTxtGender.setText(currMember.getGender() == 0 ? "남자" : "여자");
+        holder.groupManageMemberTxtLocation.setText(currMember.getLocal());
+        GlideApp.with(parent.getContext()).load(CommonUtils.serverURL + CommonUtils.attachPath + currMember.getImgUrl()).placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).circleCrop().into(holder.groupManageMemberJoinImg);
 
 
         return convertView;
@@ -59,23 +66,28 @@ public class MemberWaitingListviewAdapter extends BaseAdapter {
     }
 
     class Holder {
-        @BindView(R.id.group_manage_member_check_img)
-        ImageView groupManageMemberCheckImg;
-        @BindView(R.id.group_manage_member_check_txt_name)
-        TextView groupManageMemberCheckTxtName;
-        @BindView(R.id.group_manage_member_btn_check_ban)
-        Button groupManageMemberBtnCheckBan;
-        @BindView(R.id.group_manage_member_btn_check_nominate)
-        Button groupManageMemberBtnCheckNominate;
-        @BindView(R.id.group_manage_member_check_txt_age)
-        TextView groupManageMemberCheckTxtAge;
-        @BindView(R.id.group_manage_member_check_txt_gender)
-        TextView groupManageMemberCheckTxtGender;
-        @BindView(R.id.group_manage_member_check_txt_location)
-        TextView groupManageMemberCheckTxtLocation;
+        @BindView(R.id.group_manage_member_join_img)
+        ImageView groupManageMemberJoinImg;
+        @BindView(R.id.group_manage_member_txt_name)
+        TextView groupManageMemberTxtName;
+        @BindView(R.id.group_manage_member_txt_age)
+        TextView groupManageMemberTxtAge;
+        @BindView(R.id.group_manage_member_txt_gender)
+        TextView groupManageMemberTxtGender;
+        @BindView(R.id.group_manage_member_txt_location)
+        TextView groupManageMemberTxtLocation;
 
+        @BindView(R.id.group_manage_member_btn_join_yes)
+        Button groupManageMemberBtnJoinYes;
+        @BindView(R.id.group_manage_member_btn_join_no)
+        Button groupManageMemberBtnJoinNo;
         Holder(View view) {
             ButterKnife.bind(this, view);
+            groupManageMemberBtnJoinYes.setFocusable(false);
+            groupManageMemberBtnJoinYes.setFocusableInTouchMode(false);
+            groupManageMemberBtnJoinNo.setFocusable(false);
+            groupManageMemberBtnJoinNo.setFocusableInTouchMode(false);
         }
     }
+
 }

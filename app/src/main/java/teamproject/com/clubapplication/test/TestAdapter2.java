@@ -49,7 +49,7 @@ public class TestAdapter2 extends RecyclerView.Adapter<TestAdapter2.Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        GlideApp.with(context).load(serverURL+filePath.get(position)).into(holder.imageView);
+        GlideApp.with(context).load(serverURL+filePath.get(position)).skipMemoryCache(true).into(holder.imageView);
     }
 
     @Override

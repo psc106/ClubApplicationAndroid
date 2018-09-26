@@ -3,6 +3,7 @@ package teamproject.com.clubapplication;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -14,11 +15,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
@@ -91,6 +94,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     GroupViewpagerAdapter homeAdapter;
     LoginService loginService;
     private ClubMemberClass clubMemberClass = null;
+    LoadingDialog loadingDialog;
     Bus bus;
     Long clubId;
 
@@ -117,6 +121,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             }
             intent.putExtra("category", category);
             intent.putExtra("class", clubMemberClass.getMemberClass());
+            intent.putExtra("clubId", clubMemberClass.getClubView().getId());
             startActivity(intent);
 
         }
@@ -125,9 +130,11 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setPan();
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
         loginService = LoginService.getInstance();
+        loadingDialog = LoadingDialog.getInstance();
         Intent intent = getIntent();
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
@@ -143,7 +150,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             finish();
             //실패처리
         } else {
-            final LoadingDialog loadingDialog = LoadingDialog.getInstance();
+            Log.d("로그", "onCreate: "+loadingDialog);
             loadingDialog.progressON(this, "메세지");
             Long userId = -1L;
             if (loginService.getMember() != null)
@@ -173,6 +180,9 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
             @Override
             public void onPageSelected(int position) {
+                RefreshData refreshData = (RefreshData)(homeAdapter.getItem(position));
+                refreshData.refresh();
+
                 if (position > 0) {
                     if (!ishideState) {
                         hideView(appBarLayout);
@@ -180,13 +190,42 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
                 } else {
                     if (ishideState) {
                         showView(appBarLayout);
-//                        viewpager.scrollTo(0, offset);
                     }
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        coordinatorLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                Rect r = new Rect();
+                coordinatorLayout.getWindowVisibleDisplayFrame(r);
+                int screenHeight = coordinatorLayout.getRootView().getHeight();
+
+                // r.bottom is the position above soft keypad or device button.
+                // if keypad is shown, the r.bottom is smaller than that before.
+                int keypadHeight = screenHeight - r.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                    // keyboard is opened
+                    if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
+                        writeBtnFrame.setVisibility(View.GONE);
+                    }
+//                    isKeyboard = true;
+
+                }
+                else {
+                    if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
+                        writeBtnFrame.setVisibility(View.VISIBLE);
+                    }
+//                    isKeyboard = false;
+                    // keyboard is closed
+                }
             }
         });
 
@@ -216,7 +255,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     @Subscribe
     void finishLoad(ClubLoadEvent clubLoadEvent) {
-        if (this.clubId == clubLoadEvent.getClubMemberClass().getClub().getId()) {
+        if (this.clubId == clubLoadEvent.getClubMemberClass().getClubView().getId()) {
             refresh();
         }
     }
@@ -252,12 +291,12 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
     @Override
     public void refresh() {
-        Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClub().getId());
+        Call<String> imgObserver = RetrofitService.getInstance().getRetrofitRequest().selectClubProfileImg(clubMemberClass.getClubView().getId());
         imgObserver.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    GlideApp.with(GroupActivity.this).load(CommonUtils.serverURL + response.body()).centerCrop().into(imageView);
+                    GlideApp.with(GroupActivity.this).load(CommonUtils.serverURL + CommonUtils.attachPath+ response.body()).skipMemoryCache(true).centerCrop().into(imageView);
                 }
             }
 
@@ -300,7 +339,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
      */
     private void hideView(final View view) {
 
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
         mIsHiding = true;
         ViewPropertyAnimator animator = view.animate()
@@ -318,7 +356,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
                 mIsHiding = false;
 
                 appBarLayout.setActivated(false);
-                appBarLayout.setVisibility(View.GONE);
 
                 ishideState = true;
             }
@@ -358,9 +395,6 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         animator.setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                appBarLayout.setVisibility(View.VISIBLE);
-//                appBarLayout.setExpanded(true, true);
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewpager.getLayoutParams();
             }
 
             @Override
@@ -386,6 +420,13 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
         animator.start();
     }
+
+    @Override
+    public void onBackPressed() {
+        loadingDialog.progressOFF();
+        super.onBackPressed();
+    }
+
 
 }
 
