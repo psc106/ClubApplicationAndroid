@@ -4,17 +4,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Alarm;
 import teamproject.com.clubapplication.data.Club;
+import teamproject.com.clubapplication.data.ClubView;
 
 public class MyClubListviewAdapter extends BaseAdapter {
-    ArrayList<Club> list;
-    public MyClubListviewAdapter(ArrayList<Club> list) {
+    ArrayList<ClubView> list;
+    public MyClubListviewAdapter(ArrayList<ClubView> list) {
         this.list = list;
     }
 
@@ -48,6 +52,19 @@ public class MyClubListviewAdapter extends BaseAdapter {
     }
 
     class Holder {
+        @BindView(R.id.lv_my_group_title)
+        TextView groupName;
+        @BindView(R.id.lv_my_group_category)
+        TextView category;
+        @BindView(R.id.lv_my_group_count)
+        TextView memberCount;
+        @BindView(R.id.lv_my_group_img)
+        ImageView profileImg;
+        @BindView(R.id.lv_my_group_location)
+        TextView local;
+        @BindView(R.id.lv_my_group_maker)
+        TextView admin;
+
         Holder(View view) {
             ButterKnife.bind(this, view);
         }

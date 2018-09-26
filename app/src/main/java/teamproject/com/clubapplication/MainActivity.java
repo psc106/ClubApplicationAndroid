@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -53,6 +54,8 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     LinearLayout mainLayoutAdvancedSearch;
     @BindView(R.id.main_gridV_category)
     ScrollGridview mainGridVCategory;
+//    @BindView(R.id.main_gridV_local)
+//    ScrollGridview mainGridVLocal;
     //    GridView mainGridVCategory;
     @BindView(R.id.main_btn_MakeGroup)
     Button mainBtnMakeGroup;
@@ -123,6 +126,14 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
+        mainGridVCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra("category", position+1);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

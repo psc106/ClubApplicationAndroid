@@ -13,11 +13,11 @@ import butterknife.ButterKnife;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.Schedule;
 
-public class MyCalendarListviewAdapter extends BaseAdapter {
+public class MyCalendarListViewAdapter extends BaseAdapter {
 
     ArrayList<Schedule> list;
 
-    public MyCalendarListviewAdapter(ArrayList<Schedule> list) {
+    public MyCalendarListViewAdapter(ArrayList<Schedule> list) {
         this.list = list;
     }
 
