@@ -1,124 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/postDetail_frg_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="20dp"
+    android:paddingBottom="10dp"
     tools:context=".fragment.GroupBoardDetailFragment">
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-android:scrollbars="none"
-        android:fillViewport="true">
-        <RelativeLayout
+        android:id="@+id/postDetail_frg_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp">
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/postDetail_frg_img_Profile"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+
+                <TextView
+                    android:id="@+id/group_board_detail_txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/postDetail_frg_img_Profile"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/group_board_detail_txt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/group_board_detail_txt_name"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/postDetail_frg_img_Profile" />
+            </RelativeLayout>
+
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/postDetail_frg_recycleV_img"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="160dp"-->
+            <!--android:scrollbars="none"-->
+            <!--/>-->
 
             <LinearLayout
-                android:layout_centerHorizontal="true"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="250dp"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:id="@+id/postDetail_frg_img_Profile"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp" />
-                    <TextView
-                        android:id="@+id/group_board_detail_txt_name"
-                        android:text="작성자"
-                        android:layout_toRightOf="@id/postDetail_frg_img_Profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp"/>
-                    <TextView
-                        android:id="@+id/group_board_detail_txt_date"
-                        android:layout_marginRight="10dp"
-                        android:text="2018/08/17"
-                        android:layout_toRightOf="@id/postDetail_frg_img_Profile"
-                        android:layout_below="@id/group_board_detail_txt_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/postDetail_frg_recycleV_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:scrollbars="none"
-                    />
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/postDetail_frg_viewpager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:id="@+id/group_board_detail_text"
-                    android:text="내용"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:background="@drawable/back"/>
-                <TextView
-                    android:id="@+id/group_board_detail_txt_tag"
-                    android:text="태그"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:background="@drawable/back"/>
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/back"
+                    android:minHeight="100dp"
+                    android:layout_weight="1"/>
 
-                <!--댓글 부분 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <EditText
-                        android:id="@+id/group_board_detail_edt_comment"
-                        android:background="@drawable/back"
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="1"
-                        android:gravity="left|top"/>
-                    <Button
-                        android:id="@+id/group_board_detail_btn_comment"
-                        android:layout_width="80dp"
-                        android:layout_height="60dp"
-                        android:text="작성"/>
-                </LinearLayout>
-
-                <ListView
-                    android:id="@+id/postDetail_frg_listV_Comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    >
-                </ListView>
             </LinearLayout>
 
-        </RelativeLayout>
+            <!--댓글 부분 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/group_board_detail_edt_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/back"
+                    android:gravity="left|top" />
+
+                <Button
+                    android:id="@+id/group_board_detail_btn_comment"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:text="작성" />
+            </LinearLayout>
+
+            <ListView
+                android:descendantFocusability="blocksDescendants"
+                android:id="@+id/postDetail_frg_listV_Comment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scrollbars="none"></ListView>
+        </LinearLayout>
+
 
     </ScrollView>
 
     <Button
         android:id="@+id/group_board_detail_btn_write"
-        android:text="글쓰기"
-        android:layout_toLeftOf="@id/group_board_detail_btn_delete"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
-    <Button
-        android:id="@+id/group_board_detail_btn_delete"
-        android:text="삭제"
-        android:layout_toLeftOf="@id/group_board_detail_btn_modify"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
-    <Button
-        android:id="@+id/group_board_detail_btn_modify"
-        android:layout_alignParentRight="true"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:text="수정"/>
+        android:layout_toLeftOf="@id/group_board_detail_btn_delete"
+        android:text="글쓰기" />
+
+    <Button
+        android:id="@+id/group_board_detail_btn_delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@id/group_board_detail_btn_modify"
+        android:text="삭제" />
+
+    <Button
+        android:id="@+id/group_board_detail_btn_modify"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:text="수정" />
 
 </RelativeLayout>

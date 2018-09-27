@@ -46,9 +46,12 @@ public class GroupWriteActivity extends KeyHideActivity {
     @BindView(R.id.groupWrite_frame_writeForm)
     FrameLayout writeFormFrame;
     private DrawerMenu drawerMenu;
+//
+//    final static String[] WRITE_COMMON_TYPE_NAME = {"게시판", "앨범", "일정"};
+//    final static String[] WRITE_ADMIN_TYPE_NAME = {"공지", "게시판", "앨범", "일정"};
 
-    final static String[] WRITE_COMMON_TYPE_NAME = {"게시판", "앨범", "일정"};
-    final static String[] WRITE_ADMIN_TYPE_NAME = {"공지", "게시판", "앨범", "일정"};
+    final static String[] WRITE_COMMON_TYPE_NAME = {"게시판"};
+    final static String[] WRITE_ADMIN_TYPE_NAME = {"공지", "게시판"};
     final static Fragment[] FRAGMENTS = {GroupWriteNoticeFragment.getInstance(), GroupWriteBoardFragment.getInstance(), GroupWriteAlbumFragment.getInstance(), GroupWriteScheduleFragment.getInstance()};
 
     String memberClass;

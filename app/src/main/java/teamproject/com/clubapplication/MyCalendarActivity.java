@@ -36,7 +36,7 @@ import retrofit2.Response;
 
 import teamproject.com.clubapplication.adapter.MyCalendarGridviewAdapter;
 
-import teamproject.com.clubapplication.adapter.MyCalendarListViewAdapter;
+import teamproject.com.clubapplication.adapter.MyCalendarListviewAdapter;
 
 import teamproject.com.clubapplication.data.CalendarSchedule;
 
@@ -61,7 +61,7 @@ public class MyCalendarActivity extends AppCompatActivity implements RefreshData
 
     MyCalendarGridviewAdapter gridviewAdapter;
     ArrayList<CalendarSchedule> calendarArrayList;
-    MyCalendarListViewAdapter listviewAdapter;
+    MyCalendarListviewAdapter listviewAdapter;
     ArrayList<Schedule> scheduleArrayList;
 
     LoginService loginService;
@@ -79,7 +79,7 @@ public class MyCalendarActivity extends AppCompatActivity implements RefreshData
         gridView.setAdapter(gridviewAdapter);
 
         scheduleArrayList = new ArrayList<>();
-        listviewAdapter = new MyCalendarListViewAdapter(scheduleArrayList);
+        listviewAdapter = new MyCalendarListviewAdapter(scheduleArrayList);
         listView.setAdapter(listviewAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

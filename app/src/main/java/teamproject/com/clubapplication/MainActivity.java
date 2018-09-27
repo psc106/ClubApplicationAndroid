@@ -77,7 +77,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
     public void search(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
         if (mainLayoutAdvancedSearch.getVisibility() != View.GONE) {
-            if (mainSpinnerLocationDoSi.getSelectedItemPosition() >0)
+            if (mainSpinnerLocationDoSi.getSelectedItemPosition() > 0)
                 intent.putExtra("localDoSi", mainSpinnerLocationDoSi.getSelectedItemPosition());
             if (mainSpinnerLocationSiGunGu.getSelectedItemPosition() > 0)
                 intent.putExtra("localSiGunGu", mainSpinnerLocationSiGunGu.getSelectedItemPosition());
@@ -132,7 +132,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         arrayListLocal = new ArrayList<>();
         arrayListLocal.addAll(new ArrayList<>(Arrays.asList(items_locationDoSi)));
         mainGridviewLocalAdapter = new MainGridviewAdapter(arrayListLocal);
-        mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size()))+1);
+        mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size())) + 1);
         mainGridVLocal.setAdapter(mainGridviewLocalAdapter);
 
         CommonUtils.initSpinner(this, mainSpinnerLocationDoSi, items_locationDoSi, noneSelect);
@@ -146,7 +146,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                intent.putExtra("category", position+1);
+                intent.putExtra("category", position + 1);
                 startActivity(intent);
 
             }
@@ -156,7 +156,7 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!isSiGunGu) {
-                    selectDoSiPosition = position+1;
+                    selectDoSiPosition = position + 1;
                     String selectDoSi = arrayListLocal.get(position);
                     String[] tmpItem = dbManager.getSiGunGuFromDoSi(selectDoSi);
                     ArrayList<String> tmpArrayList = new ArrayList<>();
@@ -167,28 +167,28 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
                     arrayListLocal.addAll(tmpArrayList);
                     mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size())) + 1);
                     mainGridviewLocalAdapter.notifyDataSetChanged();
-                    isSiGunGu=true;
+                    isSiGunGu = true;
                 } else {
-                    if(position==0) {
+                    if (position == 0) {
                         selectDoSiPosition = 0;
                         arrayListLocal.clear();
                         arrayListLocal.addAll(new ArrayList<>(Arrays.asList(items_locationDoSi)));
                         double count = Math.sqrt(arrayListLocal.size());
-                        if(count-(int)count==0){
+                        if (count - (int) count == 0) {
                             mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size())));
                         } else {
                             mainGridVLocal.setNumColumns(((int) Math.sqrt(arrayListLocal.size())) + 1);
                         }
                         mainGridviewLocalAdapter.notifyDataSetChanged();
                         isSiGunGu = false;
-                    } else if(position==1) {
+                    } else if (position == 1) {
                         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                         intent.putExtra("localDoSi", selectDoSiPosition);
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                         intent.putExtra("localDoSi", selectDoSiPosition);
-                        intent.putExtra("localSiGunGu", position-1);
+                        intent.putExtra("localSiGunGu", position - 1);
                         startActivity(intent);
                     }
 
@@ -199,12 +199,12 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
         mainSpinnerLocationDoSi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0) {
+                if (position > 0) {
                     String selectDoSi = (String) mainSpinnerLocationDoSi.getSelectedItem();
-                    if(dbManager!=null) {
+                    if (dbManager != null) {
                         mainSpinnerLocationSiGunGu.setVisibility(View.VISIBLE);
                         items_locationSiGunGu = dbManager.getSiGunGuFromDoSi(selectDoSi);
-                        Log.d("로그", "onItemSelected: "+items_locationSiGunGu.toString());
+                        Log.d("로그", "onItemSelected: " + items_locationSiGunGu.toString());
                         CommonUtils.initSpinner(activity, mainSpinnerLocationSiGunGu, items_locationSiGunGu, noneSelect);
                     }
                 } else {
@@ -246,7 +246,9 @@ public class MainActivity extends KeyHideActivity implements RefreshData {
 
 
     public void backHomeActivity(Activity otherActivity) {
-        Intent intent = new Intent(otherActivity, this.getClass());
+
+        Intent intent;
+        intent = new Intent(otherActivity, this.getClass());
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

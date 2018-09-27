@@ -119,23 +119,26 @@ public class MenuFragment extends Fragment {
         } else if (position == 1) {
             intent = new Intent(getContext(), MyGroupActivity.class);
             closeClass = MyGroupActivity.class;
+//        } else if (position == 2) {
+//            intent = new Intent(getContext(), MyCalendarActivity.class);
+//            closeClass = MyCalendarActivity.class;
+//        } else if (position == 3) {
+//            intent = new Intent(getContext(), MyAlarmActivity.class);
+//            closeClass = MyAlarmActivity.class;
+//        } else if (position == 4) {
+//            intent = new Intent(getContext(), MyContentActivity.class);
+//            closeClass = MyContentActivity.class;
+//        } else if (position == 5) {
         } else if (position == 2) {
-            intent = new Intent(getContext(), MyCalendarActivity.class);
-            closeClass = MyCalendarActivity.class;
-        } else if (position == 3) {
-            intent = new Intent(getContext(), MyAlarmActivity.class);
-            closeClass = MyAlarmActivity.class;
-        } else if (position == 4) {
-            intent = new Intent(getContext(), MyContentActivity.class);
-            closeClass = MyContentActivity.class;
-        } else if (position == 5) {
             intent = new Intent(getContext(), MyOptionActivity.class);
             closeClass = MyOptionActivity.class;
         } else {
             return;
         }
 
-        if (loginService.getMember() == null && (position >= 1 && position <= 4)) {
+//        if (loginService.getMember() == null && (position >= 1 && position <= 4)) {
+        if (loginService.getMember() == null && (position >= 1 && position <= 2)) {
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
             builder.setTitle("정보")        // 제목 설정
@@ -149,7 +152,8 @@ public class MenuFragment extends Fragment {
         } else if (loginService.getMember() != null) {
             refreshLogin();
 
-            if (loginService.getMember().getVerify().equals("N") && (position >= 1 && position <= 4)) {
+//            if (loginService.getMember().getVerify().equals("N") && (position >= 1 && position <= 4)) {
+            if (loginService.getMember().getVerify().equals("N") && (position >= 1 && position <= 2)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                 builder.setTitle("정보")        // 제목 설정
@@ -176,7 +180,8 @@ public class MenuFragment extends Fragment {
     Bus bus;
     ArrayAdapter adapter;
     LoginService loginService;
-    String[] menuList = {"홈", "내 동호회", "내 일정", "내 알림", "내 글", "설정"};
+    //    String[] menuList = {"홈", "내 동호회", "내 일정", "내 알림", "내 글", "설정"};
+    String[] menuList = {"홈", "내 동호회", "설정"};
 
 
     @Nullable
@@ -194,7 +199,7 @@ public class MenuFragment extends Fragment {
         if (loginService.getMember() == null) {
             setLogoutMenu();
         } else {
-            setLoginMenu();
+            setLoginMenu(loginService.getMember().getName());
         }
 
         return view;
@@ -229,10 +234,10 @@ public class MenuFragment extends Fragment {
         nameTxt.setText("로그인이 필요합니다.");
     }
 
-    public void setLoginMenu() {
+    public void setLoginMenu(String name) {
         //profileImg.setVisibility(View.VISIBLE);
 //        menuListV.setVisibility(View.VISIBLE);
-        nameTxt.setText(loginService.getMember().getName() + " 님(" + loginService.getMember().getLogin_id() + ")");
+        nameTxt.setText(name + "\n[ " + loginService.getMember().getLogin_id() + " ]");
     }
 
     @Subscribe
@@ -240,7 +245,7 @@ public class MenuFragment extends Fragment {
         if (event.getState() == 0) {
             setLogoutMenu();
         } else if (event.getState() == 1) {
-            setLoginMenu();
+            setLoginMenu(loginService.getMember().getName());
         }
     }
 

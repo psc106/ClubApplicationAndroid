@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -46,6 +47,9 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
 
     Long clubId;
 
+    public Long getClubId() {
+        return clubId;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +61,13 @@ public class GroupManageMemberActivity extends AppCompatActivity implements Refr
         clubId = intent.getLongExtra("clubId", -1);
 
         waitList = new ArrayList<>();
-        waitAdapter = new MemberWaitingListviewAdapter(waitList);
+        waitAdapter = new MemberWaitingListviewAdapter(waitList, clubId);
         listViewWaiting.setAdapter(waitAdapter);
 
-
-
         joinList = new ArrayList<>();
-        joinAdapter = new MemberJoinListviewAdapter(joinList);
+        joinAdapter = new MemberJoinListviewAdapter(joinList, clubId);
         listViewJoin.setAdapter(joinAdapter);
+
     }
 
     @Override

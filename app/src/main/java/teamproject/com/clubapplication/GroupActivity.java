@@ -11,6 +11,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
@@ -98,6 +99,13 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     Bus bus;
     Long clubId;
 
+
+    public void fragmentRefresh() {
+        Log.d("로그", viewpager.getCurrentItem()+"");
+        RefreshData refreshData = (RefreshData)(homeAdapter.getItem(viewpager.getCurrentItem()));
+        refreshData.refresh();
+    }
+
     //0 : 전체보임, 1 : 툴바까지, 2 : 탭레이아웃까지 3 :
     int state = 0;
     int offset = 0;
@@ -112,10 +120,10 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             //관리자
             if (tabLayout.getSelectedTabPosition() == 0 && clubMemberClass.getMemberClass().equals("A")) {
                 category = 0;
-            } else if (tabLayout.getSelectedTabPosition() == 2) {
-                category = 2;
-            } else if (tabLayout.getSelectedTabPosition() == 3) {
-                category = 3;
+//            } else if (tabLayout.getSelectedTabPosition() == 2) {
+//                category = 2;
+//            } else if (tabLayout.getSelectedTabPosition() == 3) {
+//                category = 3;
             } else {
                 category = 1;
             }
@@ -314,9 +322,10 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             homeAdapter.clearFragment();
             homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
             homeAdapter.addFragment(new GroupBoardFragment(), "게시판", 1);
-            homeAdapter.addFragment(new GroupAlbumFragment(), "앨범", 2);
-            homeAdapter.addFragment(new GroupCalendarFragment(), "일정", 3);
-            homeAdapter.addFragment(new GroupManageFragment(), "설정", 4);
+//            homeAdapter.addFragment(new GroupAlbumFragment(), "앨범", 2);
+//            homeAdapter.addFragment(new GroupCalendarFragment(), "일정", 3);'
+//                        homeAdapter.addFragment(new GroupManageFragment(), "설정", 4);
+            homeAdapter.addFragment(new GroupManageFragment(), "설정", 2);
             homeAdapter.notifyDataSetChanged();
             viewpager.setOffscreenPageLimit(4);
             writeBtnFrame.setVisibility(View.VISIBLE);
@@ -427,6 +436,15 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         super.onBackPressed();
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("로그", "ㄱㄷㄴ "+resultCode);
+        Log.d("로그", "ㄱㄷㅂ "+requestCode);
+        if(resultCode==RESULT_OK){
+            if(requestCode==0){
+                fragmentRefresh();
+            }
+        }
+    }
 }
 

@@ -77,7 +77,7 @@ public class GroupManageFragment extends Fragment implements RefreshData{
 
                 switch (list.get(position).getId()){
                     case 0:
-                            intent = new Intent(getActivity(), GroupManageProfileActivity.class);
+                        intent = new Intent(getActivity(), GroupManageProfileActivity.class);
                         intent.putExtra("memberId", loginService.getMember().getId());
                         startActivity(intent);
                         break;

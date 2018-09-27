@@ -37,10 +37,20 @@ public class GroupPostDetailActivity extends KeyHideActivity {
 
     GroupPostDetailPageAdapter pageAdapter;
     private PostView currPost;
+    String memberClass;
+    Long clubId;
 
     public void setCurrPost(PostView currPost) {
         this.currPost = currPost;
         pageAdapter.setPostView(currPost);
+    }
+
+    public String getMemberClass() {
+        return memberClass;
+    }
+
+    public Long getClubId() {
+        return clubId;
     }
 
     public static int prePosition;
@@ -55,6 +65,8 @@ public class GroupPostDetailActivity extends KeyHideActivity {
 
         Intent intent = getIntent();
         currPost=intent.getParcelableExtra("postData");
+        memberClass=intent.getStringExtra("memberClass");
+        clubId=intent.getLongExtra("clubId", -1);
 
         pageAdapter = new GroupPostDetailPageAdapter(getSupportFragmentManager(), currPost);
         viewPager.setAdapter(pageAdapter);

@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,10 +27,13 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import teamproject.com.clubapplication.GroupActivity;
 import teamproject.com.clubapplication.GroupPostDetailActivity;
+import teamproject.com.clubapplication.GroupPostModifyActivity;
 import teamproject.com.clubapplication.LoginActivity;
 import teamproject.com.clubapplication.MainActivity;
 import teamproject.com.clubapplication.R;
+import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.CommentView;
 import teamproject.com.clubapplication.data.PostFrame;
 import teamproject.com.clubapplication.data.PostView;
@@ -45,6 +49,7 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
     ArrayList<PostFrame> arrayList;
     Context context;
     LoginService loginService;
+    ClubMemberClass clubMemberClass;
 
     public GroupBoardListviewAdapter(Context context, ArrayList<PostFrame> arrayList) {
         this.arrayList = arrayList;
@@ -89,7 +94,7 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, final ViewGroup parent) {
         final PostHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_gorup_board, parent, false);
@@ -118,24 +123,60 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
 
                 if (!TextUtils.isEmpty(holder.groupBoardLvEdtComment.getText())) {
                     String comment = holder.groupBoardLvEdtComment.getText().toString();
-                    writeComment(currPostView, comment);
+                    writeComment(groupPosition, currPostView, comment);
 
                     holder.groupBoardLvEdtComment.clearFocus();
                     holder.groupBoardLvEdtComment.setText("");
 
-                    BusProvider.getInstance().getBus().post(new CommentEvent(0, groupPosition, currPostView.getId(), -1));
                 }
+            }
+        });
+
+        holder.groupBoardLvBtnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<Boolean> observer = RetrofitService.getInstance().getRetrofitRequest().deletePost(currPostView.getId(), LoginService.getInstance().getMember().getId());
+                observer.enqueue(new Callback<Boolean>() {
+                    @Override
+                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                        if(response.isSuccessful()) {
+                            arrayList.remove(groupPosition);
+                            notifyDataSetChanged();
+                            CommonUtils.setListViewHeight((ExpandableListView) parent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Boolean> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        holder.groupBoardLvBtnModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, GroupPostModifyActivity.class);
+                intent.putExtra("postData", currPostView);
+                context.startActivity(intent);
             }
         });
 
         holder.groupBoardLvTxtContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostHolder holder = (PostHolder) v.getTag();
-                Intent intent = new Intent(context, GroupPostDetailActivity.class);
+                clubMemberClass = ((GroupActivity)context).getClubMemberClass();
+                if(clubMemberClass==null) {
+                    return;
+                }
+
+               Intent intent = new Intent(context, GroupPostDetailActivity.class);
                 Log.d("로그", arrayList.get(groupPosition).toString());
                 intent.putExtra("postData", arrayList.get(groupPosition).getPostView());
-                context.startActivity(intent);
+                intent.putExtra("memberClass", clubMemberClass.getMemberClass());
+                intent.putExtra("clubId", clubMemberClass.getClubView().getId());
+                ((GroupActivity) context).startActivityForResult(intent, 0);
             }
         });
 
@@ -156,11 +197,9 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
             holder = (CommentHolder) convertView.getTag();
         }
 
-        if(holder.groupCommentImgBtnDel.getVisibility()==View.GONE) {
-            holder.groupCommentEdtContent.setVisibility(View.GONE);
-            holder.groupCommentTxtContent.setVisibility(View.VISIBLE);
-            holder.groupCommentImgBtnDel.setVisibility(View.VISIBLE);
-        }
+        holder.groupCommentEdtContent.setVisibility(View.GONE);
+        holder.groupCommentTxtContent.setVisibility(View.VISIBLE);
+        holder.groupCommentImgBtnDel.setVisibility(View.VISIBLE);
 
         final PostView currPostView = (PostView) getGroup(groupPosition);
         final CommentView currCommentView = (CommentView) getChild(groupPosition, childPosition);
@@ -248,12 +287,13 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
     }
 
 
-    void writeComment(final PostView post, String commentContents) {
+    void writeComment(final int groupPosition, final PostView post, String commentContents) {
         Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().insertComment(post.getId(), loginService.getMember().getId(), commentContents);
         observer.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    BusProvider.getInstance().getBus().post(new CommentEvent(0, groupPosition, post.getId(), -1));
                 }
             }
 
@@ -285,6 +325,11 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
         public ImageView groupBoardLvImgThumbnail;
         @BindView(R.id.groupBoard_lv_img_count)
         public ImageView groupBoardLvImgCount;
+
+        @BindView(R.id.groupBoard_lv_btn_del)
+        public Button groupBoardLvBtnDelete;
+        @BindView(R.id.groupBoard_lv_btn_modify)
+        public Button groupBoardLvBtnModify;
 
         public PostHolder(View view) {
             ButterKnife.bind(this, view);

@@ -53,7 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,7 +74,8 @@
             android:layout_weight="1"
             android:background="@drawable/back"
             android:hint="ex)a, b, c"
-            android:inputType="text" />
+            android:inputType="text"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 

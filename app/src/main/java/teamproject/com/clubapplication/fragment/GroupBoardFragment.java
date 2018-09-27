@@ -66,8 +66,6 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     ClubMemberClass clubMemberClass;
     int page = 0;
     int count = 0;
-    private boolean lastItemVisibleFlag = false;    // 리스트 스크롤이 마지막 셀(맨 바닥)로 이동했는지 체크할 변수
-    private boolean mLockListView = false;          // 데이터 불러올때 중복안되게 하기위한 변수
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -192,6 +190,8 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
     @Subscribe
     void finishLoad(ClubLoadEvent clubLoadEvent) {
         this.clubMemberClass = clubLoadEvent.getClubMemberClass();
+        if(groupBoardListviewAdapter!=null){
+        }
         refresh();
     }
 
@@ -202,7 +202,7 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
         Call<ArrayList<CommentView>> observer;
         switch (commentEvent.getType()) {
             case 0:
-                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId());
+                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId(), 1, 4);
                 observer.enqueue(new Callback<ArrayList<CommentView>>() {
                     @Override
                     public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
@@ -221,7 +221,7 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
                 break;
 
             case 1:
-                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId());
+                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId(), 1, 4);
                 observer.enqueue(new Callback<ArrayList<CommentView>>() {
                     @Override
                     public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {
@@ -240,7 +240,7 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
                 break;
 
             case 2:
-                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId());
+                observer = RetrofitService.getInstance().getRetrofitRequest().refreshPostComment(commentEvent.getPostId(), 1, 4);
                 observer.enqueue(new Callback<ArrayList<CommentView>>() {
                     @Override
                     public void onResponse(Call<ArrayList<CommentView>> call, Response<ArrayList<CommentView>> response) {

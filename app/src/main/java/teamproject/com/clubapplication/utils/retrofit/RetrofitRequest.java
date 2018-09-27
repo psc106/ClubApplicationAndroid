@@ -36,6 +36,7 @@ public interface RetrofitRequest {
     @POST("mobile/insertClub.do")
     Call<Long> insertClub(@Part MultipartBody.Part image, @Part("category") RequestBody category, @Part("userId") RequestBody userId, @Part("name") RequestBody name, @Part("local") RequestBody local, @Part("maxPeople") RequestBody maxPeople, @Part("intro") RequestBody intro);
 
+
     //클럽
     @GET("mobile/selectClub.do")
     Call<ClubMemberClass> selectClub(@Query("clubId") Long clubId, @Query("userId") Long userId);
@@ -63,9 +64,11 @@ public interface RetrofitRequest {
     Call<Integer> getAlbumCount(@Query("clubId") Long clubId);
 
     @GET("mobile/selectPostComment.do")
-    Call<ArrayList<CommentView>> selectPostComment(@Query("postId") Long postId, @Query("page") Integer page);
+    Call<ArrayList<CommentView>> selectPostComment(@Query("postId") Long postId, @Query("page") Integer page, @Query("pageCount") Integer pageCount);
     @GET("mobile/selectCurrPost.do")
     Call<PostView> selectCurrPost(@Query("postId") Long postId);
+    @GET("mobile/getImageCount.do")
+    Call<Integer> getImageCount(@Query("postId") Long postId);
     @GET("mobile/selectPostImg.do")
     Call<ArrayList<String>> selectPostImg(@Query("postId") Long postId);
     @GET("mobile/getCommentCount.do")
@@ -88,16 +91,46 @@ public interface RetrofitRequest {
     @POST("mobile/deleteComment.do")
     Call<Boolean> deleteComment( @Field("commentId")Long commentId,  @Field("memberId")Long memberId);
 
+    @FormUrlEncoded
+    @POST("mobile/deletePost.do")
+    Call<Boolean> deletePost( @Field("postId")Long commentId,  @Field("memberId")Long memberId);
+
+
+    @FormUrlEncoded
+    @POST("mobile/deleteMember.do")
+    Call<Void> deleteMember( @Field("targetId")Long targetId,  @Field("memberId")Long memberId, @Field("clubId")Long clubId);
+
+    @FormUrlEncoded
+    @POST("mobile/updateMember.do")
+    Call<Void> updateMember( @Field("targetId")Long targetId,  @Field("memberId")Long memberId, @Field("clubId")Long clubId);
+
+    @FormUrlEncoded
+    @POST("mobile/updateAdmin.do")
+    Call<Void> updateAdmin( @Field("targetId")Long targetId,  @Field("memberId")Long memberId, @Field("clubId")Long clubId);
+
+
     @Multipart
     @POST("mobile/insertPost.do")
     Call<ResponseBody> insertPost(@Part("content") RequestBody contentBody, @Part("tag") RequestBody tagBody, @Part("clubId") RequestBody clubIdBody, @Part("memberId") RequestBody memberIdBody,
                                  @Part ArrayList<MultipartBody.Part> parts, @Part("check") RequestBody checkBody);
 
+    @Multipart
+    @POST("mobile/updatePost.do")
+    Call<ResponseBody> updatePost( @Part("postId") RequestBody postIdBody, @Part("memberId") RequestBody memberIdBody,  @Part("content") RequestBody contentBody, @Part("deletList") RequestBody deleteListBody,
+                                   @Part ArrayList<MultipartBody.Part> parts);
+
     @GET("mobile/refreshPostComment.do")
-    Call<ArrayList<CommentView>> refreshPostComment(@Query("postId") Long postId);
+    Call<ArrayList<CommentView>> refreshPostComment(@Query("postId") Long postId, @Query("page") Integer page, @Query("pageCount") Integer pageCount);
+
+
+    @Multipart
+    @POST("mobile/updateProfile.do")
+    Call<Void> updateProfile( @Part("clubId") RequestBody clubIdBody, @Part("memberId") RequestBody memberIdBody,  @Part("nickname") RequestBody nicknameBody, @Part MultipartBody.Part parts);
+    @FormUrlEncoded
+    @POST("mobile/deleteMember.do")
+    Call<MemberView> getCurrentMember( @Field("clubId")Long clubId,  @Field("memberId")Long memberId);
 
     //로그인
-
     @FormUrlEncoded
     @POST("mobile/selectLoginUser.do")
     Call<Member> selectLoginUser(@Field("id") String id, @Field("pw") String pw);

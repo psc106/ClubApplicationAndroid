@@ -121,6 +121,7 @@ public class GroupWriteBoardFragment extends Fragment {
                     String name = imageList.get(i).getRealPath();
                     Uri uri = imageList.get(i).getFileUri();
                     parts.add(prepareFilePart(name, uri));
+                    Log.d("로그", i+"/"+name);
                 }
                 Long clubId = ((GroupWriteActivity)getActivity()).getClubId();
                 Long memberId = loginService.getMember().getId();

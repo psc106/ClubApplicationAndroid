@@ -1,184 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/group_manage_modify_drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GroupManageHomeActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ImageView
+        android:id="@+id/group_manage_modify_img"
+        android:layout_width="200dp"
+        android:layout_height="170dp"
+        android:layout_centerHorizontal="true"
+        android:background="#ff0000" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".GroupManageHomeActivity">
+        android:layout_below="@+id/group_manage_modify_img"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/group_manage_modify_img"
-            android:layout_width="200dp"
-            android:layout_height="170dp"
-            android:layout_centerHorizontal="true"
-            android:background="#ff0000" />
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/group_manage_modify_img"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
 
                         <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="40dp"
-                            android:layout_centerInParent="true">
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1">
-
-                                <TextView
-                                    android:id="@+id/group_manage_modify_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="이름"
-                                    android:textSize="30dp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-                                    <!-- 인원수 -->
-                                    <TextView
-                                        android:id="@+id/group_manage_modify_count"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:text="6/10" />
-                                </RelativeLayout>
-                            </LinearLayout>
+                            <EditText
+                                android:id="@+id/group_manage_modify_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="23dp"
+                                android:hint="동호회 이름"/>
                         </LinearLayout>
 
-                    </RelativeLayout>
-                    <!--모임장 -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="모임장 : " />
-
-                        <TextView
-                            android:id="@+id/group_manage_modify_maker"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="test" />
-
-                    </LinearLayout>
-                    <!--주제-->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="주제 : " />
-
-                        <TextView
-                            android:id="@+id/group_manage_modify_category"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="test" />
-
-                    </LinearLayout>
-                    <!--지역-->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="지역 : " />
-
-                        <TextView
-                            android:id="@+id/group_manage_modify_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="test" />
-
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <!-- 인원수 -->
+                                <EditText
+                                    android:id="@+id/group_manage_modify_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:textSize="23dp"
+                                    android:hint="최대 인원"/>
+                            </RelativeLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
-                    <!--소개-->
-                    <LinearLayout
+                </RelativeLayout>
+                <!--모임장 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
+                        android:text="모임장 : " />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="소개 " />
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/group_manage_modify_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/back"
-                        android:gravity="left|top"
+                    <TextView
+                        android:id="@+id/group_manage_modify_maker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="test" />
 
+                </LinearLayout>
+                <!--주제-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="주제 : " />
+
+                    <TextView
+                        android:id="@+id/group_manage_modify_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="test" />
 
                 </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
+                <!--지역-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/group_manage_modify_btn_ok"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="#79e2f7"
-            android:text="수정" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="지역 : " />
+
+                    <TextView
+                        android:id="@+id/group_manage_modify_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="test" />
+
+                </LinearLayout>
+
+                <!--소개-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="소개 " />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/group_manage_modify_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/back"
+                    android:gravity="left|top"
+                    android:hint="소개말"/>
 
 
-    </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/group_manage_modify_menu"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:gravity="center"></FrameLayout>
-</android.support.v4.widget.DrawerLayout>
+    <Button
+        android:id="@+id/group_manage_modify_btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#79e2f7"
+        android:text="수정" />
+
+
+</RelativeLayout>
