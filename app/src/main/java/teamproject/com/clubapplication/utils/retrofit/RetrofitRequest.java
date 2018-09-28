@@ -127,7 +127,7 @@ public interface RetrofitRequest {
     @POST("mobile/updateProfile.do")
     Call<Void> updateProfile( @Part("clubId") RequestBody clubIdBody, @Part("memberId") RequestBody memberIdBody,  @Part("nickname") RequestBody nicknameBody, @Part MultipartBody.Part parts);
     @FormUrlEncoded
-    @POST("mobile/deleteMember.do")
+    @POST("mobile/getCurrentMember.do")
     Call<MemberView> getCurrentMember( @Field("clubId")Long clubId,  @Field("memberId")Long memberId);
 
     //로그인

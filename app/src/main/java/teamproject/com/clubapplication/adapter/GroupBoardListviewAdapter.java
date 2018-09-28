@@ -1,23 +1,17 @@
 package teamproject.com.clubapplication.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,7 +25,6 @@ import teamproject.com.clubapplication.GroupActivity;
 import teamproject.com.clubapplication.GroupPostDetailActivity;
 import teamproject.com.clubapplication.GroupPostModifyActivity;
 import teamproject.com.clubapplication.LoginActivity;
-import teamproject.com.clubapplication.MainActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.CommentView;
@@ -110,7 +103,15 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
         holder.groupBoardLvTxtContent.setText(currPostView.getContent());
         holder.groupBoardLvTxtDate.setText(currPostView.getCreate_date());
         holder.groupBoardLvTxtProfileName.setText(currPostView.getNickname());
-        GlideApp.with(context).load(currPostView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupBoardLvImgProfileImg);
+        GlideApp.with(context).load(CommonUtils.serverURL+CommonUtils.attachPath+currPostView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupBoardLvImgProfileImg);
+
+        if(currPostView.getMember_id()!=LoginService.getInstance().getMember().getId()){
+            holder.groupBoardLvBtnDelete.setVisibility(View.GONE);
+            holder.groupBoardLvBtnModify.setVisibility(View.GONE);
+        } else {
+            holder.groupBoardLvBtnDelete.setVisibility(View.VISIBLE);
+            holder.groupBoardLvBtnModify.setVisibility(View.VISIBLE);
+        }
 
         holder.groupBoardLvBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,8 +209,15 @@ public class GroupBoardListviewAdapter extends BaseExpandableListAdapter {
         holder.groupCommentTxtContent.setText(currCommentView.getContent());
         holder.groupCommentTxtDate.setText(currCommentView.getCreate_date());
         holder.groupCommentTxtNickname.setText(currCommentView.getNickname());
-        GlideApp.with(context).load(currCommentView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupCommentImgProfile);
+        GlideApp.with(context).load(CommonUtils.serverURL+CommonUtils.attachPath+currCommentView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupCommentImgProfile);
 
+        if(currCommentView.getMember_id()!=LoginService.getInstance().getMember().getId()){
+            holder.groupCommentImgBtnDel.setVisibility(View.GONE);
+            holder.groupCommentImgBtnModify.setVisibility(View.GONE);
+        } else {
+            holder.groupCommentImgBtnDel.setVisibility(View.VISIBLE);
+            holder.groupCommentImgBtnModify.setVisibility(View.VISIBLE);
+        }
 
         holder.groupCommentImgBtnDel.setOnClickListener(new View.OnClickListener() {
             @Override

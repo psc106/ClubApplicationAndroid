@@ -9,10 +9,11 @@
 
     <ImageView
         android:id="@+id/group_manage_modify_img"
-        android:layout_width="200dp"
+        android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_centerHorizontal="true"
-        android:background="#ff0000" />
+        android:layout_margin="10dp"
+        android:background="@drawable/club_default" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,6 +50,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="23dp"
+                                android:text="myClub"
                                 android:hint="동호회 이름"/>
                         </LinearLayout>
 
@@ -68,6 +70,7 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:textSize="23dp"
+                                    android:text="100"
                                     android:hint="최대 인원"/>
                             </RelativeLayout>
                         </LinearLayout>
@@ -90,7 +93,8 @@
                         android:id="@+id/group_manage_modify_maker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="test" />
+                        android:layout_marginLeft="10dp"
+                        android:text="psc" />
 
                 </LinearLayout>
                 <!--주제-->
@@ -109,7 +113,8 @@
                         android:id="@+id/group_manage_modify_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="test" />
+                        android:layout_marginLeft="10dp"
+                        android:text="취미1" />
 
                 </LinearLayout>
                 <!--지역-->
@@ -128,7 +133,8 @@
                         android:id="@+id/group_manage_modify_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="test" />
+                        android:layout_marginLeft="10dp"
+                        android:text="부산광역시" />
 
                 </LinearLayout>
 
@@ -152,6 +158,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/back"
                     android:gravity="left|top"
+                    android:text="my club is good"
                     android:hint="소개말"/>
 
 

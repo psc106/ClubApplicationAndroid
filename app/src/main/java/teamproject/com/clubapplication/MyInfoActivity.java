@@ -15,9 +15,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.data.Member;
+import teamproject.com.clubapplication.data.MemberView;
 import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.LoginService;
+import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 public class MyInfoActivity extends KeyHideActivity {
@@ -94,7 +96,7 @@ public class MyInfoActivity extends KeyHideActivity {
         idTxt.setText(member.getLogin_id());
         nameTxt.setText(member.getName());
         localEdt.setText(member.getLocal());
-        profileImg.setBackgroundColor(Color.parseColor("#0fffff"));
+        GlideApp.with(this).load(R.drawable.profile).into(profileImg);
 
         //가공 필요
         ageTxt.setText(member.getBirthday());

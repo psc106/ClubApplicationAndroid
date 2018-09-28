@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,48 +42,67 @@ public class FindPwFragment extends Fragment {
     Button findBtn;
     @BindView(R.id.findpw_edt_Email)
     EditText emailEdt;
-    @BindView(R.id.findpw_edt_Id)
-    EditText idEdt;
+//    @BindView(R.id.findpw_edt_Id)
+//    EditText idEdt;
     @BindView(R.id.findpw_txt_Alarm)
     TextView alarmTxt;
 
     @OnClick(R.id.findpw_btn_Find)
     void findId() {
-        String email, id;
+        final String email, id;
         if(emailEdt.getText()!=null && !emailEdt.getText().toString().equals("")){
             email = emailEdt.getText().toString();
+            id =  emailEdt.getText().toString();
         } else {
             return;
         }
-        if(idEdt.getText()!=null && !idEdt.getText().toString().equals("")){
-            id = idEdt.getText().toString();
-        } else {
-            return;
-        }
-
-        final LoadingDialog loadingDialog = LoadingDialog.getInstance();
-        loadingDialog.progressON(getActivity(), "메일 발송중");
-
-        Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().findPw(id);
-        observer.enqueue(new Callback<Void>() {
+//        if(idEdt.getText()!=null && !idEdt.getText().toString().equals("")){
+//            id = idEdt.getText().toString();
+//        } else {
+//            return;
+//        }
+        Call<Integer> obs = RetrofitService.getInstance().getRetrofitRequest().checkId(id);
+        obs.enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
-                    alarmTxt.setText("임시 비밀번호 메일 발송 완료");
-                    loadingDialog.progressOFF();
-                }else  {
-                    alarmTxt.setText("임시 비밀번호 메일 발송 실패.\n 통신 오류");
-                    loadingDialog.progressOFF();
+
+                    if(response.body()!=0) {
+                        final LoadingDialog loadingDialog = LoadingDialog.getInstance();
+                        loadingDialog.progressON(getActivity(), "메일 발송중");
+
+                        Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().findPw(id);
+                        observer.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    alarmTxt.setText("임시 비밀번호 메일 발송 완료");
+                                    loadingDialog.progressOFF();
+                                } else {
+                                    alarmTxt.setText("임시 비밀번호 메일 발송 실패.\n 서버 오류");
+                                    loadingDialog.progressOFF();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                alarmTxt.setText("임시 비밀번호 메일 발송 실패.\n 서버 오류");
+                                loadingDialog.progressOFF();
+                                t.printStackTrace();
+                            }
+                        });
+                    } else {
+                        alarmTxt.setText("없는 아이디입니다.");
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                alarmTxt.setText("임시 비밀번호 메일 발송 실패.\n 서버 오류");
-                loadingDialog.progressOFF();
-                t.printStackTrace();
+            public void onFailure(Call<Integer> call, Throwable t) {
+
             }
         });
+
     }
 
     Unbinder unbinder;
@@ -91,6 +112,22 @@ public class FindPwFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_find_pw, container, false);
         unbinder = ButterKnife.bind(this, view);
+        emailEdt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                alarmTxt.setText("");
+            }
+        });
 
         return view;
     }

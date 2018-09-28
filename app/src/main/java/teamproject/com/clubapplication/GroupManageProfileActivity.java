@@ -2,13 +2,11 @@ package teamproject.com.clubapplication;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,10 +28,11 @@ import teamproject.com.clubapplication.data.ExternalImage;
 import teamproject.com.clubapplication.data.MemberView;
 import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.LoginService;
+import teamproject.com.clubapplication.utils.customView.KeyHideActivity;
 import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
-public class GroupManageProfileActivity extends AppCompatActivity {
+public class GroupManageProfileActivity extends KeyHideActivity {
 
     @BindView(R.id.manageProfile_img)
     ImageView manageProfileImg;
@@ -44,26 +43,68 @@ public class GroupManageProfileActivity extends AppCompatActivity {
     @BindView(R.id.manageProfile_btn_cancel)
     Button manageProfileBtnCancel;
 
-    MemberView member;
-    Long clubId;
-    Long memeberId;
-
     @OnClick(R.id.manageProfile_img)
     void photoSelect() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(Intent.createChooser(intent,"다중 선택은 '포토'를 선택하세요."), 1);
+        startActivityForResult(Intent.createChooser(intent, "다중 선택은 '포토'를 선택하세요."), 1);
     }
 
+    boolean originImgState = true;
     @OnClick(R.id.manageProfile_btn_cancel)
     void photoCancel() {
-        if(manageProfileBtnCancel.getVisibility()== View.VISIBLE) {
+//        if(originImgState && member.getImgUrl()==null)
+        Log.d("로그", member.getImgUrl());
+        if (manageProfileBtnCancel.getVisibility() == View.VISIBLE) {
             manageProfileBtnCancel.setVisibility(View.GONE);
-            GlideApp.with(this).load(new ColorDrawable(Color.parseColor("#55000000"))).into(manageProfileImg);
+            GlideApp.with(GroupManageProfileActivity.this).load(CommonUtils.serverURL+CommonUtils.attachPath+member.getImgUrl()).centerCrop().
+                    placeholder(R.drawable.profile).error(R.drawable.profile).
+                    skipMemoryCache(true).into(manageProfileImg);
             externalImage = null;
         }
     }
+
+    @OnClick(R.id.manageProfile_btn_ok)
+    void modifyProfile() {
+        MultipartBody.Part part = null;
+        if (manageProfileBtnCancel.getVisibility() == View.VISIBLE && externalImage != null)
+            part = prepareFilePart(externalImage.getRealPath(), externalImage.getFileUri());
+
+        String nickname;
+        if (TextUtils.isEmpty(manageProfileEdt.getText()) || member.getNickname().equals(manageProfileEdt.getText().toString().trim())) {
+            nickname = member.getNickname();
+        } else {
+            nickname = manageProfileEdt.getText().toString().trim();
+        }
+
+        RequestBody clubIdBody = createPartFromString(String.valueOf(clubId));
+        RequestBody memeberIdBody = createPartFromString(String.valueOf(memeberId));
+        RequestBody nicknameBody = createPartFromString(nickname);
+
+        Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().updateProfile(clubIdBody, memeberIdBody, nicknameBody, part);
+        observer.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(GroupManageProfileActivity.this, "완료", Toast.LENGTH_SHORT).show();
+                    manageProfileBtnCancel.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+    ExternalImage externalImage;
+    MemberView member;
+    Long clubId;
+    Long memeberId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,50 +115,10 @@ public class GroupManageProfileActivity extends AppCompatActivity {
         clubId = intent.getLongExtra("clubId", -1);
         memeberId = LoginService.getInstance().getMember().getId();
         getMemberView();
-
-        manageProfileBtnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MultipartBody.Part part = null;
-                if(manageProfileBtnCancel.getVisibility()==View.VISIBLE && externalImage!=null)
-                    part = prepareFilePart(externalImage.getRealPath(), externalImage.getFileUri());
-
-                String nickname;
-                if(TextUtils.isEmpty(manageProfileEdt.getText())){
-                    nickname = member.getNickname();
-                } else {
-                    nickname = manageProfileEdt.getText().toString();
-                }
-
-                part = prepareFilePart(externalImage.getRealPath(), externalImage.getFileUri());
-                RequestBody clubIdBody = createPartFromString(String.valueOf(clubId));
-                RequestBody memeberIdBody = createPartFromString(String.valueOf(memeberId));
-                RequestBody nicknameBody = createPartFromString(nickname);
-
-                Call<Void> observer = RetrofitService.getInstance().getRetrofitRequest().updateProfile(clubIdBody, memeberIdBody, nicknameBody, part);
-                observer.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(GroupManageProfileActivity.this, "완료", Toast.LENGTH_SHORT).show();
-                            manageProfileBtnCancel.setVisibility(View.GONE);
-                            getMemberView();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
     }
 
-
-    ExternalImage externalImage;
     final int REQUEST_TAKE_ALBUM = 1;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -126,8 +127,8 @@ public class GroupManageProfileActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
 
                     externalImage = new ExternalImage(data.getData(), CommonUtils.getPath(this, data.getData()));
-                    GlideApp.with(this).load(externalImage.getFileUri()).centerCrop().into(manageProfileImg);
-                    if(manageProfileBtnCancel.getVisibility()==View.GONE)
+                    GlideApp.with(this).load(externalImage.getFileUri()).placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).centerCrop().into(manageProfileImg);
+                    if (manageProfileBtnCancel.getVisibility() == View.GONE)
                         manageProfileBtnCancel.setVisibility(View.VISIBLE);
 
                 } else {
@@ -166,14 +167,13 @@ public class GroupManageProfileActivity extends AppCompatActivity {
         observer.enqueue(new Callback<MemberView>() {
             @Override
             public void onResponse(Call<MemberView> call, Response<MemberView> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     member = response.body();
-                    manageProfileEdt.setText(member.getNickname());
-                    GlideApp.with(GroupManageProfileActivity.this).load(CommonUtils.serverURL+CommonUtils.attachPath+member.getImgUrl()).into(manageProfileImg);
-                    if(member.getImgUrl()!=null){
-                        manageProfileBtnCancel.setVisibility(View.VISIBLE);
-                        externalImage = null;
-                    }
+                    manageProfileEdt.setText(response.body().getNickname());
+                    GlideApp.with(GroupManageProfileActivity.this).load(CommonUtils.serverURL+CommonUtils.attachPath+response.body().getImgUrl()).centerCrop().
+                            placeholder(R.drawable.profile).error(R.drawable.profile).
+                            skipMemoryCache(true).into(manageProfileImg);
+                    Log.d("로그", member.getImgUrl());
                 }
             }
 

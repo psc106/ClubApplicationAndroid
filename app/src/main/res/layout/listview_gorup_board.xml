@@ -91,7 +91,9 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:background="@drawable/border_rectangle_layout2"/>
     </LinearLayout>
     <LinearLayout
         android:tag="리니어5"
@@ -108,6 +110,7 @@
             android:id="@+id/groupBoard_lv_btn_comment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"/>
+            android:layout_weight="3"
+            android:text="댓글 입력"/>
     </LinearLayout>
 </LinearLayout>

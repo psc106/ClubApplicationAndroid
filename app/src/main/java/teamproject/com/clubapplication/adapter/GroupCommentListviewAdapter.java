@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,8 +23,6 @@ import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.CommentView;
 import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.LoginService;
-import teamproject.com.clubapplication.utils.bus.BusProvider;
-import teamproject.com.clubapplication.utils.bus.event.CommentEvent;
 import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
@@ -77,8 +74,15 @@ public class GroupCommentListviewAdapter extends BaseAdapter {
         holder.groupCommentTxtContent.setText(currCommentView.getContent());
         holder.groupCommentTxtDate.setText(currCommentView.getCreate_date());
         holder.groupCommentTxtNickname.setText(currCommentView.getNickname());
-        GlideApp.with(context).load(currCommentView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupCommentImgProfile);
+        GlideApp.with(context).load(CommonUtils.serverURL+CommonUtils.attachPath+currCommentView.getImgUrl()).centerCrop().placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).into(holder.groupCommentImgProfile);
 
+        if(currCommentView.getMember_id()!=LoginService.getInstance().getMember().getId()){
+            holder.groupCommentImgBtnDel.setVisibility(View.GONE);
+            holder.groupCommentImgBtnModify.setVisibility(View.GONE);
+        } else {
+            holder.groupCommentImgBtnDel.setVisibility(View.VISIBLE);
+            holder.groupCommentImgBtnModify.setVisibility(View.VISIBLE);
+        }
 
         holder.groupCommentImgBtnDel.setOnClickListener(new View.OnClickListener() {
             @Override

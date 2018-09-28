@@ -48,7 +48,7 @@ public class GroupManageFragment extends Fragment implements RefreshData{
     GroupManageListviewAdapter adapter;
 
     ArrayList<GroupManageMenu> admin = new ArrayList<GroupManageMenu>(Arrays.asList(new GroupManageMenu[]{GroupManageMenu.profile, GroupManageMenu.home, GroupManageMenu.member, GroupManageMenu.delete}));
-    ArrayList<GroupManageMenu> normal = new ArrayList<GroupManageMenu>(Arrays.asList(new GroupManageMenu[]{GroupManageMenu.profile, GroupManageMenu.member, GroupManageMenu.out}));
+    ArrayList<GroupManageMenu> normal = new ArrayList<GroupManageMenu>(Arrays.asList(new GroupManageMenu[]{GroupManageMenu.profile, GroupManageMenu.out}));
     ArrayList<GroupManageMenu> wait = new ArrayList<GroupManageMenu>(Arrays.asList(new GroupManageMenu[]{GroupManageMenu.profile, GroupManageMenu.out}));
 
     ArrayList<GroupManageMenu> list;
@@ -78,6 +78,7 @@ public class GroupManageFragment extends Fragment implements RefreshData{
                 switch (list.get(position).getId()){
                     case 0:
                         intent = new Intent(getActivity(), GroupManageProfileActivity.class);
+                        intent.putExtra("clubId", clubMemberClass.getClubView().getId());
                         intent.putExtra("memberId", loginService.getMember().getId());
                         startActivity(intent);
                         break;

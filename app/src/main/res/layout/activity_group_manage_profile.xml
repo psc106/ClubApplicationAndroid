@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".GroupManageProfileActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필 변경"
+        android:layout_gravity="center"
+        android:textSize="20dp"/>
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

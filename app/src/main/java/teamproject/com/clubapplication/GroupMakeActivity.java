@@ -72,7 +72,7 @@ public class GroupMakeActivity extends KeyHideActivity {
     void photoCancel() {
         if(cancelBtn.getVisibility()== View.VISIBLE) {
             cancelBtn.setVisibility(View.GONE);
-            GlideApp.with(this).load(new ColorDrawable(Color.parseColor("#3789b0"))).into(imgGroupPhoto);
+            GlideApp.with(this).load(R.drawable.club_default).into(imgGroupPhoto);
         }
     }
     @OnClick(R.id.btn_select_group_photo)

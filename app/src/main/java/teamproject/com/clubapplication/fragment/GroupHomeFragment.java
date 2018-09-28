@@ -196,7 +196,12 @@ public class GroupHomeFragment extends Fragment implements RefreshData {
         title.setText(clubMemberClass.getClubView().getName());
 
         if (!clubMemberClass.getMemberClass().equals("O")) {
-            Call<String> observer = RetrofitService.getInstance().getRetrofitRequest().refreshMemberClass(clubMemberClass.getClubView().getId(), loginService.getMember().getId());
+            Long id;
+            if(loginService.getMember()==null)
+                id = -1L;
+            else
+                id = loginService.getMember().getId();
+            Call<String> observer = RetrofitService.getInstance().getRetrofitRequest().refreshMemberClass(clubMemberClass.getClubView().getId(), id);
             observer.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

@@ -17,6 +17,7 @@
         android:id="@+id/main_GridV_ctext_Text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="20dp"
-        android:text="empty"/>
+        android:gravity="center"
+        android:textSize="15dp"
+        android:background="@drawable/main_gridv"/>
 </LinearLayout>

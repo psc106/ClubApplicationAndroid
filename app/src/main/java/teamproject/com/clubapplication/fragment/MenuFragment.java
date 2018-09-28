@@ -39,6 +39,7 @@ import teamproject.com.clubapplication.MyCalendarActivity;
 import teamproject.com.clubapplication.MyGroupActivity;
 import teamproject.com.clubapplication.MyContentActivity;
 import teamproject.com.clubapplication.MyOptionActivity;
+import teamproject.com.clubapplication.utils.CommonUtils;
 import teamproject.com.clubapplication.utils.RefreshData;
 import teamproject.com.clubapplication.data.Member;
 import teamproject.com.clubapplication.utils.LoginService;
@@ -47,6 +48,7 @@ import teamproject.com.clubapplication.utils.DrawerMenu;
 import teamproject.com.clubapplication.MyInfoActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.utils.bus.event.LoginEvent;
+import teamproject.com.clubapplication.utils.glide.GlideApp;
 import teamproject.com.clubapplication.utils.retrofit.RetrofitService;
 
 @SuppressLint("ValidFragment")
@@ -199,7 +201,7 @@ public class MenuFragment extends Fragment {
         if (loginService.getMember() == null) {
             setLogoutMenu();
         } else {
-            setLoginMenu(loginService.getMember().getName());
+            setLoginMenu(loginService.getMember().getName(), "");
         }
 
         return view;
@@ -232,12 +234,16 @@ public class MenuFragment extends Fragment {
         // profileImg.setVisibility(View.GONE);
 //        menuListV.setVisibility(View.GONE);
         nameTxt.setText("로그인이 필요합니다.");
+        GlideApp.with(this).load(R.drawable.main_logo).centerCrop().into(profileImg);
+        loginBtn.setText("로그인");
     }
 
-    public void setLoginMenu(String name) {
+    public void setLoginMenu(String name, String imgUrl) {
         //profileImg.setVisibility(View.VISIBLE);
 //        menuListV.setVisibility(View.VISIBLE);
         nameTxt.setText(name + "\n[ " + loginService.getMember().getLogin_id() + " ]");
+        GlideApp.with(this).load(CommonUtils.serverURL+CommonUtils.attachPath+imgUrl).error(R.drawable.main_logo).centerCrop().into(profileImg);
+        loginBtn.setText("로그아웃");
     }
 
     @Subscribe
@@ -245,11 +251,13 @@ public class MenuFragment extends Fragment {
         if (event.getState() == 0) {
             setLogoutMenu();
         } else if (event.getState() == 1) {
-            setLoginMenu(loginService.getMember().getName());
+            setLoginMenu(loginService.getMember().getName(), null);
         }
     }
 
     public void refreshLogin() {
+        if(loginService.getMember()==null)
+            return;
 
         if (loginService.getMember().getVerify().equals("N")) {
             Call<Member> observer = RetrofitService.getInstance().getRetrofitRequest().refreshLoginUser(loginService.getMember().getId());

@@ -1,7 +1,6 @@
 package teamproject.com.clubapplication.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import teamproject.com.clubapplication.GroupActivity;
-import teamproject.com.clubapplication.MainActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.ClubMemberClass;
 import teamproject.com.clubapplication.data.MemberView;
@@ -74,6 +71,13 @@ public class MemberJoinListviewAdapter extends BaseAdapter {
         holder.groupManageMemberCheckTxtGender.setText(currMember.getGender() == 1 ? "남자" : "여자");
         holder.groupManageMemberCheckTxtLocation.setText(currMember.getLocal());
         GlideApp.with(parent.getContext()).load(CommonUtils.serverURL + CommonUtils.attachPath + currMember.getImgUrl()).placeholder(R.drawable.profile).skipMemoryCache(true).error(R.drawable.profile).circleCrop().into(holder.groupManageMemberCheckImg);
+
+        if(LoginService.getInstance().getMember().getId()==currMember.getMemberId()){
+            holder.groupManageMemberBtnCheckBan.setVisibility(View.GONE);
+        } else {
+            holder.groupManageMemberBtnCheckBan.setVisibility(View.VISIBLE);
+
+        }
 
         holder.groupManageMemberBtnCheckBan.setOnClickListener(new View.OnClickListener() {
             @Override

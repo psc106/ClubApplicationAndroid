@@ -63,16 +63,13 @@ public class LoginService {
     //refreshMember(Member member) : 현재 로그인중인 멤버를 매개변수 member로 바꾼다.
     //정보가 다를 경우 로그아웃이 된다.
     public void refreshMember(Member member) {
-        Log.d("로그", "1 "+member.toString());
         if(this.member.getId()==member.getId()) {
             if (member != null) {
-                Log.d("로그", "2 "+member.toString());
                 this.member=member;
                 BusProvider.getInstance().getBus().post(new LoginEvent(1));
                 return;
             }
         }
-        Log.d("로그", "3 "+member.toString());
         BusProvider.getInstance().getBus().post(new LoginEvent(0));
     }
 

@@ -123,6 +123,13 @@ public class GroupBoardDetailFragment extends Fragment implements RefreshData {
         viewPager.setPadding(30, 0, 30, 0);
         viewPager.setPageMargin(getResources().getDisplayMetrics().widthPixels / -9);
 
+        if(postView.getMember_id()!=LoginService.getInstance().getMember().getId()){
+            groupBoardDetailBtnDelete.setVisibility(View.GONE);
+            groupBoardDetailBtnModify.setVisibility(View.GONE);
+        } else {
+            groupBoardDetailBtnDelete.setVisibility(View.VISIBLE);
+            groupBoardDetailBtnModify.setVisibility(View.VISIBLE);
+        }
 
         LoadingDialog.getInstance().progressON(getActivity(), "로딩중");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

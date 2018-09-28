@@ -123,6 +123,7 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
 
     @Override
     public void refresh() {
+        Log.d("로그", "보드 리프레시");
         page = 1;
         if (clubMemberClass != null) {
             getCount();
@@ -174,8 +175,9 @@ public class GroupBoardFragment extends Fragment implements RefreshData {
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
                     count = response.body();
+                    arrayList.clear();
+                    groupBoardListviewAdapter.notifyDataSetChanged();
                     if (count > 0) {
-                        arrayList.clear();
                         getData();
                     }
                 }

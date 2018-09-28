@@ -1,7 +1,5 @@
 package teamproject.com.clubapplication.adapter;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,7 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import teamproject.com.clubapplication.GroupActivity;
 import teamproject.com.clubapplication.GroupManageMemberActivity;
-import teamproject.com.clubapplication.MainActivity;
 import teamproject.com.clubapplication.R;
 import teamproject.com.clubapplication.data.MemberView;
 import teamproject.com.clubapplication.utils.CommonUtils;

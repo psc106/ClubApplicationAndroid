@@ -10,7 +10,7 @@
             android:innerRadius="20dp">
             <stroke
                 android:width="3dp"
-                android:color="#000000" />
+                android:color="#e2c3c3" />
             <solid android:color="#ffffff" />
             <corners android:radius="20dp"/>
         </shape>

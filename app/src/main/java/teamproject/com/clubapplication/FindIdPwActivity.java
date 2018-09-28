@@ -22,22 +22,22 @@ public class FindIdPwActivity extends KeyHideActivity {
     Fragment fragment;
     LoadingDialog loadingDialog;
 
-    @BindView(R.id.btn_find_id) Button btn_find_id;
-    @BindView(R.id.btn_find_pw) Button btn_find_pw;
+//    @BindView(R.id.btn_find_id) Button btn_find_id;
+//    @BindView(R.id.btn_find_pw) Button btn_find_pw;
+//
+//    @OnClick(R.id.btn_find_id)
+//    public void onClick_btn_find_id(View view) {
+//        fragment = FindIdFragment.getInstance();
+//
+//        goFragment();
+//    }
 
-    @OnClick(R.id.btn_find_id)
-    public void onClick_btn_find_id(View view) {
-        fragment = FindIdFragment.getInstance();
-
-        goFragment();
-    }
-
-    @OnClick(R.id.btn_find_pw)
-    public void onClick_btn_find_pw(View view) {
-        fragment = FindPwFragment.getInstance();
-
-        goFragment();
-    }
+//    @OnClick(R.id.btn_find_pw)
+//    public void onClick_btn_find_pw(View view) {
+//        fragment = FindPwFragment.getInstance();
+//
+//        goFragment();
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
@@ -50,11 +50,11 @@ public class FindIdPwActivity extends KeyHideActivity {
         Intent intent = getIntent();
         Integer findIdentifier = intent.getIntExtra("findValue", 1);
 
-        if(findIdentifier == 1) {
-            fragment = FindIdFragment.getInstance();
-        }else if(findIdentifier == 2) {
+//        if(findIdentifier == 1) {
+//            fragment = FindIdFragment.getInstance();
+//        }else if(findIdentifier == 2) {
             fragment = FindPwFragment.getInstance();
-        }
+//        }
 
         goFragment();
     }

@@ -29,6 +29,7 @@
                 android:id="@+id/group_manage_member_check_txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:text="이름"
                 android:textSize="20dp" />
 
@@ -44,7 +45,8 @@
                 android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:layout_toLeftOf="@+id/group_manage_member_btn_check_ban"
-                android:text="임명" />
+                android:text="임명"
+                android:visibility="gone"/>
         </RelativeLayout>
         <!--나이 부분-->
         <LinearLayout

@@ -29,7 +29,7 @@
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_marginTop="20dp"
-                        android:background="#3789b0" />
+                        android:background="@drawable/club_default"/>
                     <ImageButton
                         android:id="@+id/make_btn_CancelImage"
                         android:layout_width="50dp"
@@ -37,9 +37,9 @@
                         android:layout_marginTop="25dp"
                         android:layout_marginRight="5dp"
                         android:layout_alignRight="@id/img_group_photo"
+                        android:background="@drawable/delete"
                         android:visibility="gone"/>
                 </RelativeLayout>
-
 
                 <Button
                     android:id="@+id/btn_select_group_photo"
@@ -170,7 +170,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#79e2f7"
+            android:background="#FAAC58"
             android:text="그룹생성" />
     </RelativeLayout>
 

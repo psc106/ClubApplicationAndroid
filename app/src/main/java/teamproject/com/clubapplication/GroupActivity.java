@@ -40,6 +40,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teamproject.com.clubapplication.adapter.GroupViewpagerAdapter;
 import teamproject.com.clubapplication.data.ClubMemberClass;
+import teamproject.com.clubapplication.data.MemberView;
 import teamproject.com.clubapplication.fragment.GroupAlbumFragment;
 import teamproject.com.clubapplication.fragment.GroupBoardFragment;
 import teamproject.com.clubapplication.fragment.GroupCalendarFragment;
@@ -77,7 +78,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.group_appbar)
     AppBarLayout appBarLayout;
-//    @BindView(R.id.group_toolbar2)
+    //    @BindView(R.id.group_toolbar2)
 //    Toolbar toolbar2;
 //    @BindView(R.id.group_collapsToolbar2)
 //    CollapsingToolbarLayout collapsingToolbarLayout2;
@@ -95,14 +96,15 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     GroupViewpagerAdapter homeAdapter;
     LoginService loginService;
     private ClubMemberClass clubMemberClass = null;
+    private MemberView member = null;
     LoadingDialog loadingDialog;
     Bus bus;
     Long clubId;
 
 
     public void fragmentRefresh() {
-        Log.d("로그", viewpager.getCurrentItem()+"");
-        RefreshData refreshData = (RefreshData)(homeAdapter.getItem(viewpager.getCurrentItem()));
+        Log.d("로그", viewpager.getCurrentItem() + "번 탭");
+        RefreshData refreshData = (RefreshData) (homeAdapter.getItem(viewpager.getCurrentItem()));
         refreshData.refresh();
     }
 
@@ -147,6 +149,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         bus = BusProvider.getInstance().getBus();
         bus.register(this);
 
+
         homeAdapter = new GroupViewpagerAdapter(getSupportFragmentManager(), this);
         homeAdapter.addFragment(new GroupHomeFragment(), "HOME", 0);
         viewpager.setOffscreenPageLimit(4);
@@ -158,7 +161,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             finish();
             //실패처리
         } else {
-            Log.d("로그", "onCreate: "+loadingDialog);
+            Log.d("로그", "onCreate: " + loadingDialog);
             loadingDialog.progressON(this, "메세지");
             Long userId = -1L;
             if (loginService.getMember() != null)
@@ -188,7 +191,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
             @Override
             public void onPageSelected(int position) {
-                RefreshData refreshData = (RefreshData)(homeAdapter.getItem(position));
+                RefreshData refreshData = (RefreshData) (homeAdapter.getItem(position));
                 refreshData.refresh();
 
                 if (position > 0) {
@@ -221,14 +224,13 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
 
                 if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
                     // keyboard is opened
-                    if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
+                    if (!(loginService.getMember() == null || clubMemberClass != null && (clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
                         writeBtnFrame.setVisibility(View.GONE);
                     }
 //                    isKeyboard = true;
 
-                }
-                else {
-                    if (!(loginService.getMember() == null || clubMemberClass!=null &&( clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
+                } else {
+                    if (!(loginService.getMember() == null || clubMemberClass != null && (clubMemberClass.getMemberClass().equals("O") || clubMemberClass.getMemberClass().equals("N") || clubMemberClass.getMemberClass().equals("W")))) {
                         writeBtnFrame.setVisibility(View.VISIBLE);
                     }
 //                    isKeyboard = false;
@@ -246,6 +248,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         } else {
             drawerMenu.restartMenu(this, R.id.group_menu, R.id.group_drawer);
         }
+
         super.onResume();
 
     }
@@ -254,6 +257,9 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
     protected void onDestroy() {
         super.onDestroy();
         bus.unregister(this);
+        if(loginService.getMember()!=null){
+            BusProvider.getInstance().getBus().post(new LoginEvent(1));
+        }
     }
 
     public ClubMemberClass getClubMemberClass() {
@@ -304,7 +310,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    GlideApp.with(GroupActivity.this).load(CommonUtils.serverURL + CommonUtils.attachPath+ response.body()).skipMemoryCache(true).centerCrop().into(imageView);
+                    GlideApp.with(GroupActivity.this).load(CommonUtils.serverURL + CommonUtils.attachPath + response.body()).skipMemoryCache(true).centerCrop().into(imageView);
                 }
             }
 
@@ -330,6 +336,7 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
             viewpager.setOffscreenPageLimit(4);
             writeBtnFrame.setVisibility(View.VISIBLE);
         }
+
     }
 
 
@@ -435,16 +442,17 @@ public class GroupActivity extends KeyHideActivity implements RefreshData {
         loadingDialog.progressOFF();
         super.onBackPressed();
     }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d("로그", "resultCode " + resultCode);
+//        Log.d("로그", "requestCode " + requestCode);
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == 0) {
+//                fragmentRefresh();
+//            }
+//        }
+//    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("로그", "ㄱㄷㄴ "+resultCode);
-        Log.d("로그", "ㄱㄷㅂ "+requestCode);
-        if(resultCode==RESULT_OK){
-            if(requestCode==0){
-                fragmentRefresh();
-            }
-        }
-    }
 }
 

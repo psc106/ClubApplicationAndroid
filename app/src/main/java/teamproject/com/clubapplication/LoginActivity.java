@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,12 +67,14 @@ public class LoginActivity extends KeyHideActivity {
         if(login_id.getText()!=null && !login_id.getText().toString().equals("")){
             id = login_id.getText().toString();
         } else {
+            Toast.makeText(this, "아이디를 입력하세요", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(login_pw.getText()!=null && !login_pw.getText().toString().equals("")){
             pw = login_pw.getText().toString();
         } else {
+            Toast.makeText(this, "비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -96,16 +99,20 @@ public class LoginActivity extends KeyHideActivity {
                         finish();
 
                     } else {
+                        login_pw.setText("");
+                        Toast.makeText(LoginActivity.this, "잘못된 정보입니다.", Toast.LENGTH_SHORT).show();
                         //포커스?
                         //리셋?
                     }
                 }else {
+                    Toast.makeText(LoginActivity.this, "서버 오류입니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Member> call, Throwable t) {
                 t.printStackTrace();
+                Toast.makeText(LoginActivity.this, "서버 오류입니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
